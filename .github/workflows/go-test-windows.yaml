@@ -1,0 +1,37 @@
+# Based on
+# - https://github.com/marketplace/actions/setup-go-environment
+
+name: go-test-windows.yaml
+on: [push]
+env:
+  SENZING_TOOLS_DATABASE_URL: 'sqlite3://na:na@nowhere/C:\Temp\sqlite\G2C.db'
+jobs:
+  go-test-windows:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        go: ["1.21"]
+        os: [windows-latest]
+        senzingapi-version: [staging]
+    name: "go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Install Senzing API
+        uses: Senzing/github-action-install-senzing-api@latest
+        with:
+          senzingapi-version: ${{ matrix.senzingapi-version }}
+      - name: Add to "Path" environment variable
+        run: echo "C:\Program Files\Senzing\g2\lib" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Copy /etc files
+        run: copy testdata/senzing-license/g2.lic "C:\Program Files\Senzing\g2\etc\g2.lic"
+      - name: Copy test database files
+        run: mkdir "C:\Temp\sqlite" && copy testdata/sqlite/G2C.db "C:\Temp\sqlite\G2C.db"
+      - name: Run go test
+        run: go test -v -p 1 ./...
