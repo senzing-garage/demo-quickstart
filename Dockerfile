@@ -4,7 +4,7 @@
 
 ARG IMAGE_GO_BUILDER=golang:1.21.4-bullseye
 # FIXME: ARG IMAGE_FINAL=senzing/senzingapi-runtime:3.8.0
-ARG IMAGE_FINAL=senzing/senzingapi-runtime:staging
+ARG IMAGE_FINAL=senzing/senzingapi-runtime:3.8.0
 
 # -----------------------------------------------------------------------------
 # Stage: senzingapi_runtime
@@ -44,7 +44,7 @@ RUN make build
 # Copy binaries to /output.
 
 RUN mkdir -p /output \
- && cp -R ${GOPATH}/src/demo-quickstart/target/*  /output/
+      && cp -R ${GOPATH}/src/demo-quickstart/target/*  /output/
 
 # -----------------------------------------------------------------------------
 # Stage: final
