@@ -1,0 +1,17 @@
+name: docker-build-container.yaml
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  docker-build-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build docker image
+        uses: senzing-factory/github-action-docker-buildx-build@latest
+        with:
+          image-repository: senzing/demo-quickstart
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+          platforms: linux/amd64
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
