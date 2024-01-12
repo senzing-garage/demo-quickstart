@@ -16,6 +16,7 @@ import (
 	"github.com/docktermj/cloudshell/xtermservice"
 	"github.com/flowchartsman/swaggerui"
 	"github.com/pkg/browser"
+	"github.com/senzing-garage/demo-entity-search/entitysearchservice"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestapi"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
@@ -30,9 +31,11 @@ import (
 type HttpServerImpl struct {
 	ApiUrlRoutePrefix              string // FIXME: Only works with "api"
 	EnableAll                      bool
+	EnableEntitySearch             bool
 	EnableSenzingRestAPI           bool
 	EnableSwaggerUI                bool
 	EnableXterm                    bool
+	EntitySearchRoutePrefix        string // FIXME: Only works with "entity-search"
 	GrpcDialOptions                []grpc.DialOption
 	GrpcTarget                     string
 	LogLevelName                   string
@@ -59,14 +62,16 @@ type HttpServerImpl struct {
 
 type TemplateVariables struct {
 	HttpServerImpl
-	ApiServerStatus string
-	ApiServerUrl    string
-	HtmlTitle       string
-	RequestHost     string
-	SwaggerStatus   string
-	SwaggerUrl      string
-	XtermStatus     string
-	XtermUrl        string
+	ApiServerStatus    string
+	ApiServerUrl       string
+	EntitySearchStatus string
+	EntitySearchUrl    string
+	HtmlTitle          string
+	RequestHost        string
+	SwaggerStatus      string
+	SwaggerUrl         string
+	XtermStatus        string
+	XtermUrl           string
 }
 
 // ----------------------------------------------------------------------------
@@ -163,6 +168,11 @@ func (httpServer *HttpServerImpl) getSenzingApiMux(ctx context.Context) *senzing
 	return srv
 }
 
+func (httpServer *HttpServerImpl) getEntitySearchMux(ctx context.Context) *http.ServeMux {
+	service := &entitysearchservice.HttpServiceImpl{}
+	return service.Handler(ctx)
+}
+
 func (httpServer *HttpServerImpl) getSwaggerUiMux(ctx context.Context) *http.ServeMux {
 	swaggerMux := swaggerui.Handler([]byte{}) // OpenAPI specification handled by openApiFunc()
 	swaggerFunc := swaggerMux.ServeHTTP
@@ -189,14 +199,16 @@ func (httpServer *HttpServerImpl) getXtermMux(ctx context.Context) *http.ServeMu
 
 func (httpServer *HttpServerImpl) siteFunc(w http.ResponseWriter, r *http.Request) {
 	templateVariables := TemplateVariables{
-		HttpServerImpl:  *httpServer,
-		HtmlTitle:       "Senzing Tools",
-		ApiServerUrl:    httpServer.getServerUrl(httpServer.EnableSenzingRestAPI, fmt.Sprintf("http://%s/api", r.Host)),
-		ApiServerStatus: httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
-		SwaggerUrl:      httpServer.getServerUrl(httpServer.EnableSwaggerUI, fmt.Sprintf("http://%s/swagger", r.Host)),
-		SwaggerStatus:   httpServer.getServerStatus(httpServer.EnableSwaggerUI),
-		XtermUrl:        httpServer.getServerUrl(httpServer.EnableXterm, fmt.Sprintf("http://%s/xterm", r.Host)),
-		XtermStatus:     httpServer.getServerStatus(httpServer.EnableXterm),
+		HttpServerImpl:     *httpServer,
+		HtmlTitle:          "Senzing Tools",
+		ApiServerStatus:    httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
+		ApiServerUrl:       httpServer.getServerUrl(httpServer.EnableSenzingRestAPI, fmt.Sprintf("http://%s/api", r.Host)),
+		EntitySearchStatus: httpServer.getServerStatus(httpServer.EnableEntitySearch),
+		EntitySearchUrl:    httpServer.getServerUrl(httpServer.EnableEntitySearch, fmt.Sprintf("http://%s/entity-search", r.Host)),
+		SwaggerStatus:      httpServer.getServerStatus(httpServer.EnableSwaggerUI),
+		SwaggerUrl:         httpServer.getServerUrl(httpServer.EnableSwaggerUI, fmt.Sprintf("http://%s/swagger", r.Host)),
+		XtermStatus:        httpServer.getServerStatus(httpServer.EnableXterm),
+		XtermUrl:           httpServer.getServerUrl(httpServer.EnableXterm, fmt.Sprintf("http://%s/xterm", r.Host)),
 	}
 	w.Header().Set("Content-Type", "text/html")
 	filePath := fmt.Sprintf("static/templates%s", r.RequestURI)
@@ -228,6 +240,14 @@ func (httpServer *HttpServerImpl) Serve(ctx context.Context) error {
 		senzingApiMux := httpServer.getSenzingApiMux(ctx)
 		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.ApiUrlRoutePrefix), http.StripPrefix("/api", senzingApiMux))
 		userMessage = fmt.Sprintf("%sServing Senzing REST API at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.ApiUrlRoutePrefix)
+	}
+
+	// Enable Senzing Entity Search.
+
+	if httpServer.EnableAll || httpServer.EnableEntitySearch {
+		entitySearchMux := httpServer.getEntitySearchMux(ctx)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.EntitySearchRoutePrefix), http.StripPrefix("/entity-search", entitySearchMux))
+		userMessage = fmt.Sprintf("%sServing Entity Search at    http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.EntitySearchRoutePrefix)
 	}
 
 	// Enable SwaggerUI.

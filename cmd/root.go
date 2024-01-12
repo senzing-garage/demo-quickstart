@@ -7,28 +7,29 @@ import (
 	"log"
 	"net"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/senzing-garage/demo-quickstart/httpserver"
 	"github.com/senzing-garage/go-cmdhelping/cmdhelper"
 	"github.com/senzing-garage/go-cmdhelping/engineconfiguration"
 	"github.com/senzing-garage/go-cmdhelping/option"
-	"github.com/senzing-garage/go-grpcing/grpcurl"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
+	"github.com/senzing-garage/serve-grpc/grpcserver"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"google.golang.org/grpc"
 )
 
 const (
-	Short string = "HTTP server supporting various services"
+	Short string = "HTTP/gRPC server supporting various services"
 	Use   string = "demo-quickstart"
 	Long  string = `
-An HTTP server supporting the following services:
-    - Senzing API server
-    - Swagger UI
-    - Xterm
+A server supporting the following services:
+    - HTTP: Senzing API server
+    - HTTP: Swagger UI
+    - HTTP: Xterm
+	- gRPC:
     `
 )
 
@@ -39,14 +40,10 @@ An HTTP server supporting the following services:
 var ContextVariablesForMultiPlatform = []option.ContextVariable{
 	option.Configuration,
 	option.DatabaseUrl,
-	option.EnableAll,
-	option.EnableSenzingRestApi,
-	option.EnableSwaggerUi,
-	option.EnableXterm,
 	option.EngineConfigurationJson,
 	option.EngineLogLevel,
 	option.EngineModuleName,
-	option.GrpcUrl,
+	option.GrpcPort,
 	option.HttpPort,
 	option.LogLevel,
 	option.ObserverOrigin,
@@ -120,37 +117,43 @@ func RunE(_ *cobra.Command, _ []string) error {
 	var err error = nil
 	ctx := context.Background()
 
+	// Set default value for SENZING_TOOLS_DATABASE_URL.
+
+	_, isSet := os.LookupEnv("SENZING_TOOLS_DATABASE_URL")
+	if !isSet {
+		os.Setenv("SENZING_TOOLS_DATABASE_URL", SENZING_TOOLS_DATABASE_URL)
+	}
+
+	// Build configuration for Senzing engine.
+
 	senzingEngineConfigurationJson, err := engineconfiguration.BuildAndVerifySenzingEngineConfigurationJson(ctx, viper.GetViper())
 	if err != nil {
 		return err
-	}
-
-	// Determine if gRPC is being used.
-
-	grpcUrl := viper.GetString(option.GrpcUrl.Arg)
-	grpcTarget := ""
-	grpcDialOptions := []grpc.DialOption{}
-	if len(grpcUrl) > 0 {
-		grpcTarget, grpcDialOptions, err = grpcurl.Parse(ctx, grpcUrl)
-		if err != nil {
-			return err
-		}
 	}
 
 	// Build observers.
 
 	observers := []observer.Observer{}
 
+	// Setup gRPC server
+
+	grpcserver := &grpcserver.GrpcServerImpl{
+		EnableAll:                      true,
+		LogLevelName:                   viper.GetString(option.LogLevel.Arg),
+		ObserverOrigin:                 viper.GetString(option.ObserverOrigin.Arg),
+		ObserverUrl:                    viper.GetString(option.ObserverUrl.Arg),
+		Port:                           viper.GetInt(option.GrpcPort.Arg),
+		SenzingEngineConfigurationJson: senzingEngineConfigurationJson,
+		SenzingModuleName:              viper.GetString(option.EngineModuleName.Arg),
+		SenzingVerboseLogging:          viper.GetInt64(option.EngineLogLevel.Arg),
+	}
+
 	// Create object and Serve.
 
 	httpServer := &httpserver.HttpServerImpl{
 		ApiUrlRoutePrefix:              "api",
-		EnableAll:                      viper.GetBool(option.EnableAll.Arg),
-		EnableSenzingRestAPI:           viper.GetBool(option.EnableSenzingRestApi.Arg),
-		EnableSwaggerUI:                viper.GetBool(option.EnableSwaggerUi.Arg),
-		EnableXterm:                    viper.GetBool(option.EnableXterm.Arg),
-		GrpcDialOptions:                grpcDialOptions,
-		GrpcTarget:                     grpcTarget,
+		EnableAll:                      true,
+		EntitySearchRoutePrefix:        "entity-search",
 		LogLevelName:                   viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:                 viper.GetString(option.ObserverOrigin.Arg),
 		Observers:                      observers,
@@ -171,7 +174,25 @@ func RunE(_ *cobra.Command, _ []string) error {
 		XtermMaxBufferSizeBytes:        viper.GetInt(option.XtermMaxBufferSizeBytes.Arg),
 		XtermUrlRoutePrefix:            "xterm",
 	}
-	return httpServer.Serve(ctx)
+
+	// Start servers.
+
+	var waitGroup sync.WaitGroup
+	waitGroup.Add(2)
+
+	go func() {
+		defer waitGroup.Done()
+		err = httpServer.Serve(ctx)
+	}()
+
+	go func() {
+		defer waitGroup.Done()
+		err = grpcserver.Serve(ctx)
+	}()
+
+	waitGroup.Wait()
+
+	return nil
 }
 
 // Used in construction of cobra.Command

@@ -58,6 +58,7 @@ LABEL Name="senzing/demo-quickstart" \
 
 # Copy files from prior stage.
 
+COPY ./rootfs /
 COPY --from=go_builder "/output/linux-amd64/demo-quickstart" "/app/demo-quickstart"
 
 # Runtime environment variables.
