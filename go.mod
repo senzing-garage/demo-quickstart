@@ -6,10 +6,11 @@ require (
 	github.com/docktermj/cloudshell v0.2.0
 	github.com/flowchartsman/swaggerui v0.0.0-20221017034628-909ed4f3701b
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
+	github.com/senzing-garage/demo-entity-search v0.1.0
 	github.com/senzing-garage/go-cmdhelping v0.2.0
-	github.com/senzing-garage/go-grpcing v0.2.0
 	github.com/senzing-garage/go-observing v0.3.0
 	github.com/senzing-garage/go-rest-api-service v0.2.0
+	github.com/senzing-garage/serve-grpc v0.6.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	google.golang.org/grpc v1.60.1
@@ -69,7 +70,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.21.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.26.0 // indirect
-	golang.org/x/exp v0.0.0-20240110193028-0dcbfd608b1e // indirect
+	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3 // indirect
 	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
