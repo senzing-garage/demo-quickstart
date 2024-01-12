@@ -121,7 +121,10 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	_, isSet := os.LookupEnv("SENZING_TOOLS_DATABASE_URL")
 	if !isSet {
-		os.Setenv("SENZING_TOOLS_DATABASE_URL", SENZING_TOOLS_DATABASE_URL)
+		err = os.Setenv("SENZING_TOOLS_DATABASE_URL", SENZING_TOOLS_DATABASE_URL)
+		if err != nil {
+			return err
+		}
 	}
 
 	// Build configuration for Senzing engine.
