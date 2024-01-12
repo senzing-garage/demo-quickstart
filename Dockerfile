@@ -3,7 +3,6 @@
 # -----------------------------------------------------------------------------
 
 ARG IMAGE_GO_BUILDER=golang:1.21.4-bullseye
-# FIXME: ARG IMAGE_FINAL=senzing/senzingapi-runtime:3.8.0
 ARG IMAGE_FINAL=senzing/senzingapi-runtime:3.8.0
 
 # -----------------------------------------------------------------------------
@@ -20,7 +19,7 @@ FROM ${IMAGE_GO_BUILDER} as go_builder
 ENV REFRESHED_AT=2023-10-03
 LABEL Name="senzing/demo-quickstart-builder" \
       Maintainer="support@senzing.com" \
-      Version="0.2.0"
+      Version="0.0.1"
 
 # Copy local files from the Git repository.
 
@@ -54,7 +53,7 @@ FROM ${IMAGE_FINAL} as final
 ENV REFRESHED_AT=2023-10-03
 LABEL Name="senzing/demo-quickstart" \
       Maintainer="support@senzing.com" \
-      Version="0.2.0"
+      Version="0.0.1"
 
 # Copy files from prior stage.
 

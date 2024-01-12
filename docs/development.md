@@ -126,12 +126,10 @@ the reference can be found by clicking on the following badge at the top of the 
 
     ```console
     docker run \
-      --env SENZING_TOOLS_DATABASE_URL=sqlite3://na:na@/tmp/sqlite/G2C.db \
-      --publish 8258:8258 \
       --publish 8260:8260 \
+      --publish 8261:8261 \
       --rm \
-      --tty \
-      senzing/demo-quickstart --enable-all
+      senzing/demo-quickstart
 
     ```
 
