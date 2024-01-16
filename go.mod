@@ -38,13 +38,12 @@ require (
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/ogen-go/ogen v0.81.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
 	github.com/prometheus/client_golang v1.18.0 // indirect
 	github.com/prometheus/client_model v0.5.0 // indirect
-	github.com/prometheus/common v0.45.0 // indirect
+	github.com/prometheus/common v0.46.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
@@ -57,7 +56,7 @@ require (
 	github.com/senzing/g2-sdk-go v0.8.0 // indirect
 	github.com/senzing/g2-sdk-go-base v0.4.0 // indirect
 	github.com/senzing/g2-sdk-go-grpc v0.5.0 // indirect
-	github.com/senzing/g2-sdk-proto/go v0.0.0-20240110172410-a7cefad0f33e // indirect
+	github.com/senzing/g2-sdk-proto/go v0.0.0-20240115134958-8e806054968d // indirect
 	github.com/senzing/go-sdk-abstract-factory v0.5.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect

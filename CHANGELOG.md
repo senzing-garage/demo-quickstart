@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 2024-01-16
+
+### Added to 0.0.2
+
+- Proxy for Senzing API server at `entity-search/api`
+
 ## [0.0.1] - 2024-01-12
 
 ### Added to 0.0.1
