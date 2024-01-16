@@ -148,7 +148,7 @@ func (httpServer *HttpServerImpl) populateStaticTemplate(responseWriter http.Res
 
 // --- http.ServeMux ----------------------------------------------------------
 
-func (httpServer *HttpServerImpl) getSenzingApiMux(ctx context.Context) *senzingrestapi.Server {
+func (httpServer *HttpServerImpl) getSenzingApiGenericMux(ctx context.Context, urlRoutePrefix string) *senzingrestapi.Server {
 	service := &senzingrestservice.SenzingRestServiceImpl{
 		GrpcDialOptions:                httpServer.GrpcDialOptions,
 		GrpcTarget:                     httpServer.GrpcTarget,
@@ -158,7 +158,7 @@ func (httpServer *HttpServerImpl) getSenzingApiMux(ctx context.Context) *senzing
 		SenzingEngineConfigurationJson: httpServer.SenzingEngineConfigurationJson,
 		SenzingModuleName:              httpServer.SenzingModuleName,
 		SenzingVerboseLogging:          httpServer.SenzingVerboseLogging,
-		UrlRoutePrefix:                 httpServer.ApiUrlRoutePrefix,
+		UrlRoutePrefix:                 urlRoutePrefix,
 		OpenApiSpecificationSpec:       httpServer.OpenApiSpecificationRest,
 	}
 	srv, err := senzingrestapi.NewServer(service, httpServer.ServerOptions...)
@@ -166,6 +166,14 @@ func (httpServer *HttpServerImpl) getSenzingApiMux(ctx context.Context) *senzing
 		log.Fatal(err)
 	}
 	return srv
+}
+
+func (httpServer *HttpServerImpl) getSenzingApiMux(ctx context.Context) *senzingrestapi.Server {
+	return httpServer.getSenzingApiGenericMux(ctx, "/api")
+}
+
+func (httpServer *HttpServerImpl) getSenzingApi2Mux(ctx context.Context) *senzingrestapi.Server {
+	return httpServer.getSenzingApiGenericMux(ctx, "/entity-search/api")
 }
 
 func (httpServer *HttpServerImpl) getEntitySearchMux(ctx context.Context) *http.ServeMux {
@@ -240,6 +248,14 @@ func (httpServer *HttpServerImpl) Serve(ctx context.Context) error {
 		senzingApiMux := httpServer.getSenzingApiMux(ctx)
 		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.ApiUrlRoutePrefix), http.StripPrefix("/api", senzingApiMux))
 		userMessage = fmt.Sprintf("%sServing Senzing REST API at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.ApiUrlRoutePrefix)
+	}
+
+	// Enable Senzing HTTP REST API as reverse proxy.
+
+	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI || httpServer.EnableEntitySearch {
+		senzingApiMux2 := httpServer.getSenzingApi2Mux(ctx)
+		rootMux.Handle("/entity-search/api/", http.StripPrefix("/entity-search/api", senzingApiMux2))
+		userMessage = fmt.Sprintf("%sServing Senzing REST API Reverse Proxy at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, "entity-search/api")
 	}
 
 	// Enable Senzing Entity Search.
