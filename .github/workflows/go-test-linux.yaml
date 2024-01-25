@@ -13,7 +13,7 @@ jobs:
       matrix:
         go: ["1.21"]
         os: [ubuntu-latest]
-        senzingapi-version: [staging]
+        senzingapi-version: [latest]
     name: "go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     steps:
       - name: Checkout repository
