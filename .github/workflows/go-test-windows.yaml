@@ -2,9 +2,15 @@
 # - https://github.com/marketplace/actions/setup-go-environment
 
 name: go-test-windows.yaml
+
 on: [push]
+
 env:
   SENZING_TOOLS_DATABASE_URL: 'sqlite3://na:na@nowhere/C:\Temp\sqlite\G2C.db'
+
+permissions:
+  contents: read
+
 jobs:
   go-test-windows:
     runs-on: ${{ matrix.os }}
