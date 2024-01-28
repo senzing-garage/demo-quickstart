@@ -2,12 +2,18 @@
 # - https://github.com/marketplace/actions/setup-go-environment
 
 name: go-test-darwin.yaml
+
 on: [push]
+
 env:
   DYLD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/macos
   LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/macos
   SENZING_TOOLS_DATABASE_URL: "sqlite3://na:na@/tmp/sqlite/G2C.db"
   SENZING_TOOLS_ENABLE_ALL: true
+
+permissions:
+  contents: read
+
 jobs:
   go-test-darwin:
     runs-on: ${{ matrix.os }}

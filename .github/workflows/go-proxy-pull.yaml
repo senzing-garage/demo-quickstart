@@ -5,10 +5,15 @@
 # - https://futurestud.io/tutorials/github-actions-run-a-workflow-when-creating-a-tag
 
 name: go-proxy-pull.yaml
+
 on:
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: write
+
 jobs:
   go-proxy-pull:
     runs-on: ubuntu-latest
