@@ -1,7 +1,5 @@
-# Based on
-# - https://github.com/securego/gosec
+name: 'gosec'
 
-name: gosec.yaml
 on:
   push:
     branches:
@@ -9,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: read
+
 jobs:
   gosec:
     runs-on: ubuntu-latest
@@ -17,7 +19,8 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
+
       - name: Run Gosec Security Scanner
-        uses: securego/gosec@master
+        uses: securego/gosec@v2.18.2
         with:
           args: ./...

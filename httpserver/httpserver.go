@@ -18,6 +18,7 @@ import (
 	"github.com/pkg/browser"
 	"github.com/senzing-garage/demo-entity-search/entitysearchservice"
 	"github.com/senzing-garage/go-observing/observer"
+	"github.com/senzing-garage/go-rest-api-service-legacy/restapiservicelegacy"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestapi"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
 	"google.golang.org/grpc"
@@ -172,8 +173,15 @@ func (httpServer *HttpServerImpl) getSenzingApiMux(ctx context.Context) *senzing
 	return httpServer.getSenzingApiGenericMux(ctx, "/api")
 }
 
-func (httpServer *HttpServerImpl) getSenzingApi2Mux(ctx context.Context) *senzingrestapi.Server {
-	return httpServer.getSenzingApiGenericMux(ctx, "/entity-search/api")
+// func (httpServer *HttpServerImpl) getSenzingApiProxyMux(ctx context.Context) *senzingrestapi.Server {
+// 	return httpServer.getSenzingApiGenericMux(ctx, "/entity-search/api")
+// }
+
+func (httpServer *HttpServerImpl) getSenzingApiProxyMux(ctx context.Context) *http.ServeMux {
+	service := &restapiservicelegacy.SenzingRestServiceLegacyImpl{
+		UrlRoutePrefix: "/entity-search/api",
+	}
+	return service.Handler(ctx)
 }
 
 func (httpServer *HttpServerImpl) getEntitySearchMux(ctx context.Context) *http.ServeMux {
@@ -253,8 +261,8 @@ func (httpServer *HttpServerImpl) Serve(ctx context.Context) error {
 	// Enable Senzing HTTP REST API as reverse proxy.
 
 	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI || httpServer.EnableEntitySearch {
-		senzingApiMux2 := httpServer.getSenzingApi2Mux(ctx)
-		rootMux.Handle("/entity-search/api/", http.StripPrefix("/entity-search/api", senzingApiMux2))
+		senzingApiProxyMux := httpServer.getSenzingApiProxyMux(ctx)
+		rootMux.Handle("/entity-search/api/", http.StripPrefix("/entity-search/api", senzingApiProxyMux))
 		userMessage = fmt.Sprintf("%sServing Senzing REST API Reverse Proxy at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, "entity-search/api")
 	}
 
