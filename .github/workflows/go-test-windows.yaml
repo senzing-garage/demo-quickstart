@@ -7,8 +7,7 @@ permissions:
 
 env:
   SENZING_TOOLS_DATABASE_URL: 'sqlite3://na:na@nowhere/C:\Temp\sqlite\G2C.db'
-  
-  
+
 jobs:
   go-test-windows:
     runs-on: ${{ matrix.os }}
