@@ -1,4 +1,4 @@
-name: make-go-tag.yaml
+name: 'make go tag'
 
 on:
   push:
@@ -15,5 +15,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Make go version tag
-        uses: senzing-factory/github-action-make-go-tag@main
+        uses: senzing-factory/github-action-make-go-tag@v1

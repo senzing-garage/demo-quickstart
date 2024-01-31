@@ -40,7 +40,7 @@ This command creates an environment for exploring Senzing.
 
 Senzing SDKs for accessing the gRPC server:
 
-1. Go: [g2-sdk-go-grpc](https://github.com/senzing/g2-sdk-go-grpc)
+1. Go: [g2-sdk-go-grpc](https://github.com/senzing-garage/g2-sdk-go-grpc)
 1. Python: [g2-sdk-python-grpc](https://github.com/senzing-garage/g2-sdk-python-grpc)
 
 A simple demonstration using `senzing-tools` and a SQLite database.

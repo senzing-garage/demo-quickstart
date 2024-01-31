@@ -1,7 +1,4 @@
-# Based on
-# - https://github.com/marketplace/actions/setup-go-environment
-
-name: go-test-linux.yaml
+name: 'go test linux'
 
 on: [push]
 
@@ -26,17 +23,22 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Setup go
         uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
+
       - name: Install Senzing API
         uses: Senzing/github-action-install-senzing-api@latest
         with:
           senzingapi-version: ${{ matrix.senzingapi-version }}
+
       - name: Copy /etc files
         run: sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
+
       - name: Copy test database files
         run: mkdir /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/G2C.db
+
       - name: Run go test
         run: go test -v -p 1 ./...

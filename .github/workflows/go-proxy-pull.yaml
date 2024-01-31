@@ -1,10 +1,4 @@
-# Based on
-# - https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-# - https://github.com/marketplace/actions/go-proxy-warming
-# - https://github.com/andrewslotin/go-proxy-pull-action
-# - https://futurestud.io/tutorials/github-actions-run-a-workflow-when-creating-a-tag
-
-name: go-proxy-pull.yaml
+name: 'go proxy pull'
 
 on:
   push:
