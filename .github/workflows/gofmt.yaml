@@ -1,4 +1,4 @@
-name: 'gofmt'
+name: gofmt
 
 on:
   pull_request:
