@@ -35,7 +35,7 @@ jobs:
           senzingapi-version: ${{ matrix.senzingapi-version }}
 
       - name: add to "Path" environment variable
-        run: echo "C:\Program Files\Senzing\g2\lib" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        run: echo "C:\Program Files\Senzing\g2\lib" | Out-File -FilePath "$env:GITHUB_PATH" -Encoding utf8 -Append
 
       - name: copy /etc files
         run: copy testdata/senzing-license/g2.lic "C:\Program Files\Senzing\g2\etc\g2.lic"
