@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 
 ARG IMAGE_GO_BUILDER=golang:1.21.4-bullseye
-ARG IMAGE_FINAL=senzing/senzingapi-runtime:3.8.0
+ARG IMAGE_FINAL=senzing/senzingapi-tools:3.8.0
 
 # -----------------------------------------------------------------------------
 # Stage: senzingapi_runtime
@@ -16,7 +16,7 @@ FROM ${IMAGE_FINAL} as senzingapi_runtime
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_GO_BUILDER} as go_builder
-ENV REFRESHED_AT=2024-01-30
+ENV REFRESHED_AT=2024-02-07
 LABEL Name="senzing/demo-quickstart-builder" \
       Maintainer="support@senzing.com" \
       Version="0.0.1"
@@ -50,7 +50,7 @@ RUN mkdir -p /output \
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_FINAL} as final
-ENV REFRESHED_AT=2023-10-03
+ENV REFRESHED_AT=2024-02-07
 LABEL Name="senzing/demo-quickstart" \
       Maintainer="support@senzing.com" \
       Version="0.0.1"
@@ -62,13 +62,17 @@ COPY --from=go_builder "/output/linux-amd64/demo-quickstart" "/app/demo-quicksta
 
 # Install packages via apt.
 
-RUN apt update \
+RUN export STAT_TMP=$(stat --format=%a /tmp) \
+ && chmod 777 /tmp \
+ && apt update \
  && apt -y install \
       gnupg2 \
       jq \
       libodbc1 \
       postgresql-client \
+      supervisor \
       unixodbc \
+ && chmod ${STAT_TMP} /tmp \
  && rm -rf /var/lib/apt/lists/*
 
 # Install Java-11.
@@ -100,4 +104,5 @@ ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/sen
 # Runtime execution.
 
 WORKDIR /app
-ENTRYPOINT ["/app/demo-quickstart"]
+# ENTRYPOINT ["/app/demo-quickstart"]
+CMD ["/usr/bin/supervisord", "--nodaemon"]
