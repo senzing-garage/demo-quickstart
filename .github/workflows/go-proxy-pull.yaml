@@ -1,4 +1,4 @@
-name: 'go proxy pull'
+name: go proxy pull
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
   go-proxy-pull:
     runs-on: ubuntu-latest
     steps:
-      - name: Pull new module version
+      - name: pull new module version
         uses: andrewslotin/go-proxy-pull-action@v1.1.0
         with:
-          import_path: github.com/senzing-garage/demo-quickstart
+          import_path: github.com/${{ github.repository }}

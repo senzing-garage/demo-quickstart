@@ -1,4 +1,4 @@
-name: 'make go github file'
+name: make go github file
 
 on:
   push:

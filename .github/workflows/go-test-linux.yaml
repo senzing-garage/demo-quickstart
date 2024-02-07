@@ -1,4 +1,4 @@
-name: 'go test linux'
+name: go test linux
 
 on: [push]
 
@@ -11,34 +11,35 @@ permissions:
 
 jobs:
   go-test-linux:
+    name: "go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         go: ["1.21"]
         os: [ubuntu-latest]
         senzingapi-version: [latest]
-    name: "go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+
     steps:
-      - name: Checkout repository
+      - name: checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup go
+      - name: setup go
         uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
 
-      - name: Install Senzing API
-        uses: Senzing/github-action-install-senzing-api@latest
+      - name: install Senzing API
+        uses: Senzing/github-action-install-senzing-api@v1
         with:
           senzingapi-version: ${{ matrix.senzingapi-version }}
 
-      - name: Copy /etc files
+      - name: copy /etc files
         run: sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
 
-      - name: Copy test database files
+      - name: copy test database files
         run: mkdir /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/G2C.db
 
-      - name: Run go test
+      - name: run go test
         run: go test -v -p 1 ./...
