@@ -15,10 +15,6 @@ SENZING_TOOLS_DATABASE_URL ?= sqlite3://na:na@/tmp/sqlite/G2C.db
 # OS specific targets
 # -----------------------------------------------------------------------------
 
-.PHONY: build-osarch-specific
-build-osarch-specific: darwin/amd64
-
-
 .PHONY: clean-osarch-specific
 clean-osarch-specific:
 	@docker rm --force $(DOCKER_CONTAINER_NAME) 2> /dev/null || true
@@ -31,6 +27,11 @@ clean-osarch-specific:
 .PHONY: hello-world-osarch-specific
 hello-world-osarch-specific:
 	@echo "Hello World, from darwin."
+
+
+.PHONY: package-osarch-specific
+package-osarch-specific:
+	@echo No packaging for darwin.
 
 
 .PHONY: run-osarch-specific
