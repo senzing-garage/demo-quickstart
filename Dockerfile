@@ -19,7 +19,7 @@ FROM ${IMAGE_GO_BUILDER} as go_builder
 ENV REFRESHED_AT=2024-02-07
 LABEL Name="senzing/demo-quickstart-builder" \
       Maintainer="support@senzing.com" \
-      Version="0.0.1"
+      Version="0.0.4"
 
 # Copy local files from the Git repository.
 
@@ -55,10 +55,13 @@ LABEL Name="senzing/demo-quickstart" \
       Maintainer="support@senzing.com" \
       Version="0.0.1"
 
-# Copy files from prior stage.
+# Copy local files from the Git repository.
 
 COPY ./rootfs /
-COPY --from=go_builder "/output/linux-amd64/demo-quickstart" "/app/demo-quickstart"
+
+# Copy files from prior stage.
+
+COPY --from=go_builder "/output/linux/demo-quickstart" "/app/demo-quickstart"
 
 # Install packages via apt.
 

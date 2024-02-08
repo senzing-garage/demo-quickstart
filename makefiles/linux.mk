@@ -11,10 +11,6 @@ SENZING_TOOLS_DATABASE_URL ?= sqlite3://na:na@/tmp/sqlite/G2C.db
 # OS specific targets
 # -----------------------------------------------------------------------------
 
-.PHONY: build-osarch-specific
-build-osarch-specific: linux/amd64
-
-
 .PHONY: clean-osarch-specific
 clean-osarch-specific:
 	@docker rm --force $(DOCKER_CONTAINER_NAME) 2> /dev/null || true
@@ -27,6 +23,14 @@ clean-osarch-specific:
 .PHONY: hello-world-osarch-specific
 hello-world-osarch-specific:
 	@echo "Hello World, from linux."
+
+
+.PHONY: package-osarch-specific
+package-osarch-specific: docker-build-package
+	@mkdir -p $(TARGET_DIRECTORY) || true
+	@CONTAINER_ID=$$(docker create $(DOCKER_BUILD_IMAGE_NAME)); \
+	docker cp $$CONTAINER_ID:/output/. $(TARGET_DIRECTORY)/; \
+	docker rm -v $$CONTAINER_ID
 
 
 .PHONY: run-osarch-specific
