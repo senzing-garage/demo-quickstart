@@ -30,7 +30,7 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: install Senzing API
-        uses: Senzing/github-action-install-senzing-api@v1
+        uses: Senzing/github-action-install-senzing-api@v2
         with:
           senzingapi-version: ${{ matrix.senzingapi-version }}
 
