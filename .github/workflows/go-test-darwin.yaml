@@ -5,7 +5,7 @@ on: [push]
 env:
   DYLD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/macos
   LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/macos
-  SENZING_TOOLS_DATABASE_URL: "sqlite3://na:na@/tmp/sqlite/G2C.db"
+  SENZING_TOOLS_DATABASE_URL: 'sqlite3://na:na@/tmp/sqlite/G2C.db'
   SENZING_TOOLS_ENABLE_ALL: true
 
 permissions:
@@ -13,13 +13,13 @@ permissions:
 
 jobs:
   go-test-darwin:
-    name: "go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+    name: 'go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go: ["1.21"]
+        go: ['1.21']
         os: [macos-latest]
-        senzingapi-version: [staging]
+        senzingapi-version: [production-v3]
 
     steps:
       - name: checkout repository
