@@ -4,20 +4,20 @@ on: [push]
 
 env:
   LD_LIBRARY_PATH: /opt/senzing/g2/lib
-  SENZING_TOOLS_DATABASE_URL: "sqlite3://na:na@/tmp/sqlite/G2C.db"
+  SENZING_TOOLS_DATABASE_URL: 'sqlite3://na:na@/tmp/sqlite/G2C.db'
 
 permissions:
   contents: read
 
 jobs:
   go-test-linux:
-    name: "go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+    name: 'go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go: ["1.21"]
+        go: ['1.21']
         os: [ubuntu-latest]
-        senzingapi-version: [latest]
+        senzingapi-version: [production-v3]
 
     steps:
       - name: checkout repository
@@ -31,7 +31,7 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: install Senzing API
-        uses: Senzing/github-action-install-senzing-api@v1
+        uses: Senzing/github-action-install-senzing-api@v2
         with:
           senzingapi-version: ${{ matrix.senzingapi-version }}
 
