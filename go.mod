@@ -16,7 +16,7 @@ require (
 	github.com/senzing-garage/serve-grpc v0.7.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
-	google.golang.org/grpc v1.62.1
+	google.golang.org/grpc v1.63.0
 )
 
 require (
@@ -33,7 +33,6 @@ require (
 	github.com/go-faster/yaml v0.4.6 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
