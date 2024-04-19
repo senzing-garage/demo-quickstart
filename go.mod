@@ -10,7 +10,7 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/senzing-garage/demo-entity-search v0.1.1
 	github.com/senzing-garage/go-cmdhelping v0.2.0
-	github.com/senzing-garage/go-observing v0.3.0
+	github.com/senzing-garage/go-observing v0.3.1
 	github.com/senzing-garage/go-rest-api-service v0.9.2
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
 	github.com/senzing-garage/serve-grpc v0.7.0
@@ -72,11 +72,11 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/exp v0.0.0-20240314144324-c7f7c6466f7f // indirect
-	golang.org/x/net v0.22.0 // indirect
+	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/sys v0.19.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240314234333-6e1732d8331c // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240415180920-8c6c420018be // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
