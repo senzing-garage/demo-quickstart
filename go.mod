@@ -13,7 +13,7 @@ require (
 	github.com/senzing-garage/go-observing v0.3.1
 	github.com/senzing-garage/go-rest-api-service v0.9.2
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
-	github.com/senzing-garage/serve-grpc v0.7.0
+	github.com/senzing-garage/serve-grpc v0.7.1
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	google.golang.org/grpc v1.63.2
@@ -22,7 +22,7 @@ require (
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/creack/pty v1.1.21 // indirect
 	github.com/dlclark/regexp2 v1.11.0 // indirect
 	github.com/fatih/color v1.16.0 // indirect
@@ -60,6 +60,9 @@ require (
 	github.com/senzing-garage/go-logging v1.4.1 // indirect
 	github.com/senzing-garage/go-messaging v1.4.1 // indirect
 	github.com/senzing-garage/go-sdk-abstract-factory v0.7.0 // indirect
+	github.com/senzing-garage/sz-sdk-go v0.12.1 // indirect
+	github.com/senzing-garage/sz-sdk-go-core v0.7.0 // indirect
+	github.com/senzing-garage/sz-sdk-proto v0.7.2 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
