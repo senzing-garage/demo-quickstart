@@ -129,7 +129,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	// Build configuration for Senzing engine.
 
-	senzingEngineConfigurationJson, err := engineconfiguration.BuildAndVerifySenzingEngineConfigurationJson(ctx, viper.GetViper())
+	senzingSettings, err := engineconfiguration.BuildAndVerifySenzingEngineConfigurationJson(ctx, viper.GetViper())
 	if err != nil {
 		return err
 	}
@@ -141,14 +141,14 @@ func RunE(_ *cobra.Command, _ []string) error {
 	// Setup gRPC server
 
 	grpcserver := &grpcserver.GrpcServerImpl{
-		EnableAll:                      true,
-		LogLevelName:                   viper.GetString(option.LogLevel.Arg),
-		ObserverOrigin:                 viper.GetString(option.ObserverOrigin.Arg),
-		ObserverUrl:                    viper.GetString(option.ObserverUrl.Arg),
-		Port:                           viper.GetInt(option.GrpcPort.Arg),
-		SenzingEngineConfigurationJson: senzingEngineConfigurationJson,
-		SenzingModuleName:              viper.GetString(option.EngineModuleName.Arg),
-		SenzingVerboseLogging:          viper.GetInt64(option.EngineLogLevel.Arg),
+		EnableAll:             true,
+		LogLevelName:          viper.GetString(option.LogLevel.Arg),
+		ObserverOrigin:        viper.GetString(option.ObserverOrigin.Arg),
+		ObserverUrl:           viper.GetString(option.ObserverUrl.Arg),
+		Port:                  viper.GetInt(option.GrpcPort.Arg),
+		SenzingSettings:       senzingSettings,
+		SenzingInstanceName:   viper.GetString(option.EngineModuleName.Arg),
+		SenzingVerboseLogging: viper.GetInt64(option.EngineLogLevel.Arg),
 	}
 
 	// Create object and Serve.
@@ -162,7 +162,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 		Observers:                      observers,
 		OpenApiSpecificationRest:       senzingrestservice.OpenApiSpecificationJson,
 		ReadHeaderTimeout:              60 * time.Second,
-		SenzingEngineConfigurationJson: senzingEngineConfigurationJson,
+		SenzingEngineConfigurationJson: senzingSettings,
 		SenzingModuleName:              viper.GetString(option.EngineModuleName.Arg),
 		SenzingVerboseLogging:          viper.GetInt64(option.EngineLogLevel.Arg),
 		ServerAddress:                  viper.GetString(option.ServerAddress.Arg),
