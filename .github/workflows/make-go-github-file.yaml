@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   make-go-github-file:
-    uses: senzing-factory/build-resources/.github/workflows/make-go-github-file.yaml@v1
+    uses: senzing-factory/build-resources/.github/workflows/make-go-github-file.yaml@v2
     secrets:
       SENZING_GITHUB_ACTOR: ${{ secrets.SENZING_GITHUB_ACTOR }}
       SENZING_GITHUB_GPG_PASSPHRASE: ${{ secrets.SENZING_GITHUB_GPG_PASSPHRASE }}
