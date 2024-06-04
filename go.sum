@@ -98,8 +98,8 @@ github.com/senzing-garage/go-logging v1.4.1 h1:ubNspaf0r4Q29XeNW58q0oPGLq4c1pdf9
 github.com/senzing-garage/go-logging v1.4.1/go.mod h1:TW1w0UE9fQpy9odkx1jJQeffW+OTdrqEyxhtWKGW1n4=
 github.com/senzing-garage/go-messaging v1.4.1 h1:ZdFcemh1iACP+HJWGS5/QLaUSD7PUYVXhzW7Zbju9f0=
 github.com/senzing-garage/go-messaging v1.4.1/go.mod h1:7tEicOa0baYz0lh0w1BJEiQ6ry1FIQl/67JAWwFpcRY=
-github.com/senzing-garage/go-observing v0.3.1 h1:EGqe+Uix8VNQ9HCwm5xZkAF0hGoHaC1URAaT/5FW37A=
-github.com/senzing-garage/go-observing v0.3.1/go.mod h1:x60vlRIR0ZdJrHDuK82nzmQG4sN0G6oqdLE9vQl9pVc=
+github.com/senzing-garage/go-observing v0.3.2 h1:jXW5u656aZywe/UEUi7ga7nieBSW4CUO8YKvpNNAFMQ=
+github.com/senzing-garage/go-observing v0.3.2/go.mod h1:5yHCwaaIrwX81JOghAL/1Q1V8eF7SQhyBBdhTb7+rgY=
 github.com/senzing-garage/go-rest-api-service v0.9.3 h1:YOYZobOEhhc4S+CasMF9uRnpvSkwlHqJsQNBJVgm2Pw=
 github.com/senzing-garage/go-rest-api-service v0.9.3/go.mod h1:c/bkYsIHITjdcBAsdiZ4yAeMJD7E93Rr8ctxbuwxGXg=
 github.com/senzing-garage/go-rest-api-service-legacy v0.1.1 h1:Ka0Livm51aUdv5s8z+pZ69VmDtKIGWLEZoZqvKapx9c=
