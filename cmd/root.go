@@ -13,6 +13,7 @@ import (
 	"github.com/senzing-garage/demo-quickstart/httpserver"
 	"github.com/senzing-garage/go-cmdhelping/cmdhelper"
 	"github.com/senzing-garage/go-cmdhelping/option"
+	"github.com/senzing-garage/go-cmdhelping/option/optiontype"
 	"github.com/senzing-garage/go-cmdhelping/settings"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
@@ -33,11 +34,20 @@ A server supporting the following services:
     `
 )
 
+var avoidServe = option.ContextVariable{
+	Arg:     "avoid-serving",
+	Default: option.OsLookupEnvBool("SENZING_TOOLS_AVOID_SERVING", false),
+	Envar:   "SENZING_TOOLS_AVOID_SERVING",
+	Help:    "Avoid serving.  For testing only. [%s]",
+	Type:    optiontype.Bool,
+}
+
 // ----------------------------------------------------------------------------
 // Context variables
 // ----------------------------------------------------------------------------
 
 var ContextVariablesForMultiPlatform = []option.ContextVariable{
+	avoidServe,
 	option.Configuration,
 	option.DatabaseURL,
 	option.EngineConfigurationJSON,
@@ -141,6 +151,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 	// Setup gRPC server
 
 	grpcserver := &grpcserver.BasicGrpcServer{
+		AvoidServing:          viper.GetBool(avoidServe.Arg),
 		EnableAll:             true,
 		LogLevelName:          viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:        viper.GetString(option.ObserverOrigin.Arg),
@@ -155,6 +166,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	httpServer := &httpserver.BasicHTTPServer{
 		APIUrlRoutePrefix:         "api",
+		AvoidServing:              viper.GetBool(avoidServe.Arg),
 		EnableAll:                 true,
 		EntitySearchRoutePrefix:   "entity-search",
 		LogLevelName:              viper.GetString(option.LogLevel.Arg),

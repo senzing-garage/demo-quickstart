@@ -29,6 +29,7 @@ import (
 // BasicHTTPServer is the default implementation of the HttpServer interface.
 type BasicHTTPServer struct {
 	APIUrlRoutePrefix         string // FIXME: Only works with "api"
+	AvoidServing              bool
 	EnableAll                 bool
 	EnableEntitySearch        bool
 	EnableSenzingRestAPI      bool
@@ -79,6 +80,105 @@ type TemplateVariables struct {
 
 //go:embed static/*
 var static embed.FS
+
+// ----------------------------------------------------------------------------
+// Interface methods
+// ----------------------------------------------------------------------------
+
+/*
+The Serve method simply prints the 'Something' value in the type-struct.
+
+Input
+  - ctx: A context to control lifecycle.
+
+Output
+  - Nothing is returned, except for an error.  However, something is printed.
+    See the example output.
+*/
+
+func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
+	rootMux := http.NewServeMux()
+	var userMessage string
+
+	// Enable Senzing HTTP REST API.
+
+	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI {
+		senzingAPIMux := httpServer.getSenzingRestAPIMux(ctx)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.APIUrlRoutePrefix), http.StripPrefix("/api", senzingAPIMux))
+		userMessage = fmt.Sprintf("%sServing Senzing REST API at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.APIUrlRoutePrefix)
+	}
+
+	// Enable Senzing HTTP REST API as reverse proxy.
+
+	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI || httpServer.EnableEntitySearch {
+		senzingAPIProxyMux := httpServer.getSenzingRestAPIProxyMux(ctx)
+		rootMux.Handle("/entity-search/api/", http.StripPrefix("/entity-search/api", senzingAPIProxyMux))
+		userMessage = fmt.Sprintf("%sServing Senzing REST API Reverse Proxy at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, "entity-search/api")
+	}
+
+	// Enable Senzing Entity Search.
+
+	if httpServer.EnableAll || httpServer.EnableEntitySearch {
+		entitySearchMux := httpServer.getEntitySearchMux(ctx)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.EntitySearchRoutePrefix), http.StripPrefix("/entity-search", entitySearchMux))
+		userMessage = fmt.Sprintf("%sServing Entity Search at    http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.EntitySearchRoutePrefix)
+	}
+
+	// Enable SwaggerUI.
+
+	if httpServer.EnableAll || httpServer.EnableSwaggerUI {
+		swaggerUIMux := httpServer.getSwaggerUIMux(ctx)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.SwaggerURLRoutePrefix), http.StripPrefix("/swagger", swaggerUIMux))
+		userMessage = fmt.Sprintf("%sServing SwaggerUI at        http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.SwaggerURLRoutePrefix)
+	}
+
+	// Enable Xterm.
+
+	if httpServer.EnableAll || httpServer.EnableXterm {
+		err := os.Setenv("SENZING_ENGINE_CONFIGURATION_JSON", httpServer.SenzingSettings)
+		if err != nil {
+			panic(err)
+		}
+		xtermMux := httpServer.getXtermMux(ctx)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.XtermURLRoutePrefix), http.StripPrefix("/xterm", xtermMux))
+		userMessage = fmt.Sprintf("%sServing XTerm at            http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.XtermURLRoutePrefix)
+	}
+
+	// Add route to template pages.
+
+	rootMux.HandleFunc("/site/", httpServer.siteFunc)
+	userMessage = fmt.Sprintf("%sServing Console at          http://localhost:%d\n", userMessage, httpServer.ServerPort)
+
+	// Add route to static files.
+
+	rootDir, err := fs.Sub(static, "static/root")
+	if err != nil {
+		panic(err)
+	}
+	rootMux.Handle("/", http.StripPrefix("/", http.FileServer(http.FS(rootDir))))
+
+	// Start service.
+
+	listenOnAddress := fmt.Sprintf("%s:%v", httpServer.ServerAddress, httpServer.ServerPort)
+	userMessage = fmt.Sprintf("%sStarting server on interface:port '%s'...\n", userMessage, listenOnAddress)
+	fmt.Println(userMessage)
+	server := http.Server{
+		ReadHeaderTimeout: httpServer.ReadHeaderTimeout,
+		Addr:              listenOnAddress,
+		Handler:           rootMux,
+	}
+
+	// Start a web browser.  Unless disabled.
+
+	if !httpServer.TtyOnly {
+		_ = browser.OpenURL(fmt.Sprintf("http://localhost:%d", httpServer.ServerPort))
+	}
+
+	if !httpServer.AvoidServing {
+		err = server.ListenAndServe()
+	}
+	return err
+}
 
 // ----------------------------------------------------------------------------
 // Internal methods
@@ -245,100 +345,4 @@ func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Reque
 	w.Header().Set("Content-Type", "text/html")
 	filePath := fmt.Sprintf("static/templates%s", r.RequestURI)
 	httpServer.populateStaticTemplate(w, r, filePath, templateVariables)
-}
-
-// ----------------------------------------------------------------------------
-// Interface methods
-// ----------------------------------------------------------------------------
-
-/*
-The Serve method simply prints the 'Something' value in the type-struct.
-
-Input
-  - ctx: A context to control lifecycle.
-
-Output
-  - Nothing is returned, except for an error.  However, something is printed.
-    See the example output.
-*/
-
-func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
-	rootMux := http.NewServeMux()
-	var userMessage string
-
-	// Enable Senzing HTTP REST API.
-
-	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI {
-		senzingAPIMux := httpServer.getSenzingRestAPIMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.APIUrlRoutePrefix), http.StripPrefix("/api", senzingAPIMux))
-		userMessage = fmt.Sprintf("%sServing Senzing REST API at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.APIUrlRoutePrefix)
-	}
-
-	// Enable Senzing HTTP REST API as reverse proxy.
-
-	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI || httpServer.EnableEntitySearch {
-		senzingAPIProxyMux := httpServer.getSenzingRestAPIProxyMux(ctx)
-		rootMux.Handle("/entity-search/api/", http.StripPrefix("/entity-search/api", senzingAPIProxyMux))
-		userMessage = fmt.Sprintf("%sServing Senzing REST API Reverse Proxy at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, "entity-search/api")
-	}
-
-	// Enable Senzing Entity Search.
-
-	if httpServer.EnableAll || httpServer.EnableEntitySearch {
-		entitySearchMux := httpServer.getEntitySearchMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.EntitySearchRoutePrefix), http.StripPrefix("/entity-search", entitySearchMux))
-		userMessage = fmt.Sprintf("%sServing Entity Search at    http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.EntitySearchRoutePrefix)
-	}
-
-	// Enable SwaggerUI.
-
-	if httpServer.EnableAll || httpServer.EnableSwaggerUI {
-		swaggerUIMux := httpServer.getSwaggerUIMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.SwaggerURLRoutePrefix), http.StripPrefix("/swagger", swaggerUIMux))
-		userMessage = fmt.Sprintf("%sServing SwaggerUI at        http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.SwaggerURLRoutePrefix)
-	}
-
-	// Enable Xterm.
-
-	if httpServer.EnableAll || httpServer.EnableXterm {
-		err := os.Setenv("SENZING_ENGINE_CONFIGURATION_JSON", httpServer.SenzingSettings)
-		if err != nil {
-			panic(err)
-		}
-		xtermMux := httpServer.getXtermMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.XtermURLRoutePrefix), http.StripPrefix("/xterm", xtermMux))
-		userMessage = fmt.Sprintf("%sServing XTerm at            http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.XtermURLRoutePrefix)
-	}
-
-	// Add route to template pages.
-
-	rootMux.HandleFunc("/site/", httpServer.siteFunc)
-	userMessage = fmt.Sprintf("%sServing Console at          http://localhost:%d\n", userMessage, httpServer.ServerPort)
-
-	// Add route to static files.
-
-	rootDir, err := fs.Sub(static, "static/root")
-	if err != nil {
-		panic(err)
-	}
-	rootMux.Handle("/", http.StripPrefix("/", http.FileServer(http.FS(rootDir))))
-
-	// Start service.
-
-	listenOnAddress := fmt.Sprintf("%s:%v", httpServer.ServerAddress, httpServer.ServerPort)
-	userMessage = fmt.Sprintf("%sStarting server on interface:port '%s'...\n", userMessage, listenOnAddress)
-	fmt.Println(userMessage)
-	server := http.Server{
-		ReadHeaderTimeout: httpServer.ReadHeaderTimeout,
-		Addr:              listenOnAddress,
-		Handler:           rootMux,
-	}
-
-	// Start a web browser.  Unless disabled.
-
-	if !httpServer.TtyOnly {
-		_ = browser.OpenURL(fmt.Sprintf("http://localhost:%d", httpServer.ServerPort))
-	}
-
-	return server.ListenAndServe()
 }
