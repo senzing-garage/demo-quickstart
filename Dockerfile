@@ -18,8 +18,8 @@ FROM ${IMAGE_FINAL} as senzingapi_runtime
 FROM ${IMAGE_GO_BUILDER} as go_builder
 ENV REFRESHED_AT=2024-02-07
 LABEL Name="senzing/demo-quickstart-builder" \
-  Maintainer="support@senzing.com" \
-  Version="0.0.4"
+      Maintainer="support@senzing.com" \
+      Version="0.0.4"
 
 # Copy local files from the Git repository.
 
@@ -43,7 +43,7 @@ RUN make build
 # Copy binaries to /output.
 
 RUN mkdir -p /output \
-  && cp -R ${GOPATH}/src/demo-quickstart/target/*  /output/
+ && cp -R ${GOPATH}/src/demo-quickstart/target/*  /output/
 
 # -----------------------------------------------------------------------------
 # Stage: final
@@ -52,8 +52,8 @@ RUN mkdir -p /output \
 FROM ${IMAGE_FINAL} as final
 ENV REFRESHED_AT=2024-02-07
 LABEL Name="senzing/demo-quickstart" \
-  Maintainer="support@senzing.com" \
-  Version="0.0.1"
+      Maintainer="support@senzing.com" \
+      Version="0.0.1"
 
 # Copy local files from the Git repository.
 
@@ -65,32 +65,34 @@ COPY --from=go_builder "/output/linux/demo-quickstart" "/app/demo-quickstart"
 
 # Install packages via apt-get.
 
+USER root
+
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
-  && chmod 777 /tmp \
-  && apt-get update \
-  && apt-get -y install \
-  gnupg2 \
-  jq \
-  libodbc1 \
-  postgresql-client \
-  supervisor \
-  unixodbc \
-  && chmod ${STAT_TMP} /tmp \
-  && rm -rf /var/lib/apt/lists/*
+ && chmod 777 /tmp \
+ && apt-get update \
+ && apt-get -y install \
+      gnupg2 \
+      jq \
+      libodbc1 \
+      postgresql-client \
+      supervisor \
+      unixodbc \
+ && chmod ${STAT_TMP} /tmp \
+ && rm -rf /var/lib/apt/lists/*
 
 # Install Java-11.
 
 RUN mkdir -p /etc/apt/keyrings \
-  && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
+ && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
 
 RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" >> /etc/apt/sources.list
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
-  && chmod 777 /tmp \
-  && apt-get update \
-  && apt-get -y install temurin-11-jdk \
-  && chmod ${STAT_TMP} /tmp \
-  && rm -rf /var/lib/apt/lists/*
+ && chmod 777 /tmp \
+ && apt-get update \
+ && apt-get -y install temurin-11-jdk \
+ && chmod ${STAT_TMP} /tmp \
+ && rm -rf /var/lib/apt/lists/*
 
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 

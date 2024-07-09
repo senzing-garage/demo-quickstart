@@ -5,11 +5,11 @@
 package cmd
 
 var (
-	githubDate           string = "2024-05-10"
-	githubIteration      string = "0"
-	githubRef            string = "refs/tags/0.1.1"
-	githubRefName        string = "0.1.1"
-	githubRepository     string = "senzing-garage/demo-quickstart"
-	githubRepositoryName string = "demo-quickstart"
-	githubVersion        string = "0.1.1"
+	githubDate           = "2024-05-10"
+	githubIteration      = "0"
+	githubRef            = "refs/tags/0.1.1"
+	githubRefName        = "0.1.1"
+	githubRepository     = "senzing-garage/demo-quickstart"
+	githubRepositoryName = "demo-quickstart"
+	githubVersion        = "0.1.1"
 )

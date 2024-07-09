@@ -21,4 +21,5 @@
 go.work
 .history
 target
+coverage.html
 

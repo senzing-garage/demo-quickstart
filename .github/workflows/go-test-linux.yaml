@@ -30,8 +30,13 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
+      - name: Set up gotestfmt
+        uses: gotesttools/gotestfmt-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: install Senzing API
-        uses: Senzing/github-action-install-senzing-api@v3
+        uses: senzing-factory/github-action-install-senzing-api@v3
         with:
           senzingapi-runtime-version: ${{ matrix.senzingapi-version }}
 
@@ -42,4 +47,25 @@ jobs:
         run: mkdir /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/G2C.db
 
       - name: run go test
-        run: go test -v -p 1 ./...
+        run: go test -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
+
+      - name: Store coverage file
+        uses: actions/upload-artifact@v4
+        with:
+          name: cover.out
+          path: ./cover.out
+
+      - name: Upload test log
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-log
+          path: /tmp/gotest.log
+          if-no-files-found: error
+
+  coverage:
+    name: coverage
+    needs: go-test-linux
+    uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
+    with:
+      coverage-config: ./.github/coverage/testcoverage.yaml

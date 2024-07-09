@@ -1,14 +1,9 @@
 package httpserver
 
-import (
-	"context"
-)
-
 // ----------------------------------------------------------------------------
-// Types
+// Examples for godoc documentation
 // ----------------------------------------------------------------------------
 
-// The HTTPServer interface...
-type HTTPServer interface {
-	Serve(ctx context.Context) error
+func ExampleBasicHTTPServer_Serve() {
+
 }
