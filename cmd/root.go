@@ -12,8 +12,8 @@ import (
 
 	"github.com/senzing-garage/demo-quickstart/httpserver"
 	"github.com/senzing-garage/go-cmdhelping/cmdhelper"
-	"github.com/senzing-garage/go-cmdhelping/engineconfiguration"
 	"github.com/senzing-garage/go-cmdhelping/option"
+	"github.com/senzing-garage/go-cmdhelping/settings"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
 	"github.com/senzing-garage/serve-grpc/grpcserver"
@@ -129,7 +129,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	// Build configuration for Senzing engine.
 
-	senzingSettings, err := engineconfiguration.BuildAndVerifySenzingEngineConfigurationJson(ctx, viper.GetViper())
+	senzingSettings, err := settings.BuildAndVerifySenzingEngineConfigurationJson(ctx, viper.GetViper())
 	if err != nil {
 		return err
 	}
