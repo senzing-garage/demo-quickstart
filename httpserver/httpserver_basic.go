@@ -26,51 +26,51 @@ import (
 // Types
 // ----------------------------------------------------------------------------
 
-// HttpServerImpl is the default implementation of the HttpServer interface.
-type HttpServerImpl struct {
-	ApiUrlRoutePrefix              string // FIXME: Only works with "api"
-	EnableAll                      bool
-	EnableEntitySearch             bool
-	EnableSenzingRestAPI           bool
-	EnableSwaggerUI                bool
-	EnableXterm                    bool
-	EntitySearchRoutePrefix        string // FIXME: Only works with "entity-search"
-	GrpcDialOptions                []grpc.DialOption
-	GrpcTarget                     string
-	LogLevelName                   string
-	ObserverOrigin                 string
-	Observers                      []observer.Observer
-	OpenApiSpecificationRest       []byte
-	ReadHeaderTimeout              time.Duration
-	SenzingEngineConfigurationJson string
-	SenzingModuleName              string
-	SenzingVerboseLogging          int64
-	ServerAddress                  string
-	ServerOptions                  []senzingrestapi.ServerOption
-	ServerPort                     int
-	SwaggerUrlRoutePrefix          string // FIXME: Only works with "swagger"
-	TtyOnly                        bool
-	XtermAllowedHostnames          []string
-	XtermArguments                 []string
-	XtermCommand                   string
-	XtermConnectionErrorLimit      int
-	XtermKeepalivePingTimeout      int
-	XtermMaxBufferSizeBytes        int
-	XtermUrlRoutePrefix            string // FIXME: Only works with "xterm"
+// BasicHTTPServer is the default implementation of the HttpServer interface.
+type BasicHTTPServer struct {
+	APIUrlRoutePrefix         string // FIXME: Only works with "api"
+	EnableAll                 bool
+	EnableEntitySearch        bool
+	EnableSenzingRestAPI      bool
+	EnableSwaggerUI           bool
+	EnableXterm               bool
+	EntitySearchRoutePrefix   string // FIXME: Only works with "entity-search"
+	GrpcDialOptions           []grpc.DialOption
+	GrpcTarget                string
+	LogLevelName              string
+	ObserverOrigin            string
+	Observers                 []observer.Observer
+	OpenAPISpecificationRest  []byte
+	ReadHeaderTimeout         time.Duration
+	SenzingModuleName         string
+	SenzingSettings           string
+	SenzingVerboseLogging     int64
+	ServerAddress             string
+	ServerOptions             []senzingrestapi.ServerOption
+	ServerPort                int
+	SwaggerURLRoutePrefix     string // FIXME: Only works with "swagger"
+	TtyOnly                   bool
+	XtermAllowedHostnames     []string
+	XtermArguments            []string
+	XtermCommand              string
+	XtermConnectionErrorLimit int
+	XtermKeepalivePingTimeout int
+	XtermMaxBufferSizeBytes   int
+	XtermURLRoutePrefix       string // FIXME: Only works with "xterm"
 }
 
 type TemplateVariables struct {
-	HttpServerImpl
-	ApiServerStatus    string
-	ApiServerUrl       string
+	BasicHTTPServer
+	APIServerStatus    string
+	APIServerURL       string
 	EntitySearchStatus string
-	EntitySearchUrl    string
-	HtmlTitle          string
+	EntitySearchURL    string
+	HTMLTitle          string
 	RequestHost        string
 	SwaggerStatus      string
-	SwaggerUrl         string
+	SwaggerURL         string
 	XtermStatus        string
-	XtermUrl           string
+	XtermURL           string
 }
 
 // ----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ var static embed.FS
 // Internal methods
 // ----------------------------------------------------------------------------
 
-func (httpServer *HttpServerImpl) getServerStatus(up bool) string {
+func (httpServer *BasicHTTPServer) getServerStatus(up bool) string {
 	result := "red"
 	if httpServer.EnableAll {
 		result = "green"
@@ -95,7 +95,7 @@ func (httpServer *HttpServerImpl) getServerStatus(up bool) string {
 	return result
 }
 
-func (httpServer *HttpServerImpl) getServerUrl(up bool, url string) string {
+func (httpServer *BasicHTTPServer) getServerURL(up bool, url string) string {
 	result := ""
 	if httpServer.EnableAll {
 		result = url
@@ -106,18 +106,20 @@ func (httpServer *HttpServerImpl) getServerUrl(up bool, url string) string {
 	return result
 }
 
-func (httpServer *HttpServerImpl) openApiFunc(ctx context.Context, openApiSpecification []byte) http.HandlerFunc {
+func (httpServer *BasicHTTPServer) openAPIFunc(ctx context.Context, openAPISpecification []byte) http.HandlerFunc {
+	_ = ctx
+	_ = openAPISpecification
 	return func(w http.ResponseWriter, r *http.Request) {
 		var bytesBuffer bytes.Buffer
 		bufioWriter := bufio.NewWriter(&bytesBuffer)
-		openApiSpecificationTemplate, err := template.New("OpenApiTemplate").Parse(string(httpServer.OpenApiSpecificationRest))
+		openAPISpecificationTemplate, err := template.New("OpenApiTemplate").Parse(string(httpServer.OpenAPISpecificationRest))
 		if err != nil {
 			panic(err)
 		}
 		templateVariables := TemplateVariables{
 			RequestHost: r.Host,
 		}
-		err = openApiSpecificationTemplate.Execute(bufioWriter, templateVariables)
+		err = openAPISpecificationTemplate.Execute(bufioWriter, templateVariables)
 		if err != nil {
 			panic(err)
 		}
@@ -127,7 +129,8 @@ func (httpServer *HttpServerImpl) openApiFunc(ctx context.Context, openApiSpecif
 		}
 	}
 }
-func (httpServer *HttpServerImpl) populateStaticTemplate(responseWriter http.ResponseWriter, request *http.Request, filepath string, templateVariables TemplateVariables) {
+func (httpServer *BasicHTTPServer) populateStaticTemplate(responseWriter http.ResponseWriter, request *http.Request, filepath string, templateVariables TemplateVariables) {
+	_ = request
 	templateBytes, err := static.ReadFile(filepath)
 	if err != nil {
 		http.Error(responseWriter, http.StatusText(500), 500)
@@ -179,7 +182,7 @@ func (httpServer *HttpServerImpl) populateStaticTemplate(responseWriter http.Res
 
 // --- http.ServeMux ----------------------------------------------------------
 
-func (httpServer *HttpServerImpl) getSenzingRestApiMux(ctx context.Context) *http.ServeMux {
+func (httpServer *BasicHTTPServer) getSenzingRestAPIMux(ctx context.Context) *http.ServeMux {
 	service := &restapiservicelegacy.RestApiServiceLegacyImpl{
 		JarFile:         "/app/senzing-poc-server.jar",
 		ProxyTemplate:   "http://localhost:8250%s",
@@ -188,7 +191,7 @@ func (httpServer *HttpServerImpl) getSenzingRestApiMux(ctx context.Context) *htt
 	return service.Handler(ctx)
 }
 
-func (httpServer *HttpServerImpl) getSenzingRestApiProxyMux(ctx context.Context) *http.ServeMux {
+func (httpServer *BasicHTTPServer) getSenzingRestAPIProxyMux(ctx context.Context) *http.ServeMux {
 	service := &restapiservicelegacy.RestApiServiceLegacyImpl{
 		JarFile:         "/app/senzing-poc-server.jar",
 		ProxyTemplate:   "http://localhost:8250%s",
@@ -197,21 +200,21 @@ func (httpServer *HttpServerImpl) getSenzingRestApiProxyMux(ctx context.Context)
 	return service.Handler(ctx)
 }
 
-func (httpServer *HttpServerImpl) getEntitySearchMux(ctx context.Context) *http.ServeMux {
+func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http.ServeMux {
 	service := &entitysearchservice.BasicHTTPService{}
 	return service.Handler(ctx)
 }
 
-func (httpServer *HttpServerImpl) getSwaggerUiMux(ctx context.Context) *http.ServeMux {
+func (httpServer *BasicHTTPServer) getSwaggerUIMux(ctx context.Context) *http.ServeMux {
 	swaggerMux := swaggerui.Handler([]byte{}) // OpenAPI specification handled by openApiFunc()
 	swaggerFunc := swaggerMux.ServeHTTP
 	submux := http.NewServeMux()
 	submux.HandleFunc("/", swaggerFunc)
-	submux.HandleFunc("/swagger_spec", httpServer.openApiFunc(ctx, httpServer.OpenApiSpecificationRest))
+	submux.HandleFunc("/swagger_spec", httpServer.openAPIFunc(ctx, httpServer.OpenAPISpecificationRest))
 	return submux
 }
 
-func (httpServer *HttpServerImpl) getXtermMux(ctx context.Context) *http.ServeMux {
+func (httpServer *BasicHTTPServer) getXtermMux(ctx context.Context) *http.ServeMux {
 	xtermService := &xtermservice.XtermServiceImpl{
 		AllowedHostnames:     httpServer.XtermAllowedHostnames,
 		Arguments:            httpServer.XtermArguments,
@@ -219,25 +222,25 @@ func (httpServer *HttpServerImpl) getXtermMux(ctx context.Context) *http.ServeMu
 		ConnectionErrorLimit: httpServer.XtermConnectionErrorLimit,
 		KeepalivePingTimeout: httpServer.XtermKeepalivePingTimeout,
 		MaxBufferSizeBytes:   httpServer.XtermMaxBufferSizeBytes,
-		UrlRoutePrefix:       httpServer.XtermUrlRoutePrefix,
+		UrlRoutePrefix:       httpServer.XtermURLRoutePrefix,
 	}
 	return xtermService.Handler(ctx)
 }
 
 // --- Http Funcs -------------------------------------------------------------
 
-func (httpServer *HttpServerImpl) siteFunc(w http.ResponseWriter, r *http.Request) {
+func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Request) {
 	templateVariables := TemplateVariables{
-		HttpServerImpl:     *httpServer,
-		HtmlTitle:          "Senzing Tools",
-		ApiServerStatus:    httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
-		ApiServerUrl:       httpServer.getServerUrl(httpServer.EnableSenzingRestAPI, fmt.Sprintf("http://%s/api", r.Host)),
+		BasicHTTPServer:    *httpServer,
+		HTMLTitle:          "Senzing Tools",
+		APIServerStatus:    httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
+		APIServerURL:       httpServer.getServerURL(httpServer.EnableSenzingRestAPI, fmt.Sprintf("http://%s/api", r.Host)),
 		EntitySearchStatus: httpServer.getServerStatus(httpServer.EnableEntitySearch),
-		EntitySearchUrl:    httpServer.getServerUrl(httpServer.EnableEntitySearch, fmt.Sprintf("http://%s/entity-search", r.Host)),
+		EntitySearchURL:    httpServer.getServerURL(httpServer.EnableEntitySearch, fmt.Sprintf("http://%s/entity-search", r.Host)),
 		SwaggerStatus:      httpServer.getServerStatus(httpServer.EnableSwaggerUI),
-		SwaggerUrl:         httpServer.getServerUrl(httpServer.EnableSwaggerUI, fmt.Sprintf("http://%s/swagger", r.Host)),
+		SwaggerURL:         httpServer.getServerURL(httpServer.EnableSwaggerUI, fmt.Sprintf("http://%s/swagger", r.Host)),
 		XtermStatus:        httpServer.getServerStatus(httpServer.EnableXterm),
-		XtermUrl:           httpServer.getServerUrl(httpServer.EnableXterm, fmt.Sprintf("http://%s/xterm", r.Host)),
+		XtermURL:           httpServer.getServerURL(httpServer.EnableXterm, fmt.Sprintf("http://%s/xterm", r.Host)),
 	}
 	w.Header().Set("Content-Type", "text/html")
 	filePath := fmt.Sprintf("static/templates%s", r.RequestURI)
@@ -259,23 +262,23 @@ Output
     See the example output.
 */
 
-func (httpServer *HttpServerImpl) Serve(ctx context.Context) error {
+func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 	rootMux := http.NewServeMux()
-	var userMessage string = ""
+	var userMessage string
 
 	// Enable Senzing HTTP REST API.
 
 	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI {
-		senzingApiMux := httpServer.getSenzingRestApiMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.ApiUrlRoutePrefix), http.StripPrefix("/api", senzingApiMux))
-		userMessage = fmt.Sprintf("%sServing Senzing REST API at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.ApiUrlRoutePrefix)
+		senzingAPIMux := httpServer.getSenzingRestAPIMux(ctx)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.APIUrlRoutePrefix), http.StripPrefix("/api", senzingAPIMux))
+		userMessage = fmt.Sprintf("%sServing Senzing REST API at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.APIUrlRoutePrefix)
 	}
 
 	// Enable Senzing HTTP REST API as reverse proxy.
 
 	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI || httpServer.EnableEntitySearch {
-		senzingApiProxyMux := httpServer.getSenzingRestApiProxyMux(ctx)
-		rootMux.Handle("/entity-search/api/", http.StripPrefix("/entity-search/api", senzingApiProxyMux))
+		senzingAPIProxyMux := httpServer.getSenzingRestAPIProxyMux(ctx)
+		rootMux.Handle("/entity-search/api/", http.StripPrefix("/entity-search/api", senzingAPIProxyMux))
 		userMessage = fmt.Sprintf("%sServing Senzing REST API Reverse Proxy at http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, "entity-search/api")
 	}
 
@@ -290,21 +293,21 @@ func (httpServer *HttpServerImpl) Serve(ctx context.Context) error {
 	// Enable SwaggerUI.
 
 	if httpServer.EnableAll || httpServer.EnableSwaggerUI {
-		swaggerUiMux := httpServer.getSwaggerUiMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.SwaggerUrlRoutePrefix), http.StripPrefix("/swagger", swaggerUiMux))
-		userMessage = fmt.Sprintf("%sServing SwaggerUI at        http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.SwaggerUrlRoutePrefix)
+		swaggerUIMux := httpServer.getSwaggerUIMux(ctx)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.SwaggerURLRoutePrefix), http.StripPrefix("/swagger", swaggerUIMux))
+		userMessage = fmt.Sprintf("%sServing SwaggerUI at        http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.SwaggerURLRoutePrefix)
 	}
 
 	// Enable Xterm.
 
 	if httpServer.EnableAll || httpServer.EnableXterm {
-		err := os.Setenv("SENZING_ENGINE_CONFIGURATION_JSON", httpServer.SenzingEngineConfigurationJson)
+		err := os.Setenv("SENZING_ENGINE_CONFIGURATION_JSON", httpServer.SenzingSettings)
 		if err != nil {
 			panic(err)
 		}
 		xtermMux := httpServer.getXtermMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.XtermUrlRoutePrefix), http.StripPrefix("/xterm", xtermMux))
-		userMessage = fmt.Sprintf("%sServing XTerm at            http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.XtermUrlRoutePrefix)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.XtermURLRoutePrefix), http.StripPrefix("/xterm", xtermMux))
+		userMessage = fmt.Sprintf("%sServing XTerm at            http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.XtermURLRoutePrefix)
 	}
 
 	// Add route to template pages.

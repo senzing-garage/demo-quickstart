@@ -20,7 +20,7 @@ jobs:
           echo "repo=$(basename ${{ github.repository }})" >> "$GITHUB_OUTPUT"
         shell: bash
 
-      - name: Build docker image
+      - name: build docker image
         uses: senzing-factory/github-action-docker-buildx-build@v1
         with:
           image-repository: senzing/${{ steps.repo-basename.outputs.repo }}

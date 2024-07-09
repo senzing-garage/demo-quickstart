@@ -11,4 +11,4 @@ var ContextVariablesForOsArch = []option.ContextVariable{
 	option.SupportPath,
 }
 
-const SENZING_TOOLS_DATABASE_URL = "sqlite3://na:na@/tmp/sqlite/G2C.db"
+const SenzingToolsDatabaseURL = "sqlite3://na:na@/tmp/sqlite/G2C.db"
