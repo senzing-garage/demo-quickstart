@@ -43,7 +43,7 @@ type BasicHTTPServer struct {
 	Observers                 []observer.Observer
 	OpenAPISpecificationRest  []byte
 	ReadHeaderTimeout         time.Duration
-	SenzingModuleName         string
+	SenzingInstanceName       string
 	SenzingSettings           string
 	SenzingVerboseLogging     int64
 	ServerAddress             string

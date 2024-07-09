@@ -175,7 +175,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 		OpenAPISpecificationRest:  senzingrestservice.OpenAPISpecificationJSON,
 		ReadHeaderTimeout:         60 * time.Second,
 		SenzingSettings:           senzingSettings,
-		SenzingModuleName:         viper.GetString(option.EngineModuleName.Arg),
+		SenzingInstanceName:       viper.GetString(option.EngineModuleName.Arg),
 		SenzingVerboseLogging:     viper.GetInt64(option.EngineLogLevel.Arg),
 		ServerAddress:             viper.GetString(option.ServerAddress.Arg),
 		ServerPort:                viper.GetInt(option.HTTPPort.Arg),
