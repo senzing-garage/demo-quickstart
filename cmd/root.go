@@ -39,15 +39,15 @@ A server supporting the following services:
 
 var ContextVariablesForMultiPlatform = []option.ContextVariable{
 	option.Configuration,
-	option.DatabaseUrl,
-	option.EngineConfigurationJson,
+	option.DatabaseURL,
+	option.EngineConfigurationJSON,
 	option.EngineLogLevel,
 	option.EngineModuleName,
 	option.GrpcPort,
-	option.HttpPort,
+	option.HTTPPort,
 	option.LogLevel,
 	option.ObserverOrigin,
-	option.ObserverUrl,
+	option.ObserverURL,
 	option.ServerAddress,
 	option.TtyOnly,
 	option.XtermAllowedHostnames.SetDefault(getDefaultAllowedHostnames()),
@@ -129,7 +129,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	// Build configuration for Senzing engine.
 
-	senzingSettings, err := settings.BuildAndVerifySenzingEngineConfigurationJson(ctx, viper.GetViper())
+	senzingSettings, err := settings.BuildAndVerifySettings(ctx, viper.GetViper())
 	if err != nil {
 		return err
 	}
@@ -140,11 +140,11 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	// Setup gRPC server
 
-	grpcserver := &grpcserver.GrpcServerImpl{
+	grpcserver := &grpcserver.BasicGrpcServer{
 		EnableAll:             true,
 		LogLevelName:          viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:        viper.GetString(option.ObserverOrigin.Arg),
-		ObserverUrl:           viper.GetString(option.ObserverUrl.Arg),
+		ObserverURL:           viper.GetString(option.ObserverURL.Arg),
 		Port:                  viper.GetInt(option.GrpcPort.Arg),
 		SenzingSettings:       senzingSettings,
 		SenzingInstanceName:   viper.GetString(option.EngineModuleName.Arg),
@@ -160,13 +160,13 @@ func RunE(_ *cobra.Command, _ []string) error {
 		LogLevelName:                   viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:                 viper.GetString(option.ObserverOrigin.Arg),
 		Observers:                      observers,
-		OpenApiSpecificationRest:       senzingrestservice.OpenApiSpecificationJson,
+		OpenApiSpecificationRest:       senzingrestservice.OpenAPISpecificationJSON,
 		ReadHeaderTimeout:              60 * time.Second,
 		SenzingEngineConfigurationJson: senzingSettings,
 		SenzingModuleName:              viper.GetString(option.EngineModuleName.Arg),
 		SenzingVerboseLogging:          viper.GetInt64(option.EngineLogLevel.Arg),
 		ServerAddress:                  viper.GetString(option.ServerAddress.Arg),
-		ServerPort:                     viper.GetInt(option.HttpPort.Arg),
+		ServerPort:                     viper.GetInt(option.HTTPPort.Arg),
 		SwaggerUrlRoutePrefix:          "swagger",
 		TtyOnly:                        viper.GetBool(option.TtyOnly.Arg),
 		XtermAllowedHostnames:          viper.GetStringSlice(option.XtermAllowedHostnames.Arg),

@@ -198,7 +198,7 @@ func (httpServer *HttpServerImpl) getSenzingRestApiProxyMux(ctx context.Context)
 }
 
 func (httpServer *HttpServerImpl) getEntitySearchMux(ctx context.Context) *http.ServeMux {
-	service := &entitysearchservice.HttpServiceImpl{}
+	service := &entitysearchservice.BasicHTTPService{}
 	return service.Handler(ctx)
 }
 
