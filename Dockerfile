@@ -65,6 +65,8 @@ COPY --from=go_builder "/output/linux/demo-quickstart" "/app/demo-quickstart"
 
 # Install packages via apt-get.
 
+USER root
+
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
  && apt-get update \
