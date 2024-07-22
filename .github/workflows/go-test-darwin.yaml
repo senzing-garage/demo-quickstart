@@ -19,7 +19,7 @@ jobs:
       matrix:
         go: ['1.21']
         os: [macos-latest]
-        senzingapi-version: [production-v3]
+        senzingapi-version: [staging-v4]
 
     steps:
       - name: checkout repository
