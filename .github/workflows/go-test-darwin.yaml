@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         go: ['1.21']
-        os: [macos-latest]
+        os: [macos-13]
         senzingapi-version: [staging-v4]
 
     steps:
