@@ -251,5 +251,5 @@ Example:
 [Go]: https://go.dev/
 [godoc]: https://pkg.go.dev/golang.org/x/tools/cmd/godoc
 [How to Install Senzing for Go Development]: https://github.com/senzing-garage/knowledge-base/blob/main/HOWTO/install-senzing-for-go-development.md
-[localhost:6060]: http://localhost:6060/pkg/github.com/senzing-garage/template-go/
+[localhost:6060]: http://localhost:6060/pkg/github.com/senzing-garage/demo-quickstart/
 [testcoverage.yaml]: ../.github/coverage/testcoverage.yaml

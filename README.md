@@ -137,7 +137,7 @@ This usage shows how to initialize a database with a Docker container.
 
 [Command reference]: https://garage.senzing.com/senzing-tools/senzing-tools_demo-quickstart.html
 [Development]: docs/development.md
-[DockerHub]: https://hub.docker.com/r/senzing/template-go
+[DockerHub]: https://hub.docker.com/r/senzing/demo-quickstart
 [Errors]: docs/errors.md
 [Examples]: docs/examples.md
 [g2-sdk-go-grpc]: https://github.com/senzing-garage/g2-sdk-go-grpc
