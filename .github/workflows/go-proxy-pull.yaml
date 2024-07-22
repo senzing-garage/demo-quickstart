@@ -1,4 +1,4 @@
-name: go proxy pull
+name: Go proxy pull
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: pull new module version
+      - name: Pull new module version
         uses: andrewslotin/go-proxy-pull-action@v1.2.0
         with:
           import_path: github.com/${{ github.repository }}

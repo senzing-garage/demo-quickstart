@@ -44,25 +44,6 @@ threshold:
 #  - \.pb\.go$    # excludes all protobuf generated files
 #  - ^pkg/bar     # exclude package `pkg/bar`
 
-exclude:
-  paths:
-    - senzingchatapi/oas_cfg_gen.go
-    - senzingchatapi/oas_client_gen.go
-    - senzingchatapi/oas_handlers_gen.go
-    - senzingchatapi/oas_interfaces_gen.go
-    - senzingchatapi/oas_json_gen.go
-    - senzingchatapi/oas_labeler_gen.go
-    - senzingchatapi/oas_middleware_gen.go
-    - senzingchatapi/oas_parameters_gen.go
-    - senzingchatapi/oas_request_decoders_gen.go
-    - senzingchatapi/oas_request_encoders_gen.go
-    - senzingchatapi/oas_response_decoders_gen.go
-    - senzingchatapi/oas_response_encoders_gen.go
-    - senzingchatapi/oas_router_gen.go
-    - senzingchatapi/oas_schemas_gen.go
-    - senzingchatapi/oas_server_gen.go
-    - senzingchatapi/oas_unimplemented_gen.go
-    - senzingchatapi/oas_validators_gen.go
 # NOTES:
 # - symbol `/` in all path regexps will be replaced by current OS file path separator
 #   to properly work on Windows

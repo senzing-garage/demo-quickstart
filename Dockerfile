@@ -2,7 +2,7 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_GO_BUILDER=golang:1.22.3-bullseye@sha256:e72f9a1d29fbd6e1603df5a780e8f407caebef4dbb9f07536fc72f1c368298aa
+ARG IMAGE_GO_BUILDER=golang:1.22.3-bullseye
 ARG IMAGE_FINAL=senzing/senzingapi-runtime-staging:latest
 
 # -----------------------------------------------------------------------------
@@ -16,10 +16,10 @@ FROM ${IMAGE_FINAL} as senzingapi_runtime
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_GO_BUILDER} as go_builder
-ENV REFRESHED_AT=2024-02-07
-LABEL Name="senzing/demo-quickstart-builder" \
+ENV REFRESHED_AT=2024-07-01
+LABEL Name="senzing/go-builder" \
       Maintainer="support@senzing.com" \
-      Version="0.0.4"
+      Version="0.1.0"
 
 # Copy local files from the Git repository.
 
@@ -50,10 +50,12 @@ RUN mkdir -p /output \
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_FINAL} as final
-ENV REFRESHED_AT=2024-02-07
+ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/demo-quickstart" \
       Maintainer="support@senzing.com" \
-      Version="0.0.1"
+      Version="0.1.1"
+HEALTHCHECK CMD ["/app/healthcheck.sh"]
+USER root
 
 # Copy local files from the Git repository.
 
@@ -64,8 +66,6 @@ COPY ./rootfs /
 COPY --from=go_builder "/output/linux/demo-quickstart" "/app/demo-quickstart"
 
 # Install packages via apt-get.
-
-USER root
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
@@ -94,10 +94,6 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod ${STAT_TMP} /tmp \
  && rm -rf /var/lib/apt/lists/*
 
-HEALTHCHECK CMD ["/app/healthcheck.sh"]
-
-USER 1001
-
 # Runtime environment variables.
 
 ENV LD_LIBRARY_PATH=/opt/senzing/g2/lib/
@@ -112,6 +108,7 @@ ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/sen
 
 # Runtime execution.
 
+USER 1001
 WORKDIR /app
 # ENTRYPOINT ["/app/demo-quickstart"]
 CMD ["/usr/bin/supervisord", "--nodaemon"]

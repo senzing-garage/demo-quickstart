@@ -13,7 +13,6 @@ import (
 	"github.com/senzing-garage/demo-quickstart/httpserver"
 	"github.com/senzing-garage/go-cmdhelping/cmdhelper"
 	"github.com/senzing-garage/go-cmdhelping/option"
-	"github.com/senzing-garage/go-cmdhelping/option/optiontype"
 	"github.com/senzing-garage/go-cmdhelping/settings"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
@@ -30,29 +29,21 @@ A server supporting the following services:
     - HTTP: Senzing API server
     - HTTP: Swagger UI
     - HTTP: Xterm
-	- gRPC:
+    - gRPC:
     `
 )
-
-var avoidServe = option.ContextVariable{
-	Arg:     "avoid-serving",
-	Default: option.OsLookupEnvBool("SENZING_TOOLS_AVOID_SERVING", false),
-	Envar:   "SENZING_TOOLS_AVOID_SERVING",
-	Help:    "Avoid serving.  For testing only. [%s]",
-	Type:    optiontype.Bool,
-}
 
 // ----------------------------------------------------------------------------
 // Context variables
 // ----------------------------------------------------------------------------
 
 var ContextVariablesForMultiPlatform = []option.ContextVariable{
-	avoidServe,
+	option.AvoidServe,
 	option.Configuration,
 	option.DatabaseURL,
-	option.EngineConfigurationJSON,
+	option.EngineInstanceName,
 	option.EngineLogLevel,
-	option.EngineModuleName,
+	option.EngineSettings,
 	option.GrpcPort,
 	option.HTTPPort,
 	option.LogLevel,
@@ -71,37 +62,17 @@ var ContextVariablesForMultiPlatform = []option.ContextVariable{
 var ContextVariables = append(ContextVariablesForMultiPlatform, ContextVariablesForOsArch...)
 
 // ----------------------------------------------------------------------------
-// Private functions
+// Command
 // ----------------------------------------------------------------------------
 
-// Since init() is always invoked, define command line parameters.
-func init() {
-	cmdhelper.Init(RootCmd, ContextVariables)
-}
-
-// --- Networking -------------------------------------------------------------
-
-func getOutboundIP() net.IP {
-	conn, err := net.Dial("udp", "8.8.8.8:80")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer func() {
-		if err := conn.Close(); err != nil {
-			panic(err)
-		}
-	}()
-	localAddr := conn.LocalAddr().(*net.UDPAddr)
-	return localAddr.IP
-}
-
-func getDefaultAllowedHostnames() []string {
-	result := []string{"localhost"}
-	outboundIPAddress := getOutboundIP().String()
-	if len(outboundIPAddress) > 0 {
-		result = append(result, outboundIPAddress)
-	}
-	return result
+// RootCmd represents the command.
+var RootCmd = &cobra.Command{
+	Use:     Use,
+	Short:   Short,
+	Long:    Long,
+	PreRun:  PreRun,
+	RunE:    RunE,
+	Version: Version(),
 }
 
 // ----------------------------------------------------------------------------
@@ -151,14 +122,14 @@ func RunE(_ *cobra.Command, _ []string) error {
 	// Setup gRPC server
 
 	grpcserver := &grpcserver.BasicGrpcServer{
-		AvoidServing:          viper.GetBool(avoidServe.Arg),
+		AvoidServing:          viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:             true,
 		LogLevelName:          viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:        viper.GetString(option.ObserverOrigin.Arg),
 		ObserverURL:           viper.GetString(option.ObserverURL.Arg),
 		Port:                  viper.GetInt(option.GrpcPort.Arg),
 		SenzingSettings:       senzingSettings,
-		SenzingInstanceName:   viper.GetString(option.EngineModuleName.Arg),
+		SenzingInstanceName:   viper.GetString(option.EngineInstanceName.Arg),
 		SenzingVerboseLogging: viper.GetInt64(option.EngineLogLevel.Arg),
 	}
 
@@ -166,7 +137,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	httpServer := &httpserver.BasicHTTPServer{
 		APIUrlRoutePrefix:         "api",
-		AvoidServing:              viper.GetBool(avoidServe.Arg),
+		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:                 true,
 		EntitySearchRoutePrefix:   "entity-search",
 		LogLevelName:              viper.GetString(option.LogLevel.Arg),
@@ -175,7 +146,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 		OpenAPISpecificationRest:  senzingrestservice.OpenAPISpecificationJSON,
 		ReadHeaderTimeout:         60 * time.Second,
 		SenzingSettings:           senzingSettings,
-		SenzingInstanceName:       viper.GetString(option.EngineModuleName.Arg),
+		SenzingInstanceName:       viper.GetString(option.EngineInstanceName.Arg),
 		SenzingVerboseLogging:     viper.GetInt64(option.EngineLogLevel.Arg),
 		ServerAddress:             viper.GetString(option.ServerAddress.Arg),
 		ServerPort:                viper.GetInt(option.HTTPPort.Arg),
@@ -216,15 +187,35 @@ func Version() string {
 }
 
 // ----------------------------------------------------------------------------
-// Command
+// Private functions
 // ----------------------------------------------------------------------------
 
-// RootCmd represents the command.
-var RootCmd = &cobra.Command{
-	Use:     Use,
-	Short:   Short,
-	Long:    Long,
-	PreRun:  PreRun,
-	RunE:    RunE,
-	Version: Version(),
+// Since init() is always invoked, define command line parameters.
+func init() {
+	cmdhelper.Init(RootCmd, ContextVariables)
+}
+
+// --- Networking -------------------------------------------------------------
+
+func getOutboundIP() net.IP {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := conn.Close(); err != nil {
+			panic(err)
+		}
+	}()
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	return localAddr.IP
+}
+
+func getDefaultAllowedHostnames() []string {
+	result := []string{"localhost"}
+	outboundIPAddress := getOutboundIP().String()
+	if len(outboundIPAddress) > 0 {
+		result = append(result, outboundIPAddress)
+	}
+	return result
 }
