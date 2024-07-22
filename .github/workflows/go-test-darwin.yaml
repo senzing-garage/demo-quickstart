@@ -42,32 +42,11 @@ jobs:
         with:
           senzingapi-version: ${{ matrix.senzingapi-version }}
 
-      - name: Copy /etc files
-        run: sudo mkdir -p /opt/senzing/g2/etc && sudo cp testdata/senzing-license/g2.lic /opt/senzing/g2/etc/g2.lic
+      - name: copy /etc files
+        run: sudo cp testdata/senzing-license/g2.lic /opt/senzing/g2/etc/g2.lic
 
-      - name: Copy test database files
-        run: mkdir -p /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/
+      - name: copy test database files
+        run: mkdir /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/G2C.db
 
-      - name: Run go test
-        run: go test -exec /Users/runner/work/demo-quickstart/demo-quickstart/bin/macos_exec_dyld.sh -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
-
-      - name: Store coverage file
-        uses: actions/upload-artifact@v4
-        with:
-          name: cover.out
-          path: ./cover.out
-
-      - name: Upload test log
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-log
-          path: /tmp/gotest.log
-          if-no-files-found: error
-
-  coverage:
-    name: Coverage
-    needs: go-test-darwin
-    uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
-    with:
-      coverage-config: ./.github/coverage/testcoverage-darwin.yaml
+      - name: run go test
+        run: go test -exec /Users/runner/work/demo-quickstart/demo-quickstart/bin/macos_exec_dyld.sh -v -p 1 ./...
