@@ -1,4 +1,4 @@
-name: golangci-lint
+name: Golangci lint
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -46,14 +46,14 @@ jobs:
           cp /opt/senzing/g2/sdk/c/*.h ./szproduct/
           cp /opt/senzing/g2/sdk/c/gohelpers/*.h ./szproduct/gohelpers
 
-      - name: setup go
+      - name: Setup go
         uses: actions/setup-go@v5
         with:
           go-version: 1.21
 
-      - name: golangci-lint
+      - name: Perform linting
         uses: golangci/golangci-lint-action@v6
         with:
-          args: --config=${{ github.workspace }}/.github/linters/.golangci.yml
+          args: --config=${{ github.workspace }}/.github/linters/.golangci.yaml
           only-new-issues: false
           version: latest

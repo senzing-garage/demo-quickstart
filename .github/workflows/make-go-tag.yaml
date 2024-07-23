@@ -1,4 +1,4 @@
-name: make go tag
+name: Make go tag
 
 on:
   push:
@@ -10,12 +10,12 @@ permissions:
 
 jobs:
   make-go-tag:
-    name: make a vM.m.P tag
+    name: Make a vM.m.P tag
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: make go version tag
+      - name: Make go version tag
         uses: senzing-factory/github-action-make-go-tag@v1

@@ -1,17 +1,18 @@
-name: go test linux
+name: Go test linux
 
 on: [push]
 
 env:
   LD_LIBRARY_PATH: /opt/senzing/g2/lib
-  SENZING_TOOLS_DATABASE_URL: "sqlite3://na:na@/tmp/sqlite/G2C.db"
+  SENZING_LOG_LEVEL: TRACE
+  SENZING_TOOLS_DATABASE_URL: sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
 
 permissions:
   contents: read
 
 jobs:
   go-test-linux:
-    name: "go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+    name: "Go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -20,12 +21,12 @@ jobs:
         senzingapi-version: [staging-v4]
 
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: setup go
+      - name: Setup go
         uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
@@ -35,18 +36,18 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: install Senzing API
+      - name: Install Senzing API
         uses: senzing-factory/github-action-install-senzing-api@v3
         with:
           senzingapi-runtime-version: ${{ matrix.senzingapi-version }}
 
-      - name: copy /etc files
-        run: sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
+      - name: Copy /etc files
+        run: sudo mkdir -p /etc/opt/senzing && sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
 
-      - name: copy test database files
-        run: mkdir /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/G2C.db
+      - name: Copy test database files
+        run: mkdir -p /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/G2C.db
 
-      - name: run go test
+      - name: Run go test
         run: go test -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
 
       - name: Store coverage file
@@ -64,7 +65,7 @@ jobs:
           if-no-files-found: error
 
   coverage:
-    name: coverage
+    name: Coverage
     needs: go-test-linux
     uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
     with:

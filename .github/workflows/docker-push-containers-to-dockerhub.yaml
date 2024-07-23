@@ -1,9 +1,9 @@
-name: 'docker push containers to dockerhub'
+name: Docker push containers to dockerhub
 
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - "[0-9]+.[0-9]+.[0-9]+"
 
 permissions:
   contents: read
@@ -11,13 +11,19 @@ permissions:
 jobs:
   docker-push-containers-to-dockerhub:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Get repository name
+        id: repo-basename
+        run: |
+          echo "repo=$(basename ${{ github.repository }})" >> "$GITHUB_OUTPUT"
+        shell: bash
+
       - name: Build docker image and push to DockerHub
         uses: senzing-factory/github-action-docker-buildx-build@v1
         with:
-          build-options: '--push'
-          image-repository: senzing/demo-quickstart
+          build-options: "--push"
+          image-repository: senzing/${{ steps.repo-basename.outputs.repo }}
           image-tag: ${{ github.ref_name }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
-          platforms: 'linux/amd64,linux/arm64'
           username: ${{ secrets.DOCKERHUB_USERNAME }}
