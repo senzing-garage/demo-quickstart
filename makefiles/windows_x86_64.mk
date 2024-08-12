@@ -14,4 +14,4 @@ build-osarch-specific: windows/amd64
 
 .PHONY: only-windows-x86_64
 only-windows-x86_64:
-	@echo "Only windows-x86_64 has this Makefile target."
+	$(info Only windows-x86_64 has this Makefile target.)

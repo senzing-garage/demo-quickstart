@@ -1,5 +1,8 @@
 # demo-quickstart
 
-Placeholder for [GitHub pages](https://pages.github.com/).
+Placeholder for [GitHub pages].
 
-See [https://garage.senzing.com/demo-quickstart](https://garage.senzing.com/demo-quickstart).
+See [GitHub page].
+
+[GitHub page]: https://garage.senzing.com/demo-quickstart
+[GitHub pages]: https://pages.github.com/

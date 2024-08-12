@@ -49,12 +49,12 @@ docker-build-osarch-specific:
 
 .PHONY: hello-world-osarch-specific
 hello-world-osarch-specific:
-	@echo "Hello World, from windows."
+	$(info Hello World, from windows.)
 
 
 .PHONY: package-osarch-specific
 package-osarch-specific:
-	@echo No packaging for windows.
+	$(info No packaging for windows)
 
 
 .PHONY: run-osarch-specific
@@ -80,4 +80,4 @@ test-osarch-specific:
 
 .PHONY: only-windows
 only-windows:
-	@echo "Only windows has this Makefile target."
+	$(info Only windows has this Makefile target.)

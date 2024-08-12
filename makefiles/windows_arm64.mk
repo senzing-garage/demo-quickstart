@@ -14,4 +14,4 @@ build-osarch-specific: windows/arm64
 
 .PHONY: only-windows-arm64
 only-windows-arm64:
-	@echo "Only windows-arm64 has this Makefile target."
+	$(info Only windows-arm64 has this Makefile target.)

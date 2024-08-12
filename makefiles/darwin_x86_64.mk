@@ -13,4 +13,4 @@ build-osarch-specific: darwin/amd64
 
 .PHONY: only-darwin-x86_64
 only-darwin-x86_64:
-	@echo "Only darwin-x86_64 has this Makefile target."
+	$(info Only darwin-x86_64 has this Makefile target.)

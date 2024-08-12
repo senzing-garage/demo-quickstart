@@ -11,13 +11,13 @@ ARG IMAGE_FINAL=alpine
 # Stage: senzingapi_runtime
 # -----------------------------------------------------------------------------
 
-FROM ${IMAGE_SENZINGAPI_RUNTIME} as senzingapi_runtime
+FROM ${IMAGE_SENZINGAPI_RUNTIME} AS senzingapi_runtime
 
 # -----------------------------------------------------------------------------
 # Stage: go_builder
 # -----------------------------------------------------------------------------
 
-FROM ${IMAGE_GO_BUILDER} as go_builder
+FROM ${IMAGE_GO_BUILDER} AS go_builder
 ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/go-builder" \
       Maintainer="support@senzing.com" \
@@ -56,7 +56,7 @@ RUN mkdir -p /output \
 #  - FPM: https://fpm.readthedocs.io/en/latest/cli-reference.html
 # -----------------------------------------------------------------------------
 
-FROM ${IMAGE_FPM_BUILDER} as fpm_builder
+FROM ${IMAGE_FPM_BUILDER} AS fpm_builder
 ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/fpm-builder" \
       Maintainer="support@senzing.com" \
@@ -100,14 +100,14 @@ RUN fpm \
 # Stage: final
 # -----------------------------------------------------------------------------
 
-FROM ${IMAGE_FINAL} as final
+FROM ${IMAGE_FINAL} AS final
 ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/final-stage" \
       Maintainer="support@senzing.com" \
       Version="0.1.0"
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
-# Copy local files from the Git repository.
+# Copy files from repository.
 
 COPY ./rootfs /
 

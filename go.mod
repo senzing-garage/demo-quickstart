@@ -61,7 +61,7 @@ require (
 	github.com/senzing-garage/go-sdk-abstract-factory v0.8.1 // indirect
 	github.com/senzing-garage/sz-sdk-go v0.13.6 // indirect
 	github.com/senzing-garage/sz-sdk-go-core v0.7.5 // indirect
-	github.com/senzing-garage/sz-sdk-go-grpc v0.7.2 // indirect
+	github.com/senzing-garage/sz-sdk-go-grpc v0.7.3 // indirect
 	github.com/senzing-garage/sz-sdk-json-type-definition v0.2.6 // indirect
 	github.com/senzing-garage/sz-sdk-proto v0.7.6 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect

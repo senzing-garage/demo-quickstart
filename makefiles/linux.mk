@@ -21,6 +21,7 @@ clean-osarch-specific:
 	@docker rm  --force $(DOCKER_CONTAINER_NAME) 2> /dev/null || true
 	@docker rmi --force $(DOCKER_IMAGE_NAME) $(DOCKER_BUILD_IMAGE_NAME) 2> /dev/null || true
 	@rm -f  $(GOPATH)/bin/$(PROGRAM_NAME) || true
+	@rm -f  $(MAKEFILE_DIRECTORY)/.coverage || true
 	@rm -f  $(MAKEFILE_DIRECTORY)/coverage.html || true
 	@rm -f  $(MAKEFILE_DIRECTORY)/coverage.out || true
 	@rm -f  $(MAKEFILE_DIRECTORY)/cover.out || true
@@ -45,7 +46,7 @@ documentation-osarch-specific:
 
 .PHONY: docker-build-osarch-specific
 docker-build-osarch-specific:
-	@docker build \
+	@$(DOCKER_BUILDKIT) docker build \
 		--tag $(DOCKER_IMAGE_NAME) \
 		--tag $(DOCKER_IMAGE_NAME):$(BUILD_VERSION) \
 		.
@@ -53,7 +54,7 @@ docker-build-osarch-specific:
 
 .PHONY: hello-world-osarch-specific
 hello-world-osarch-specific:
-	@echo "Hello World, from linux."
+	$(info Hello World, from linux.)
 
 
 .PHONY: package-osarch-specific
@@ -86,4 +87,4 @@ test-osarch-specific:
 
 .PHONY: only-linux
 only-linux:
-	@echo "Only linux has this Makefile target."
+	$(info Only linux has this Makefile target.)
