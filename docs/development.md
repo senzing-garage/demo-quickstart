@@ -1,16 +1,28 @@
 # demo-quickstart development
 
-## Install Go
+The following instructions are useful during development.
 
-1. See Go's [Download and install].
+**Note:** This has been tested on Linux and Darwin/macOS.
+It has not been tested on Windows.
+
+## Prerequisites for development
+
+:thinking: The following tasks need to be complete before proceeding.
+These are "one-time tasks" which may already have been completed.
+
+1. The following software programs need to be installed:
+    1. [git]
+    1. [make]
+    1. [docker]
+    1. [go]
 
 ## Install Senzing C library
 
 Since the Senzing library is a prerequisite, it must be installed first.
 
 1. Verify Senzing C shared objects, configuration, and SDK header files are installed.
-    1. `/opt/senzing/g2/lib`
-    1. `/opt/senzing/g2/sdk/c`
+    1. `/opt/senzing/er/lib`
+    1. `/opt/senzing/er/sdk/c`
     1. `/etc/opt/senzing`
 
 1. If not installed, see [How to Install Senzing for Go Development].
@@ -37,7 +49,7 @@ Since the Senzing library is a prerequisite, it must be installed first.
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    make dependencies-for-make
+    make dependencies-for-development
 
     ```
 
@@ -47,6 +59,17 @@ Since the Senzing library is a prerequisite, it must be installed first.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     make dependencies
+
+    ```
+
+## Lint
+
+1. Run linting.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    make lint
 
     ```
 
@@ -71,8 +94,8 @@ Since the Senzing library is a prerequisite, it must be installed first.
 
 ## Run
 
-1. Run the binary.
-   Example:
+1. Run program.
+   Examples:
 
     ```console
     ${GIT_REPOSITORY_DIR}/target/linux/demo-quickstart
@@ -99,20 +122,9 @@ Since the Senzing library is a prerequisite, it must be installed first.
 
     ```
 
-## Lint
-
-1. Run Go tests.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    make lint
-
-    ```
-
 ## Test
 
-1. Run Go tests.
+1. Run tests.
    Example:
 
     ```console
@@ -140,30 +152,30 @@ Create a code coverage map.
 
 ## Documentation
 
-1. Start [godoc] documentation server.
+1. View documentation.
    Example:
 
     ```console
-     cd ${GIT_REPOSITORY_DIR}
-     make clean documentation
+    cd ${GIT_REPOSITORY_DIR}
+    make clean documentation
 
     ```
 
 1. If a web page doesn't appear, visit [localhost:6060].
 1. Senzing documentation will be in the "Third party" section.
-   `github.com` > `senzing` > `go-cmdhelping`
+   `github.com` > `senzing-garage` > `demo-quickstart`
 
 1. When a versioned release is published with a `v0.0.0` format tag,
 the reference can be found by clicking on the following badge at the top of the README.md page.
 Example:
 
-    [![Go Reference](https://pkg.go.dev/badge/github.com/senzing-garage/demo-quickstart.svg)](https://pkg.go.dev/github.com/senzing-garage/demo-quickstart)
+    [![Go Reference Badge]][Go Reference]
 
 1. To stop the `godoc` server, run
 
     ```console
-     cd ${GIT_REPOSITORY_DIR}
-     make clean
+    cd ${GIT_REPOSITORY_DIR}
+    make clean
 
     ```
 
@@ -187,6 +199,23 @@ Example:
       --publish 8261:8261 \
       --rm \
       senzing/demo-quickstart
+
+    ```
+
+1. **Optional:** Test using `docker-compose`.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    make docker-test
+
+    ```
+
+   To bring the `docker-compose` formation, run
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    make clean
 
     ```
 
@@ -246,10 +275,15 @@ Example:
 
     ```
 
+## References
+
 [clone-repository]: https://github.com/senzing-garage/knowledge-base/blob/main/HOWTO/clone-repository.md
-[Download and install]: https://go.dev/doc/install
 [Go]: https://go.dev/
-[godoc]: https://pkg.go.dev/golang.org/x/tools/cmd/godoc
 [How to Install Senzing for Go Development]: https://github.com/senzing-garage/knowledge-base/blob/main/HOWTO/install-senzing-for-go-development.md
 [localhost:6060]: http://localhost:6060/pkg/github.com/senzing-garage/demo-quickstart/
 [testcoverage.yaml]: ../.github/coverage/testcoverage.yaml
+[docker]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker.md
+[git]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/git.md
+[Go Reference Badge]: https://pkg.go.dev/badge/github.com/senzing-garage/demo-quickstart.svg
+[Go Reference]: https://pkg.go.dev/github.com/senzing-garage/demo-quickstart
+[make]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/make.md

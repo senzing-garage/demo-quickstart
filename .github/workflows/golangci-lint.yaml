@@ -31,20 +31,20 @@ jobs:
       - name: Copy Senzing headers
         run: |
           mkdir --parents ./szconfig/gohelpers
-          cp /opt/senzing/g2/sdk/c/*.h ./szconfig/
-          cp /opt/senzing/g2/sdk/c/gohelpers/*.h ./szconfig/gohelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szconfig/
+          cp /opt/senzing/er/sdk/c/gohelpers/*.h ./szconfig/gohelpers
           mkdir --parents ./szconfigmanager/gohelpers
-          cp /opt/senzing/g2/sdk/c/*.h ./szconfigmanager/
-          cp /opt/senzing/g2/sdk/c/gohelpers/*.h ./szconfigmanager/gohelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szconfigmanager/
+          cp /opt/senzing/er/sdk/c/gohelpers/*.h ./szconfigmanager/gohelpers
           mkdir --parents ./szdiagnostic/gohelpers
-          cp /opt/senzing/g2/sdk/c/*.h ./szdiagnostic/
-          cp /opt/senzing/g2/sdk/c/gohelpers/*.h ./szdiagnostic/gohelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szdiagnostic/
+          cp /opt/senzing/er/sdk/c/gohelpers/*.h ./szdiagnostic/gohelpers
           mkdir --parents ./szengine/gohelpers
-          cp /opt/senzing/g2/sdk/c/*.h ./szengine/
-          cp /opt/senzing/g2/sdk/c/gohelpers/*.h ./szengine/gohelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szengine/
+          cp /opt/senzing/er/sdk/c/gohelpers/*.h ./szengine/gohelpers
           mkdir --parents ./szproduct/gohelpers
-          cp /opt/senzing/g2/sdk/c/*.h ./szproduct/
-          cp /opt/senzing/g2/sdk/c/gohelpers/*.h ./szproduct/gohelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szproduct/
+          cp /opt/senzing/er/sdk/c/gohelpers/*.h ./szproduct/gohelpers
 
       - name: Setup go
         uses: actions/setup-go@v5

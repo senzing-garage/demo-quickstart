@@ -24,6 +24,7 @@ clean-osarch-specific:
 	@del /F /S /Q $(TARGET_DIRECTORY)
 	@del /F /S /Q C:\Temp\sqlite
 	@taskkill /f /t/im godoc
+	@docker-compose -f docker-compose.test.yaml down
 
 
 .PHONY: coverage-osarch-specific
@@ -31,12 +32,6 @@ coverage-osarch-specific:
 	@go test -v -coverprofile=coverage.out -p 1 ./...
 	@go tool cover -html="coverage.out" -o coverage.html
 	@explorer file://$(MAKEFILE_DIRECTORY)/coverage.html
-
-
-.PHONY: documentation-osarch-specific
-documentation-osarch-specific:
-	@start /b godoc
-	@explorer http://localhost:6060
 
 
 .PHONY: docker-build-osarch-specific
@@ -47,14 +42,20 @@ docker-build-osarch-specific:
 		.
 
 
+.PHONY: documentation-osarch-specific
+documentation-osarch-specific:
+	@start /b godoc
+	@explorer http://localhost:6060
+
+
 .PHONY: hello-world-osarch-specific
 hello-world-osarch-specific:
-	@echo "Hello World, from windows."
+	$(info Hello World, from windows.)
 
 
 .PHONY: package-osarch-specific
 package-osarch-specific:
-	@echo No packaging for windows.
+	$(info No packaging for windows)
 
 
 .PHONY: run-osarch-specific
@@ -80,4 +81,4 @@ test-osarch-specific:
 
 .PHONY: only-windows
 only-windows:
-	@echo "Only windows has this Makefile target."
+	$(info Only windows has this Makefile target.)

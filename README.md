@@ -19,13 +19,14 @@ the recommendation is not to use it yet.
 `demo-quickstart` is a command in the [senzing-tools] suite of tools.
 This command creates an environment for exploring Senzing.
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/senzing-garage/demo-quickstart.svg)](https://pkg.go.dev/github.com/senzing-garage/demo-quickstart)
-[![Go Report Card](https://goreportcard.com/badge/github.com/senzing-garage/demo-quickstart)](https://goreportcard.com/report/github.com/senzing-garage/demo-quickstart)
-[![License](https://img.shields.io/badge/License-Apache2-brightgreen.svg)](https://github.com/senzing-garage/demo-quickstart/blob/main/LICENSE)
+[![Go Reference Badge]][Package reference]
+[![Go Report Card Badge]][Go Report Card]
+[![License Badge]][License]
+[![go-test-linux.yaml Badge]][go-test-linux.yaml]
+[![go-test-darwin.yaml Badge]][go-test-darwin.yaml]
+[![go-test-windows.yaml Badge]][go-test-windows.yaml]
 
-[![go-test-linux.yaml](https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-linux.yaml/badge.svg)](https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-linux.yaml)
-[![go-test-darwin.yaml](https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-darwin.yaml/badge.svg)](https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-darwin.yaml)
-[![go-test-windows.yaml](https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-windows.yaml/badge.svg)](https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-windows.yaml)
+[![golangci-lint.yaml Badge]][golangci-lint.yaml]
 
 ## Overview
 
@@ -33,12 +34,13 @@ This command creates an environment for exploring Senzing.
 
 Senzing SDKs for accessing the gRPC server:
 
-1. Go: [g2-sdk-go-grpc]
-1. Python: [g2-sdk-python-grpc]
+1. Go: [sz-sdk-go-grpc]
+1. Python: [sz-sdk-python-grpc]
+
 A simple demonstration using `senzing-tools` and a SQLite database.
 
 ```console
-export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+export LD_LIBRARY_PATH=/opt/senzing/er/lib/
 export SENZING_TOOLS_DATABASE_URL=sqlite3://na:na@/tmp/sqlite/G2C.db
 senzing-tools init-database
 senzing-tools demo-quickstart
@@ -55,7 +57,7 @@ Then visit [localhost:8261]
 ## Use
 
 ```console
-export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+export LD_LIBRARY_PATH=/opt/senzing/er/lib/
 senzing-tools demo-quickstart [flags]
 ```
 
@@ -64,7 +66,7 @@ senzing-tools demo-quickstart [flags]
     1. Runtime documentation:
 
         ```console
-        export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+        export LD_LIBRARY_PATH=/opt/senzing/er/lib/
         senzing-tools demo-quickstart --help
         ```
 
@@ -76,7 +78,7 @@ senzing-tools demo-quickstart [flags]
    Example:
 
     ```console
-    export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+    export LD_LIBRARY_PATH=/opt/senzing/er/lib/
     senzing-tools demo-quickstart \
         --database-url postgresql://username:password@postgres.example.com:5432/G2 \
 
@@ -91,7 +93,7 @@ senzing-tools demo-quickstart [flags]
    Example:
 
     ```console
-    export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+    export LD_LIBRARY_PATH=/opt/senzing/er/lib/
     export SENZING_TOOLS_DATABASE_URL=postgresql://username:password@postgres.example.com:5432/G2
     senzing-tools demo-quickstart
     ```
@@ -140,10 +142,22 @@ This usage shows how to initialize a database with a Docker container.
 [DockerHub]: https://hub.docker.com/r/senzing/demo-quickstart
 [Errors]: docs/errors.md
 [Examples]: docs/examples.md
-[g2-sdk-go-grpc]: https://github.com/senzing-garage/g2-sdk-go-grpc
-[g2-sdk-python-grpc]: https://github.com/senzing-garage/g2-sdk-python-grpc
+[Go Reference Badge]: https://pkg.go.dev/badge/github.com/senzing-garage/demo-quickstart.svg
+[Go Report Card Badge]: https://goreportcard.com/badge/github.com/senzing-garage/demo-quickstart
+[Go Report Card]: https://goreportcard.com/report/github.com/senzing-garage/demo-quickstart
+[go-test-darwin.yaml Badge]: https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-darwin.yaml/badge.svg
+[go-test-darwin.yaml]: https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-darwin.yaml
+[go-test-linux.yaml Badge]: https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-linux.yaml/badge.svg
+[go-test-linux.yaml]: https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-linux.yaml
+[go-test-windows.yaml Badge]: https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-windows.yaml/badge.svg
+[go-test-windows.yaml]: https://github.com/senzing-garage/demo-quickstart/actions/workflows/go-test-windows.yaml
+[golangci-lint.yaml Badge]: https://github.com/senzing-garage/demo-quickstart/actions/workflows/golangci-lint.yaml/badge.svg
+[golangci-lint.yaml]: https://github.com/senzing-garage/demo-quickstart/actions/workflows/golangci-lint.yaml
+[License Badge]: https://img.shields.io/badge/License-Apache2-brightgreen.svg
+[License]: https://github.com/senzing-garage/demo-quickstart/blob/main/LICENSE
 [localhost:8261]: http://localhost:8261
 [Online documentation]: https://hub.senzing.com/senzing-tools/senzing-tools_demo-quickstart.html
+[Package reference]: https://pkg.go.dev/github.com/senzing-garage/demo-quickstart
 [Parameters]: #parameters
 [Senzing Garage]: https://github.com/senzing-garage-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
@@ -156,3 +170,5 @@ This usage shows how to initialize a database with a Docker container.
 [senzing-tools install]: https://github.com/senzing-garage/senzing-tools#install
 [senzing-tools]: https://github.com/senzing-garage/senzing-tools
 [Senzing]: https://senzing.com/
+[sz-sdk-go-grpc]: https://github.com/senzing-garage/sz-sdk-go-grpc
+[sz-sdk-python-grpc]: https://github.com/senzing-garage/sz-sdk-python-grpc

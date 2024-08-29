@@ -7,6 +7,7 @@
 .PHONY: build-osarch-specific
 build-osarch-specific: darwin/arm64
 
+
 .PHONY: docker-build-osarch-specific
 docker-build-osarch-specific:
 	@docker build \
@@ -21,4 +22,4 @@ docker-build-osarch-specific:
 
 .PHONY: only-darwin-arm64
 only-darwin-arm64:
-	@echo "Only darwin-arm64 has this Makefile target."
+	$(info Only darwin-arm64 has this Makefile target.)
