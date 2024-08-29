@@ -284,6 +284,6 @@ Example:
 [testcoverage.yaml]: ../.github/coverage/testcoverage.yaml
 [docker]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker.md
 [git]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/git.md
-[Go Reference Badge]: https://pkg.go.dev/badge/github.com/senzing-garage/template-go.svg
-[Go Reference]: https://pkg.go.dev/github.com/senzing-garage/template-go
+[Go Reference Badge]: https://pkg.go.dev/badge/github.com/senzing-garage/demo-quickstart.svg
+[Go Reference]: https://pkg.go.dev/github.com/senzing-garage/demo-quickstart
 [make]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/make.md
