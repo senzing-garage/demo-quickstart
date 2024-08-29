@@ -37,8 +37,8 @@ COPY . ${GOPATH}/src/${GO_PACKAGE_NAME}
 
 # Copy files from prior stage.
 
-COPY --from=senzingapi_runtime  "/opt/senzing/g2/lib/"   "/opt/senzing/g2/lib/"
-COPY --from=senzingapi_runtime  "/opt/senzing/g2/sdk/c/" "/opt/senzing/g2/sdk/c/"
+COPY --from=senzingapi_runtime  "/opt/senzing/er/lib/"   "/opt/senzing/er/lib/"
+COPY --from=senzingapi_runtime  "/opt/senzing/er/sdk/c/" "/opt/senzing/er/sdk/c/"
 
 # Build go program.
 
@@ -48,7 +48,7 @@ RUN make linux/amd64
 # Copy binaries to /output.
 
 RUN mkdir -p /output \
- && cp -R ${GOPATH}/src/${GO_PACKAGE_NAME}/target/*  /output/
+      && cp -R ${GOPATH}/src/${GO_PACKAGE_NAME}/target/*  /output/
 
 # -----------------------------------------------------------------------------
 # Stage: fpm_builder

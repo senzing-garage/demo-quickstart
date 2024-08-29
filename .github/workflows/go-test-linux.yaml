@@ -3,7 +3,7 @@ name: Go test linux
 on: [push]
 
 env:
-  LD_LIBRARY_PATH: /opt/senzing/g2/lib
+  LD_LIBRARY_PATH: /opt/senzing/er/lib
   SENZING_LOG_LEVEL: TRACE
   SENZING_TOOLS_DATABASE_URL: sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
 

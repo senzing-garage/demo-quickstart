@@ -33,12 +33,12 @@ This command creates an environment for exploring Senzing.
 
 Senzing SDKs for accessing the gRPC server:
 
-1. Go: [g2-sdk-go-grpc]
-1. Python: [g2-sdk-python-grpc]
+1. Go: [sz-sdk-go-grpc]
+1. Python: [sz-sdk-python-grpc]
 A simple demonstration using `senzing-tools` and a SQLite database.
 
 ```console
-export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+export LD_LIBRARY_PATH=/opt/senzing/er/lib/
 export SENZING_TOOLS_DATABASE_URL=sqlite3://na:na@/tmp/sqlite/G2C.db
 senzing-tools init-database
 senzing-tools demo-quickstart
@@ -55,7 +55,7 @@ Then visit [localhost:8261]
 ## Use
 
 ```console
-export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+export LD_LIBRARY_PATH=/opt/senzing/er/lib/
 senzing-tools demo-quickstart [flags]
 ```
 
@@ -64,7 +64,7 @@ senzing-tools demo-quickstart [flags]
     1. Runtime documentation:
 
         ```console
-        export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+        export LD_LIBRARY_PATH=/opt/senzing/er/lib/
         senzing-tools demo-quickstart --help
         ```
 
@@ -76,7 +76,7 @@ senzing-tools demo-quickstart [flags]
    Example:
 
     ```console
-    export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+    export LD_LIBRARY_PATH=/opt/senzing/er/lib/
     senzing-tools demo-quickstart \
         --database-url postgresql://username:password@postgres.example.com:5432/G2 \
 
@@ -91,7 +91,7 @@ senzing-tools demo-quickstart [flags]
    Example:
 
     ```console
-    export LD_LIBRARY_PATH=/opt/senzing/g2/lib/
+    export LD_LIBRARY_PATH=/opt/senzing/er/lib/
     export SENZING_TOOLS_DATABASE_URL=postgresql://username:password@postgres.example.com:5432/G2
     senzing-tools demo-quickstart
     ```
@@ -140,8 +140,6 @@ This usage shows how to initialize a database with a Docker container.
 [DockerHub]: https://hub.docker.com/r/senzing/demo-quickstart
 [Errors]: docs/errors.md
 [Examples]: docs/examples.md
-[g2-sdk-go-grpc]: https://github.com/senzing-garage/g2-sdk-go-grpc
-[g2-sdk-python-grpc]: https://github.com/senzing-garage/g2-sdk-python-grpc
 [localhost:8261]: http://localhost:8261
 [Online documentation]: https://hub.senzing.com/senzing-tools/senzing-tools_demo-quickstart.html
 [Parameters]: #parameters
