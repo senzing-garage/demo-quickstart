@@ -47,7 +47,7 @@ RUN make build
 # Copy binaries to /output.
 
 RUN mkdir -p /output \
-      && cp -R ${GOPATH}/src/demo-quickstart/target/*  /output/
+ && cp -R ${GOPATH}/src/demo-quickstart/target/*  /output/
 
 # -----------------------------------------------------------------------------
 # Stage: final
@@ -57,17 +57,9 @@ FROM ${IMAGE_FINAL} AS final
 ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/demo-quickstart" \
       Maintainer="support@senzing.com" \
-      Version="0.1.1"
+      Version="0.0.1"
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
-
-# Copy files from repository.
-
-COPY ./rootfs /
-
-# Copy files from prior stage.
-
-COPY --from=builder "/output/linux/demo-quickstart" "/app/demo-quickstart"
 
 # Install packages via apt-get.
 
@@ -97,6 +89,14 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
       && apt-get -y install temurin-11-jdk \
       && chmod ${STAT_TMP} /tmp \
       && rm -rf /var/lib/apt/lists/*
+
+# Copy files from repository.
+
+COPY ./rootfs /
+
+# Copy files from prior stage.
+
+COPY --from=builder "/output/linux/demo-quickstart" "/app/demo-quickstart"
 
 # Run as non-root container
 

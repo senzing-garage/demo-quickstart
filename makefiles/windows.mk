@@ -24,6 +24,7 @@ clean-osarch-specific:
 	@del /F /S /Q $(TARGET_DIRECTORY)
 	@del /F /S /Q C:\Temp\sqlite
 	@taskkill /f /t/im godoc
+	@docker-compose -f docker-compose.test.yaml down
 
 
 .PHONY: coverage-osarch-specific
@@ -33,18 +34,18 @@ coverage-osarch-specific:
 	@explorer file://$(MAKEFILE_DIRECTORY)/coverage.html
 
 
-.PHONY: documentation-osarch-specific
-documentation-osarch-specific:
-	@start /b godoc
-	@explorer http://localhost:6060
-
-
 .PHONY: docker-build-osarch-specific
 docker-build-osarch-specific:
 	@docker build \
 		--tag $(DOCKER_IMAGE_NAME) \
 		--tag $(DOCKER_IMAGE_NAME):$(BUILD_VERSION) \
 		.
+
+
+.PHONY: documentation-osarch-specific
+documentation-osarch-specific:
+	@start /b godoc
+	@explorer http://localhost:6060
 
 
 .PHONY: hello-world-osarch-specific

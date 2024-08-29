@@ -214,7 +214,7 @@ help:
 print-make-variables:
 	@$(foreach V,$(sort $(.VARIABLES)), \
 		$(if $(filter-out environment% default automatic, \
-		$(origin $V)),$(warning $V=$($V) ($(value $V)))))
+		$(origin $V)),$(info $V=$($V) ($(value $V)))))
 
 
 .PHONY: update-pkg-cache

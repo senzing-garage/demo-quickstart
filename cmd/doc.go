@@ -1,4 +1,4 @@
 /*
-The cmd package is used for Cobra integration.
+Package cmd is used for Cobra and Viper integration.
 */
 package cmd
