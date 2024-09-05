@@ -10,7 +10,7 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/senzing-garage/demo-entity-search v0.2.0
 	github.com/senzing-garage/go-cmdhelping v0.3.0
-	github.com/senzing-garage/go-helpers v0.6.0
+	github.com/senzing-garage/go-helpers v0.6.1
 	github.com/senzing-garage/go-observing v0.3.3
 	github.com/senzing-garage/go-rest-api-service v0.10.0
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
@@ -58,7 +58,7 @@ require (
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/senzing-garage/go-logging v1.5.0 // indirect
-	github.com/senzing-garage/go-messaging v1.5.1 // indirect
+	github.com/senzing-garage/go-messaging v1.5.2 // indirect
 	github.com/senzing-garage/go-sdk-abstract-factory v0.9.1 // indirect
 	github.com/senzing-garage/sz-sdk-go v0.14.0 // indirect
 	github.com/senzing-garage/sz-sdk-go-core v0.8.1 // indirect
@@ -77,7 +77,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/exp v0.0.0-20240823005443-9b4947da3948 // indirect
+	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.24.0 // indirect
