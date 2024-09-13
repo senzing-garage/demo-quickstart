@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 
 ARG IMAGE_SENZINGAPI_RUNTIME=senzing/senzingapi-runtime-staging:latest
-ARG IMAGE_BUILDER=golang:1.22.3-bullseye
+ARG IMAGE_BUILDER=golang:1.22.4-bullseye
 ARG IMAGE_FPM=dockter/fpm:latest
 ARG IMAGE_FINAL=alpine
 

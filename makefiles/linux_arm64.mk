@@ -13,7 +13,7 @@ build-osarch-specific: linux/arm64
 .PHONY: docker-build-osarch-specific
 docker-build-osarch-specific:
 	@docker build \
-		--platform linux/amd64 \
+		--platform linux/arm64 \
 		--tag $(DOCKER_IMAGE_NAME) \
 		--tag $(DOCKER_IMAGE_NAME):$(BUILD_VERSION) \
 		.

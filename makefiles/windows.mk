@@ -44,6 +44,7 @@ docker-build-osarch-specific:
 
 .PHONY: documentation-osarch-specific
 documentation-osarch-specific:
+	@taskkill /f /t/im godoc
 	@start /b godoc
 	@explorer http://localhost:6060
 
