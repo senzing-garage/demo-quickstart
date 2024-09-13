@@ -16,12 +16,12 @@ linters:
     - bidichk
     - bodyclose
     - contextcheck
+    - copyloopvar
     - durationcheck
     - errcheck
     - errchkjson
     - errorlint
     - exhaustive
-    - exportloopref
     - gocheckcompilerdirectives
     - gochecksumtype
     - gocritic
