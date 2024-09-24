@@ -64,31 +64,31 @@ USER root
 # Install packages via apt-get.
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
-      && chmod 777 /tmp \
-      && apt-get update \
-      && apt-get -y install \
+ && chmod 777 /tmp \
+ && apt-get update \
+ && apt-get -y install \
       gnupg2 \
       jq \
       libodbc1 \
       postgresql-client \
       supervisor \
       unixodbc \
-      && chmod ${STAT_TMP} /tmp \
-      && rm -rf /var/lib/apt/lists/*
+ && chmod ${STAT_TMP} /tmp \
+ && rm -rf /var/lib/apt/lists/*
 
 # Install Java-11.
 
 RUN mkdir -p /etc/apt/keyrings \
-      && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
+ && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
 
 RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" >> /etc/apt/sources.list
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
-      && chmod 777 /tmp \
-      && apt-get update \
-      && apt-get -y install temurin-11-jdk \
-      && chmod ${STAT_TMP} /tmp \
-      && rm -rf /var/lib/apt/lists/*
+ && chmod 777 /tmp \
+ && apt-get update \
+ && apt-get -y install temurin-11-jdk \
+ && chmod ${STAT_TMP} /tmp \
+ && rm -rf /var/lib/apt/lists/*
 
 # Copy files from repository.
 
