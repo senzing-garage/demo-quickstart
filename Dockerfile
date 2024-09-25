@@ -25,6 +25,30 @@ LABEL Name="senzing/go-builder" \
 
 USER root
 
+# Install packages via apt-get.
+
+RUN apt-get update \
+ && apt-get -y install \
+      python3 \
+      python3-dev \
+      python3-pip \
+      python3-venv \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# Create and activate virtual environment.
+
+RUN python3 -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# Install packages via PIP.
+
+COPY requirements.txt .
+RUN pip3 install --upgrade pip \
+ && pip3 install -r requirements.txt \
+ && rm requirements.txt \
+ && pip3 uninstall -y setuptools pip
+
 # Copy local files from the Git repository.
 
 COPY ./rootfs /
@@ -86,7 +110,10 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adopti
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
  && apt-get update \
- && apt-get -y install temurin-11-jdk \
+ && apt-get -y install \
+      temurin-11-jdk \
+      python3-venv \
+      curl \
  && chmod ${STAT_TMP} /tmp \
  && rm -rf /var/lib/apt/lists/*
 
@@ -96,11 +123,21 @@ COPY ./rootfs /
 
 # Copy files from prior stage.
 
-COPY --from=builder "/output/linux/demo-quickstart" "/app/demo-quickstart"
+COPY --from=builder /output/linux/demo-quickstart /app/demo-quickstart
+COPY --from=builder /app/venv /app/venv
+
+# Prepare jupyter lab environment
+
+RUN mkdir -p /.local/share
 
 # Run as non-root container
 
 USER 1001
+
+# Activate virtual environment.
+
+ENV VIRTUAL_ENV=/app/venv
+ENV PATH="/app/venv/bin:${PATH}"
 
 # Runtime environment variables.
 
