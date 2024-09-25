@@ -128,7 +128,7 @@ COPY --from=builder /app/venv /app/venv
 
 # Prepare jupyter lab environment
 
-RUN mkdir -p /.local/share
+RUN mkdir -p /.local/share /notebooks
 
 # Run as non-root container
 
