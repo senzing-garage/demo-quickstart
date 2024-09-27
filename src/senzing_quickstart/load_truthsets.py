@@ -26,9 +26,9 @@ from senzing_grpc import SzAbstractFactory, SzEngineFlags, SzError
 # In[ ]:
 
 
-home_path = "/notebooks/"
-truth_set_url_prefix = "https://raw.githubusercontent.com/Senzing/truth-sets/refs/heads/main/truthsets/demo/"
-truth_set_filenames = [
+HOME_PATH = "/notebooks/"
+TRUTH_SET_URL_PREFIX = "https://raw.githubusercontent.com/Senzing/truth-sets/refs/heads/main/truthsets/demo/"
+TRUTH_SET_FILENAMES = [
     "customers.json",
     "reference.json",
     "watchlist.json",
@@ -40,9 +40,9 @@ truth_set_filenames = [
 # In[ ]:
 
 
-for filename in truth_set_filenames:
-    url = truth_set_url_prefix + filename
-    response = requests.get(url, stream=True)
+for filename in TRUTH_SET_FILENAMES:
+    URL = TRUTH_SET_URL_PREFIX + filename
+    response = requests.get(URL, stream=True, timeout=10)
     response.raw.decode_content = True
     with open(filename, "wb") as file:
         shutil.copyfileobj(response.raw, file)
@@ -57,9 +57,9 @@ for filename in truth_set_filenames:
 
 datasources = []
 
-for filename in truth_set_filenames:
-    filepath = home_path + filename
-    with open(filepath, "r") as file:
+for filename in TRUTH_SET_FILENAMES:
+    FILEPATH = HOME_PATH + filename
+    with open(FILEPATH, "r", encoding="utf-8") as file:
         for line in file:
             line_as_dict = json.loads(line)
             datasource = line_as_dict.get("DATA_SOURCE")
@@ -91,8 +91,8 @@ sz_engine = sz_abstract_factory.create_sz_engine()
 
 
 old_config_id = sz_configmanager.get_default_config_id()
-old_json_config = sz_configmanager.get_config(old_config_id)
-config_handle = sz_config.import_config(old_json_config)
+OLD_JSON_CONFIG = sz_configmanager.get_config(old_config_id)
+config_handle = sz_config.import_config(OLD_JSON_CONFIG)
 
 
 # Add DataSources to Senzing configuration.
@@ -112,8 +112,8 @@ for datasource in datasources:
 # In[ ]:
 
 
-new_json_config = sz_config.export_config(config_handle)
-new_config_id = sz_configmanager.add_config(new_json_config, "Add TruthSet datasources")
+NEW_JSON_CONFIG = sz_config.export_config(config_handle)
+new_config_id = sz_configmanager.add_config(NEW_JSON_CONFIG, "Add TruthSet datasources")
 sz_configmanager.replace_default_config_id(old_config_id, new_config_id)
 
 
@@ -133,19 +133,19 @@ sz_diagnostic.reinitialize(new_config_id)
 # In[ ]:
 
 
-for filename in truth_set_filenames:
-    filepath = home_path + filename
-    with open(filepath, "r") as file:
+for filename in TRUTH_SET_FILENAMES:
+    FILEPATH = HOME_PATH + filename
+    with open(FILEPATH, "r", encoding="utf-8") as file:
         for line in file:
             try:
                 line_as_dict = json.loads(line)
-                info = sz_engine.add_record(
+                INFO = sz_engine.add_record(
                     line_as_dict.get("DATA_SOURCE"),
                     line_as_dict.get("RECORD_ID"),
                     line,
                     SzEngineFlags.SZ_WITH_INFO,
                 )
-                print(info)
+                print(INFO)
             except SzError as err:
                 print(err)
 
@@ -157,8 +157,8 @@ for filename in truth_set_filenames:
 # In[ ]:
 
 
-customer_1070_entity = sz_engine.get_entity_by_record_id("CUSTOMERS", "1070")
-print(json.dumps(json.loads(customer_1070_entity), indent=2))
+CUSTOMER_1070_ENTITY = sz_engine.get_entity_by_record_id("CUSTOMERS", "1070")
+print(json.dumps(json.loads(CUSTOMER_1070_ENTITY), indent=2))
 
 
 # Search for entities by attributes.
@@ -170,5 +170,5 @@ search_query = {
     "name_full": "robert smith",
     "date_of_birth": "11/12/1978",
 }
-search_result = sz_engine.search_by_attributes(json.dumps(search_query))
-print(json.dumps(json.loads(search_result), indent=2))
+SEARCH_RESULTS = sz_engine.search_by_attributes(json.dumps(search_query))
+print(json.dumps(json.loads(SEARCH_RESULTS), indent=2))
