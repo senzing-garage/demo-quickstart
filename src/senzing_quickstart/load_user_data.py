@@ -2,19 +2,19 @@
 # coding: utf-8
 
 # # Load user data
-#
+# 
 # These instructions show how to load user data into the Senzing engine.
 
 # ## Upload file of records
 
 # The following instructions show how to upload a file of JSON lines.
 # Here is an [example file].
-#
+# 
 # 1. In upper-left corner of JuypterLab, click on the
 #    ![Upload Files](img/upload-icon.png)
 #    ("Upload Files") icon.
 # 1. Choose the file of JSON lines to upload.
-#
+# 
 # [example file]: https://raw.githubusercontent.com/senzing-garage/demo-quickstart/refs/heads/main/testdata/example-data-for-senzing.json
 
 # ## Prepare Python enviroment
@@ -25,9 +25,9 @@
 
 
 import json
-
 import grpc
 from senzing_grpc import SzAbstractFactory, SzEngineFlags, SzError
+
 
 # Set environment specific variables.
 
@@ -115,7 +115,9 @@ for datasource in datasources:
 
 
 new_json_config = sz_config.export_config(config_handle)
-new_config_id = sz_configmanager.add_config(new_json_config, "Add user datasources")
+new_config_id = sz_configmanager.add_config(
+    new_json_config, "Add user datasources"
+)
 sz_configmanager.replace_default_config_id(old_config_id, new_config_id)
 
 
@@ -148,3 +150,4 @@ with open(filepath, "r") as file:
             print(info)
         except SzError as err:
             print(err)
+
