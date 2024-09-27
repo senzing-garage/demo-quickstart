@@ -10,9 +10,9 @@
 # The following instructions show how to upload a file of JSON lines.
 # Here is an [example file].
 # 
-# 1. In upper-left corner of Juypter lab, click on the
+# 1. In upper-left corner of JuypterLab, click on the
 #    ![Upload Files](img/upload-icon.png)
-#    "Upload Files" icon.
+#    ("Upload Files") icon.
 # 1. Choose the file of JSON lines to upload.
 # 
 # [example file]: https://raw.githubusercontent.com/senzing-garage/demo-quickstart/refs/heads/main/testdata/example-data-for-senzing.json
@@ -62,6 +62,7 @@ with open(filepath, "r", encoding="utf-8") as file:
             datasources.append(datasource)
 
 print(f"Found the following DATA_SOURCE values in the data: {datasources}")
+                
 
 
 # ## Update Senzing configuration
@@ -97,7 +98,7 @@ sz_engine = sz_abstract_factory.create_sz_engine()
 
 old_config_id = sz_configmanager.get_default_config_id()
 old_json_config = sz_configmanager.get_config(old_config_id)
-config_handle = sz_config.import_config(old_json_config)
+config_handle = sz_config.import_config(old_json_config)  
 
 
 # Add DataSources to Senzing configuration.
@@ -121,7 +122,7 @@ new_json_config = sz_config.export_config(config_handle)
 new_config_id = sz_configmanager.add_config(
     new_json_config, "Add TruthSet datasources"
 )
-sz_configmanager.replace_default_config_id(old_config_id, new_config_id)
+sz_configmanager.replace_default_config_id(old_config_id, new_config_id)    
 
 
 # With the change in Senzing configuration, Senzing objects need to be updated.
@@ -142,7 +143,7 @@ sz_diagnostic.reinitialize(new_config_id)
 
 with open(filepath, "r") as file:
     for line in file:
-        try:
+        try: 
             line_as_dict = json.loads(line)
             info = sz_engine.add_record(
                 line_as_dict.get("DATA_SOURCE"),
@@ -152,5 +153,5 @@ with open(filepath, "r") as file:
             )
             print(info)
         except SzError as err:
-            print(err)
+            print(err)                
 
