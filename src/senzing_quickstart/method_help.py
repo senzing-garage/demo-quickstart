@@ -9,7 +9,6 @@
 
 
 import grpc
-
 from senzing_grpc import SzAbstractFactory
 
 
