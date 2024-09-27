@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Load Senzing truth-sets
+# # Load user data
 # 
 # These instructions show how to load user data into the Senzing engine.
 
@@ -37,7 +37,7 @@ from senzing_grpc import SzAbstractFactory, SzEngineFlags, SzError
 home_path = "/notebooks/"
 
 
-# ![Modify](img/pencil2.png) Identify uploaded file.
+# ![Modify](img/pencil2.png) **Modify the following.** Identify uploaded file.
 
 # In[ ]:
 
@@ -62,7 +62,6 @@ with open(filepath, "r", encoding="utf-8") as file:
             datasources.append(datasource)
 
 print(f"Found the following DATA_SOURCE values in the data: {datasources}")
-                
 
 
 # ## Update Senzing configuration
@@ -82,9 +81,6 @@ sz_abstract_factory = SzAbstractFactory(
 # In[ ]:
 
 
-sz_abstract_factory = SzAbstractFactory(
-    grpc_channel=grpc.insecure_channel("localhost:8261")
-)
 sz_config = sz_abstract_factory.create_sz_config()
 sz_configmanager = sz_abstract_factory.create_sz_configmanager()
 sz_diagnostic = sz_abstract_factory.create_sz_diagnostic()
@@ -98,7 +94,7 @@ sz_engine = sz_abstract_factory.create_sz_engine()
 
 old_config_id = sz_configmanager.get_default_config_id()
 old_json_config = sz_configmanager.get_config(old_config_id)
-config_handle = sz_config.import_config(old_json_config)  
+config_handle = sz_config.import_config(old_json_config)
 
 
 # Add DataSources to Senzing configuration.
@@ -120,9 +116,9 @@ for datasource in datasources:
 
 new_json_config = sz_config.export_config(config_handle)
 new_config_id = sz_configmanager.add_config(
-    new_json_config, "Add TruthSet datasources"
+    new_json_config, "Add user datasources"
 )
-sz_configmanager.replace_default_config_id(old_config_id, new_config_id)    
+sz_configmanager.replace_default_config_id(old_config_id, new_config_id)
 
 
 # With the change in Senzing configuration, Senzing objects need to be updated.
@@ -143,7 +139,7 @@ sz_diagnostic.reinitialize(new_config_id)
 
 with open(filepath, "r") as file:
     for line in file:
-        try: 
+        try:
             line_as_dict = json.loads(line)
             info = sz_engine.add_record(
                 line_as_dict.get("DATA_SOURCE"),
@@ -153,5 +149,5 @@ with open(filepath, "r") as file:
             )
             print(info)
         except SzError as err:
-            print(err)                
+            print(err)
 
