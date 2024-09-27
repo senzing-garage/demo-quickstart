@@ -1,4 +1,4 @@
-# Makefile for Go project
+# Makefile for Go and Python projects
 
 # Detect the operating system and architecture.
 
@@ -74,6 +74,8 @@ dependencies-for-development: dependencies-for-development-osarch-specific
 	@go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 	@go install github.com/vladopajic/go-test-coverage/v2@latest
 	@go install golang.org/x/tools/cmd/godoc@latest
+	@python3 -m pip install --upgrade pip
+	@python3 -m pip install --requirement development-requirements.txt
 
 
 .PHONY: dependencies
@@ -81,6 +83,7 @@ dependencies:
 	@go get -u ./...
 	@go get -t -u ./...
 	@go mod tidy
+	@python3 -m pip install --requirement requirements.txt
 
 # -----------------------------------------------------------------------------
 # Setup
@@ -94,7 +97,7 @@ setup: setup-osarch-specific
 # -----------------------------------------------------------------------------
 
 .PHONY: lint
-lint: golangci-lint
+lint: golangci-lint pylint mypy bandit black flake8 isort
 
 # -----------------------------------------------------------------------------
 # Build
@@ -226,6 +229,70 @@ update-pkg-cache:
 # Specific programs
 # -----------------------------------------------------------------------------
 
+.PHONY: bandit
+bandit:
+	$(info --- bandit ---------------------------------------------------------------------)
+	@bandit $(shell git ls-files '*.py' ':!:tests/*' ':!:docs/source/*')
+
+
+.PHONY: black
+black:
+	$(info --- black ----------------------------------------------------------------------)
+	@black $(shell git ls-files '*.py' ':!:tests/*' ':!:docs/source/*')
+
+
+.PHONY: flake8
+flake8:
+	$(info --- flake8 ---------------------------------------------------------------------)
+	@flake8 $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
 .PHONY: golangci-lint
 golangci-lint:
 	@${GOBIN}/golangci-lint run --config=.github/linters/.golangci.yaml
+
+
+.PHONY: isort
+isort:
+	$(info --- isort ----------------------------------------------------------------------)
+	@isort $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: mypy
+mypy:
+	$(info --- mypy -----------------------------------------------------------------------)
+	@mypy --strict $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: pydoc
+pydoc:
+	$(info --- pydoc ----------------------------------------------------------------------)
+	@python3 -m pydoc
+
+
+.PHONY: pydoc-web
+pydoc-web:
+	$(info --- pydoc-web ------------------------------------------------------------------)
+	@python3 -m pydoc -p 8885
+
+
+.PHONY: pylint
+pylint:
+	$(info --- pylint ---------------------------------------------------------------------)
+	@pylint $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: pytest
+pytest:
+	$(info --- pytest ---------------------------------------------------------------------)
+	@pytest $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: sphinx
+sphinx: sphinx-osarch-specific
+	$(info --- sphinx ---------------------------------------------------------------------)
+
+
+.PHONY: view-sphinx
+view-sphinx: view-sphinx-osarch-specific
+	$(info --- view-sphinx ----------------------------------------------------------------)

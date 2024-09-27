@@ -25,6 +25,21 @@ this action adds the issue to the "Garage" board as "Backlog".
 - [Add to Project Garage GitHub Action]
   - Uses: [senzing-factory/build-resources/.../add-to-project.yaml]
 
+## bandit.yaml
+
+When a Pull Request (PR) is made against `main` branch,
+this action runs [Bandit] to detect security issues.
+
+- [bandit.yaml]
+  - Uses: [lukehinds/bandit-action]
+
+## black.yaml
+
+When a change is committed to GitHub or a Pull Request is made against the `main` branch,
+this action runs the [Black] code formatter.
+
+- [black.yaml]
+
 ## dependabot-approve-and-merge.yaml
 
 When a Dependabot Pull Request (PR) is made against the `main` branch,
@@ -33,6 +48,16 @@ Once this action occurs [move-pr-to-done-dependabot.yaml] moves the PR on the "G
 
 - [Dependabot Approve and Merge GitHub Action]
   - Uses: [senzing-factory/build-resources/.../dependabot-approve-and-merge.yaml]
+
+## dependency-scan.yaml
+
+When a Pull Request is made against the `main` branch,
+this action runs [Fast Python Vulnerability Scanner] and [pip-audit].
+
+- [dependency-scan.yaml]
+  - Uses:
+    - [Fast Python Vulnerability Scanner]
+    - [pypa/gh-action-pip-audit]
 
 ## docker-build-container.yaml
 
@@ -51,6 +76,14 @@ this action builds Docker images on multiple architectures and pushes the Docker
 
 - [Docker Push Containers to DockerHub GitHub Action]
   - Uses: [senzing-factory/github-action-docker-buildx-build]
+
+## flake8.yaml
+
+When a change is committed to GitHub or a Pull Request is made against the `main` branch,
+this action runs [flake8] for Python style enforcement.
+
+- [flake8.yaml]
+  - Uses: [py-actions/flake8]
 
 ## golangci-lint.yaml
 

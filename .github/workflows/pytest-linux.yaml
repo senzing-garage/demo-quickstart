@@ -1,0 +1,76 @@
+name: pytest linux
+
+on: [push, pull_request]
+
+env:
+  LD_LIBRARY_PATH: /opt/senzing/er/lib
+  PYTHONPATH: /home/runner/work/template-python/template-python/src
+  SENZING_TOOLS_DATABASE_URL: sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
+
+permissions:
+  contents: read
+
+jobs:
+  pytest-linux:
+    name: "pytest Senzing: ${{ matrix.senzingapi-runtime-version }}; OS: ${{ matrix.os }}; Python ${{ matrix.python-version }}"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        # python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.11"]
+        senzingapi-runtime-version: [staging-v4]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --requirement requirements.txt
+          python -m pip install psutil pytest pytest-cov pytest-schema
+
+      - if: matrix.python-version == '3.8' || matrix.python-version == '3.9' || matrix.python-version == '3.10'
+        name: Install python libraries for python 3.8, 3.9, and 3.10
+        run: python -m pip install typing_extensions
+
+      - name: Install Senzing API
+        uses: senzing-factory/github-action-install-senzing-api@v3
+        with:
+          senzingapi-runtime-version: ${{ matrix.senzingapi-runtime-version }}
+
+      - name: Copy /etc files
+        run: sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
+
+      - name: Copy test database files
+        run: mkdir /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/G2C.db
+
+      - name: Run pytest on tests
+        run: pytest tests/ --verbose --capture=no --cov=src --cov-append
+
+      - name: Rename coverage file
+        env:
+          COVERAGE_FILE: "coverage.${{ matrix.python-version }}"
+        run: |
+          mv .coverage "$COVERAGE_FILE"
+
+      - name: Store coverage file
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.python-version }}
+          path: coverage.${{ matrix.python-version }}
+
+  coverage:
+    name: Coverage
+    needs: pytest-linux
+    permissions:
+      pull-requests: write
+      contents: write
+    uses: senzing-factory/build-resources/.github/workflows/python-coverage-comment.yaml@v2

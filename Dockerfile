@@ -46,8 +46,7 @@ ENV PATH="/app/venv/bin:$PATH"
 COPY requirements.txt .
 RUN pip3 install --upgrade pip \
  && pip3 install -r requirements.txt \
- && rm requirements.txt \
- && pip3 uninstall -y setuptools pip
+ && rm requirements.txt
 
 # Copy local files from the Git repository.
 
