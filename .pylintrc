@@ -1,12 +1,10 @@
 [pylint]
 disable=
-    duplicate-code,
+    invalid-name,
     line-too-long,
     missing-function-docstring,
     missing-module-docstring,
-    too-many-arguments,
-    too-many-positional-arguments,
-    too-many-public-methods,
+    unspecified-encoding,
 ignore=
     __init__.py,
     docs/source/conf.py
