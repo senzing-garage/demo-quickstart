@@ -11,6 +11,7 @@
 import grpc
 from senzing_grpc import SzAbstractFactory
 
+
 # Create Senzing object.
 
 # In[ ]:
@@ -36,3 +37,4 @@ print(sz_engine.help())
 
 
 print(sz_engine.help("get_entity_by_record_id"))
+
