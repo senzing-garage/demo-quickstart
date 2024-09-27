@@ -9,9 +9,11 @@
 
 
 import grpc
+
 from senzing_grpc import SzAbstractFactory
 
-# Create Senzing object.
+
+# Create an abstract factory for accessing Senzing via gRPC.
 
 # In[ ]:
 
@@ -19,6 +21,13 @@ from senzing_grpc import SzAbstractFactory
 sz_abstract_factory = SzAbstractFactory(
     grpc_channel=grpc.insecure_channel("localhost:8261")
 )
+
+
+# Create Senzing object.
+
+# In[ ]:
+
+
 sz_engine = sz_abstract_factory.create_sz_engine()
 
 
@@ -36,3 +45,4 @@ print(sz_engine.help())
 
 
 print(sz_engine.help("get_entity_by_record_id"))
+
