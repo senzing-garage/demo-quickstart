@@ -2,9 +2,9 @@
 # coding: utf-8
 
 # # Senzing Hello World
-# 
+#
 # The following is a quick test of connectivity to Senzing using Python over gRPC.
-# 
+#
 
 # Import python packages.
 
@@ -15,7 +15,6 @@ import json
 
 import grpc
 from senzing_grpc import SzAbstractFactory
-
 
 # Create an abstract factory for accessing Senzing via gRPC.
 
@@ -41,4 +40,3 @@ sz_product = sz_abstract_factory.create_sz_product()
 
 
 print(json.dumps(json.loads(sz_product.get_version()), indent=2))
-

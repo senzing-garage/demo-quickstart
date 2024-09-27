@@ -2,9 +2,9 @@
 # coding: utf-8
 
 # # Load Senzing truth-sets
-# 
+#
 # These instructions load the [Senzing truth-sets] into the Senzing engine.
-# 
+#
 # [Senzing truth-sets]: https://github.com/Senzing/truth-sets
 
 # ## Prepare Python enviroment
@@ -20,7 +20,6 @@ import shutil
 import grpc
 import requests
 from senzing_grpc import SzAbstractFactory, SzEngineFlags, SzError
-
 
 # Set environment specific variables.
 
@@ -69,7 +68,6 @@ for filename in truth_set_filenames:
                 datasources.append(datasource)
 
 print(f"Found the following DATA_SOURCE values in the data: {datasources}")
-                
 
 
 # ## Update Senzing configuration
@@ -102,7 +100,7 @@ sz_engine = sz_abstract_factory.create_sz_engine()
 
 old_config_id = sz_configmanager.get_default_config_id()
 old_json_config = sz_configmanager.get_config(old_config_id)
-config_handle = sz_config.import_config(old_json_config)  
+config_handle = sz_config.import_config(old_json_config)
 
 
 # Add DataSources to Senzing configuration.
@@ -123,10 +121,8 @@ for datasource in datasources:
 
 
 new_json_config = sz_config.export_config(config_handle)
-new_config_id = sz_configmanager.add_config(
-    new_json_config, "Add TruthSet datasources"
-)
-sz_configmanager.replace_default_config_id(old_config_id, new_config_id)    
+new_config_id = sz_configmanager.add_config(new_json_config, "Add TruthSet datasources")
+sz_configmanager.replace_default_config_id(old_config_id, new_config_id)
 
 
 # With the change in Senzing configuration, Senzing objects need to be updated.
@@ -149,7 +145,7 @@ for filename in truth_set_filenames:
     filepath = home_path + filename
     with open(filepath, "r") as file:
         for line in file:
-            try: 
+            try:
                 line_as_dict = json.loads(line)
                 info = sz_engine.add_record(
                     line_as_dict.get("DATA_SOURCE"),
@@ -159,7 +155,7 @@ for filename in truth_set_filenames:
                 )
                 print(info)
             except SzError as err:
-                print(err)                
+                print(err)
 
 
 # ## View results
@@ -184,4 +180,3 @@ search_query = {
 }
 search_result = sz_engine.search_by_attributes(json.dumps(search_query))
 print(json.dumps(json.loads(search_result), indent=2))
-
