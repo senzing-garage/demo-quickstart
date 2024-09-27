@@ -83,6 +83,7 @@ dependencies:
 	@go get -u ./...
 	@go get -t -u ./...
 	@go mod tidy
+	@python3 -m pip install --upgrade pip
 	@python3 -m pip install --requirement requirements.txt
 
 # -----------------------------------------------------------------------------
