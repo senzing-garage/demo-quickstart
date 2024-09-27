@@ -233,13 +233,13 @@ update-pkg-cache:
 .PHONY: bandit
 bandit:
 	$(info --- bandit ---------------------------------------------------------------------)
-	@bandit $(shell git ls-files '*.py' ':!:tests/*' ':!:docs/source/*')
+	@bandit $(shell git ls-files '*.py' ':!:docs/source/*')
 
 
 .PHONY: black
 black:
 	$(info --- black ----------------------------------------------------------------------)
-	@black $(shell git ls-files '*.py' ':!:tests/*' ':!:docs/source/*')
+	@black $(shell git ls-files '*.py' ':!:docs/source/*')
 
 
 .PHONY: flake8

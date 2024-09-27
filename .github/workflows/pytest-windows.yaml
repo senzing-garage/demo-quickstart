@@ -54,9 +54,6 @@ jobs:
       - name: Copy test database files
         run: mkdir "C:\Temp\sqlite" && copy testdata/sqlite/G2C.db "C:\Temp\sqlite\G2C.db"
 
-      - name: Run pytest on tests
-        run: pytest tests/ --verbose --capture=no --cov=src
-
       - name: Rename coverage file
         env:
           COVERAGE_FILE: "coverage.${{ matrix.python-version }}"

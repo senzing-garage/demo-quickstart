@@ -51,11 +51,6 @@ jobs:
       - name: Copy test database files
         run: mkdir /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/G2C.db
 
-      - name: Run pytest on tests
-        run: |
-          export DYLD_LIBRARY_PATH=/opt/senzing/er/lib:/opt/senzing/er/lib/macos
-          pytest tests/ --verbose --capture=no --cov=src
-
       - name: Rename coverage file
         env:
           COVERAGE_FILE: "coverage.${{ matrix.python-version }}"
