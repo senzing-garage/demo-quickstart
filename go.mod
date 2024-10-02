@@ -40,7 +40,7 @@ require (
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/klauspost/compress v1.17.9 // indirect
+	github.com/klauspost/compress v1.17.10 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -49,9 +49,9 @@ require (
 	github.com/ogen-go/ogen v1.4.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/prometheus/client_golang v1.20.3 // indirect
+	github.com/prometheus/client_golang v1.20.4 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
-	github.com/prometheus/common v0.59.1 // indirect
+	github.com/prometheus/common v0.60.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sagikazarmark/locafero v0.6.0 // indirect
@@ -62,8 +62,8 @@ require (
 	github.com/senzing-garage/go-sdk-abstract-factory v0.9.2 // indirect
 	github.com/senzing-garage/sz-sdk-go v0.14.2 // indirect
 	github.com/senzing-garage/sz-sdk-go-core v0.8.3 // indirect
-	github.com/senzing-garage/sz-sdk-go-grpc v0.8.2 // indirect
-	github.com/senzing-garage/sz-sdk-go-mock v0.8.1 // indirect
+	github.com/senzing-garage/sz-sdk-go-grpc v0.8.3 // indirect
+	github.com/senzing-garage/sz-sdk-go-mock v0.8.2 // indirect
 	github.com/senzing-garage/sz-sdk-json-type-definition v0.2.7 // indirect
 	github.com/senzing-garage/sz-sdk-proto v0.7.8 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
