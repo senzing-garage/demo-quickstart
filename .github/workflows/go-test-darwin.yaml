@@ -3,6 +3,7 @@ name: Go test darwin
 on: [pull_request, workflow_dispatch]
 
 env:
+  CGO_LDFLAGS: "-Wl,-no_warn_duplicate_libraries"
   DYLD_LIBRARY_PATH: /opt/senzing/er/lib:/opt/senzing/er/lib/macos
   LD_LIBRARY_PATH: /opt/senzing/er/lib:/opt/senzing/er/lib/macos
   SENZING_TOOLS_DATABASE_URL: sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
@@ -18,7 +19,7 @@ jobs:
     strategy:
       matrix:
         go: ["1.21"]
-        os: [macos-13]
+        os: [macos-latest]
         senzingapi-version: [staging-v4]
 
     steps:
