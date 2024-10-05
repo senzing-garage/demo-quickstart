@@ -26,7 +26,7 @@ jobs:
       - name: Install Senzing API
         uses: senzing-factory/github-action-install-senzing-api@v4
         with:
-          senzingapi-runtime-version: staging-v4
+          senzingapi-version: staging-v4
 
       - name: Copy Senzing headers
         run: |
