@@ -37,9 +37,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Senzing API
-        uses: senzing-factory/github-action-install-senzing-api@v3
+        uses: senzing-factory/github-action-install-senzing-api@v4
         with:
-          senzingapi-runtime-version: ${{ matrix.senzingapi-version }}
+          senzingapi-version: ${{ matrix.senzingapi-version }}
 
       - name: Copy /etc files
         run: sudo mkdir -p /etc/opt/senzing && sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
