@@ -141,7 +141,8 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	if httpServer.EnableAll || httpServer.EnableJupyterLab {
 		jupyterLabMux := httpServer.getJupyterLabMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), http.StripPrefix("/bob", jupyterLabMux))
+		// rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), http.StripPrefix("/bob", jupyterLabMux))
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), jupyterLabMux)
 		userMessage = fmt.Sprintf("%sServing JupyterLab at       http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.JupyterLabRoutePrefix)
 	}
 
@@ -302,7 +303,7 @@ func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http
 
 func (httpServer *BasicHTTPServer) getJupyterLabMux(ctx context.Context) *http.ServeMux {
 	service := &httpproxyservice.BasicHTTPProxyService{
-		ProxyTemplate:   "http://localhost:8888/bob%s",
+		ProxyTemplate:   "http://localhost:8888%s",
 		CustomTransport: http.DefaultTransport,
 	}
 	return service.Handler(ctx)

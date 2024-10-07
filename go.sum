@@ -23,6 +23,8 @@ github.com/docktermj/go-http-proxy v0.0.0-20241007210432-593d935e2ad9 h1:lez3U+n
 github.com/docktermj/go-http-proxy v0.0.0-20241007210432-593d935e2ad9/go.mod h1:+zr2FIkltIgYihuT4QuYU0QkjEZ//QVyZSE6RMNbuIs=
 github.com/docktermj/go-http-proxy v0.0.0-20241007212224-4d8aec8e7d78 h1:oV6CN5eRhLHoMMxBabm0y42KhqUEdyv6wX0uJMrRz3o=
 github.com/docktermj/go-http-proxy v0.0.0-20241007212224-4d8aec8e7d78/go.mod h1:+zr2FIkltIgYihuT4QuYU0QkjEZ//QVyZSE6RMNbuIs=
+github.com/docktermj/go-http-proxy v0.0.0-20241007220942-4741b6dfbaa2 h1:VNRVxbikuh+5cIDD2Y5G3WKMhA4YXYlRbP0O5XBEs2U=
+github.com/docktermj/go-http-proxy v0.0.0-20241007220942-4741b6dfbaa2/go.mod h1:+zr2FIkltIgYihuT4QuYU0QkjEZ//QVyZSE6RMNbuIs=
 github.com/fatih/color v1.17.0 h1:GlRw1BRJxkpqUCBKzKOw098ed57fEsKeNjpTe3cSjK4=
 github.com/fatih/color v1.17.0/go.mod h1:YZ7TlrGPkiz6ku9fK3TLD/pl3CpsiFyu8N92HLgmosI=
 github.com/flowchartsman/swaggerui v0.0.0-20221017034628-909ed4f3701b h1:oy54yVy300Db264NfQCJubZHpJOl+SoT6udALQdFbSI=
