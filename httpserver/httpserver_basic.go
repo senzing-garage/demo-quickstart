@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/docktermj/cloudshell/xtermservice"
+	"github.com/docktermj/go-http-proxy/httpproxyservice"
 	"github.com/flowchartsman/swaggerui"
 	"github.com/pkg/browser"
 	"github.com/senzing-garage/demo-entity-search/entitysearchservice"
@@ -32,12 +33,14 @@ type BasicHTTPServer struct {
 	AvoidServing              bool
 	EnableAll                 bool
 	EnableEntitySearch        bool
+	EnableJupyterLab          bool
 	EnableSenzingRestAPI      bool
 	EnableSwaggerUI           bool
 	EnableXterm               bool
 	EntitySearchRoutePrefix   string // FIXME: Only works with "entity-search"
 	GrpcDialOptions           []grpc.DialOption
 	GrpcTarget                string
+	JupyterLabRoutePrefix     string
 	LogLevelName              string
 	ObserverOrigin            string
 	Observers                 []observer.Observer
@@ -61,12 +64,14 @@ type BasicHTTPServer struct {
 }
 
 type TemplateVariables struct {
+	APIServerStatus string
+	APIServerURL    string
 	BasicHTTPServer
-	APIServerStatus    string
-	APIServerURL       string
 	EntitySearchStatus string
 	EntitySearchURL    string
 	HTMLTitle          string
+	JupyterLabStatus   string
+	JupyterLabURL      string
 	RequestHost        string
 	SwaggerStatus      string
 	SwaggerURL         string
@@ -130,6 +135,14 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 		swaggerUIMux := httpServer.getSwaggerUIMux(ctx)
 		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.SwaggerURLRoutePrefix), http.StripPrefix("/swagger", swaggerUIMux))
 		userMessage = fmt.Sprintf("%sServing SwaggerUI at        http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.SwaggerURLRoutePrefix)
+	}
+
+	// Enable JupyterLab.
+
+	if httpServer.EnableAll || httpServer.EnableJupyterLab {
+		jupyterLabMux := httpServer.getJupyterLabMux(ctx)
+		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), http.StripPrefix("/bob", jupyterLabMux))
+		userMessage = fmt.Sprintf("%sServing JupyterLab at       http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.JupyterLabRoutePrefix)
 	}
 
 	// Enable Xterm.
@@ -282,6 +295,19 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(responseWriter http.Re
 
 // --- http.ServeMux ----------------------------------------------------------
 
+func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http.ServeMux {
+	service := &entitysearchservice.BasicHTTPService{}
+	return service.Handler(ctx)
+}
+
+func (httpServer *BasicHTTPServer) getJupyterLabMux(ctx context.Context) *http.ServeMux {
+	service := &httpproxyservice.BasicHTTPProxyService{
+		ProxyTemplate:   "http://localhost:8888/bob%s",
+		CustomTransport: http.DefaultTransport,
+	}
+	return service.Handler(ctx)
+}
+
 func (httpServer *BasicHTTPServer) getSenzingRestAPIMux(ctx context.Context) *http.ServeMux {
 	service := &restapiservicelegacy.RestApiServiceLegacyImpl{
 		JarFile:         "/app/senzing-poc-server.jar",
@@ -297,11 +323,6 @@ func (httpServer *BasicHTTPServer) getSenzingRestAPIProxyMux(ctx context.Context
 		ProxyTemplate:   "http://localhost:8250%s",
 		CustomTransport: http.DefaultTransport,
 	}
-	return service.Handler(ctx)
-}
-
-func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http.ServeMux {
-	service := &entitysearchservice.BasicHTTPService{}
 	return service.Handler(ctx)
 }
 
