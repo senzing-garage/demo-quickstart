@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/docktermj/cloudshell/xtermservice"
-	"github.com/docktermj/go-http-proxy/httpproxyservice"
 	"github.com/flowchartsman/swaggerui"
 	"github.com/pkg/browser"
 	"github.com/senzing-garage/demo-entity-search/entitysearchservice"
@@ -142,35 +141,11 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 	// Enable JupyterLab.
 
 	if httpServer.EnableAll || httpServer.EnableJupyterLab {
-
-		proxy, err := NewProxy("http://localhost:8888")
+		proxy, err := newReverseProxy("http://localhost:8888")
 		if err != nil {
 			panic(err)
 		}
-
-		// handle all requests to your server using the proxy
-		rootMux.HandleFunc(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), ProxyRequestHandler(proxy))
-
-		// rpURL, err := url.Parse("http://localhost:8888")
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-
-		// wwww := httputil.NewSingleHostReverseProxy(rpURL)
-
-		// xxxx := &httputil.ReverseProxy{
-		// 	Rewrite: func(r *httputil.ProxyRequest) {
-		// 		r.SetXForwarded()
-		// 		r.SetURL(rpURL)
-		// 	},
-		// }
-
-		// --------------------
-
-		// jupyterLabMux := httpServer.getJupyterLabMux(ctx)
-		// rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), http.StripPrefix("/bob", jupyterLabMux))
-
-		// rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), jupyterLabMux)
+		rootMux.HandleFunc(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), reverseProxyRequestHandler(proxy))
 		userMessage = fmt.Sprintf("%sServing JupyterLab at       http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.JupyterLabRoutePrefix)
 	}
 
@@ -329,31 +304,6 @@ func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http
 	return service.Handler(ctx)
 }
 
-func (httpServer *BasicHTTPServer) getJupyterLabMux(ctx context.Context) *http.ServeMux {
-
-	// mux := http.NewServeMux()
-
-	// rpURL, err := url.Parse("http://localhost:8888")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// wwww := httputil.NewSingleHostReverseProxy(rpURL)
-
-	// xxxx := &httputil.ReverseProxy{
-	// 	Rewrite: func(r *httputil.ProxyRequest) {
-	// 		r.SetXForwarded()
-	// 		r.SetURL(rpURL)
-	// 	},
-	// }
-
-	service := &httpproxyservice.BasicHTTPProxyService{
-		ProxyTemplate:   "http://localhost:8888%s",
-		CustomTransport: http.DefaultTransport,
-	}
-	return service.Handler(ctx)
-}
-
 func (httpServer *BasicHTTPServer) getSenzingRestAPIMux(ctx context.Context) *http.ServeMux {
 	service := &restapiservicelegacy.RestApiServiceLegacyImpl{
 		JarFile:         "/app/senzing-poc-server.jar",
@@ -414,18 +364,17 @@ func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Reque
 	httpServer.populateStaticTemplate(w, r, filePath, templateVariables)
 }
 
-// NewProxy takes target host and creates a reverse proxy
-func NewProxy(targetHost string) (*httputil.ReverseProxy, error) {
+// newReverseProxy takes target host and creates a reverse proxy
+func newReverseProxy(targetHost string) (*httputil.ReverseProxy, error) {
 	url, err := url.Parse(targetHost)
 	if err != nil {
 		return nil, err
 	}
-
 	return httputil.NewSingleHostReverseProxy(url), nil
 }
 
-// ProxyRequestHandler handles the http request using proxy
-func ProxyRequestHandler(proxy *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) {
+// reverseProxyRequestHandler handles the http request using proxy
+func reverseProxyRequestHandler(proxy *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		proxy.ServeHTTP(w, r)
 	}

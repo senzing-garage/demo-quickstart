@@ -81,6 +81,12 @@ ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/demo-quickstart" \
       Maintainer="support@senzing.com" \
       Version="0.0.1"
+      
+
+ARG BUILD_USER="senzing"
+ARG BUILD_UID="1001"
+ARG BUILD_GID="101"
+            
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
 
@@ -129,9 +135,15 @@ COPY --from=builder /app/venv /app/venv
 
 RUN mkdir -p /.local/share /notebooks
 
+# Create ${BUILD_USER} user
+
+RUN useradd --no-log-init --create-home --shell /bin/bash --uid "${BUILD_UID}" --no-user-group "${BUILD_USER}" && \
+    chmod --recursive 777 /tmp /notebooks
+
+
 # Run as non-root container
 
-USER 1001
+USER ${BUILD_USER}
 
 # Activate virtual environment.
 
