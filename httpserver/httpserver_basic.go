@@ -9,6 +9,8 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 	"time"
 
@@ -140,9 +142,35 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 	// Enable JupyterLab.
 
 	if httpServer.EnableAll || httpServer.EnableJupyterLab {
-		jupyterLabMux := httpServer.getJupyterLabMux(ctx)
+
+		proxy, err := NewProxy("http://localhost:8888")
+		if err != nil {
+			panic(err)
+		}
+
+		// handle all requests to your server using the proxy
+		rootMux.HandleFunc(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), ProxyRequestHandler(proxy))
+
+		// rpURL, err := url.Parse("http://localhost:8888")
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+
+		// wwww := httputil.NewSingleHostReverseProxy(rpURL)
+
+		// xxxx := &httputil.ReverseProxy{
+		// 	Rewrite: func(r *httputil.ProxyRequest) {
+		// 		r.SetXForwarded()
+		// 		r.SetURL(rpURL)
+		// 	},
+		// }
+
+		// --------------------
+
+		// jupyterLabMux := httpServer.getJupyterLabMux(ctx)
 		// rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), http.StripPrefix("/bob", jupyterLabMux))
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), jupyterLabMux)
+
+		// rootMux.Handle(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), jupyterLabMux)
 		userMessage = fmt.Sprintf("%sServing JupyterLab at       http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.JupyterLabRoutePrefix)
 	}
 
@@ -302,6 +330,23 @@ func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http
 }
 
 func (httpServer *BasicHTTPServer) getJupyterLabMux(ctx context.Context) *http.ServeMux {
+
+	// mux := http.NewServeMux()
+
+	// rpURL, err := url.Parse("http://localhost:8888")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// wwww := httputil.NewSingleHostReverseProxy(rpURL)
+
+	// xxxx := &httputil.ReverseProxy{
+	// 	Rewrite: func(r *httputil.ProxyRequest) {
+	// 		r.SetXForwarded()
+	// 		r.SetURL(rpURL)
+	// 	},
+	// }
+
 	service := &httpproxyservice.BasicHTTPProxyService{
 		ProxyTemplate:   "http://localhost:8888%s",
 		CustomTransport: http.DefaultTransport,
@@ -367,4 +412,21 @@ func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Reque
 	w.Header().Set("Content-Type", "text/html")
 	filePath := fmt.Sprintf("static/templates%s", r.RequestURI)
 	httpServer.populateStaticTemplate(w, r, filePath, templateVariables)
+}
+
+// NewProxy takes target host and creates a reverse proxy
+func NewProxy(targetHost string) (*httputil.ReverseProxy, error) {
+	url, err := url.Parse(targetHost)
+	if err != nil {
+		return nil, err
+	}
+
+	return httputil.NewSingleHostReverseProxy(url), nil
+}
+
+// ProxyRequestHandler handles the http request using proxy
+func ProxyRequestHandler(proxy *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		proxy.ServeHTTP(w, r)
+	}
 }
