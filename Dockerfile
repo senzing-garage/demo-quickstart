@@ -131,15 +131,13 @@ COPY ./rootfs /
 COPY --from=builder /output/linux/demo-quickstart /app/demo-quickstart
 COPY --from=builder /app/venv /app/venv
 
-# Prepare jupyter lab environment
+# Prepare jupyter lab environment.
 
-RUN mkdir -p /.local/share /notebooks
+RUN chmod --recursive 777 /tmp /notebooks
 
-# Create ${BUILD_USER} user
+# Create ${BUILD_USER} user.
 
-RUN useradd --no-log-init --create-home --shell /bin/bash --uid "${BUILD_UID}" --no-user-group "${BUILD_USER}" && \
-    chmod --recursive 777 /tmp /notebooks
-
+RUN useradd --no-log-init --create-home --shell /bin/bash --uid "${BUILD_UID}" --no-user-group "${BUILD_USER}"
 
 # Run as non-root container
 
