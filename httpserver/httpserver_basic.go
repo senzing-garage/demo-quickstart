@@ -260,6 +260,7 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(responseWriter http.Re
 	}
 	err = templateParsed.Execute(responseWriter, templateVariables)
 	if err != nil {
+		fmt.Printf("Template parsing error: %v", err)
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return
 	}
@@ -348,12 +349,14 @@ func (httpServer *BasicHTTPServer) getXtermMux(ctx context.Context) *http.ServeM
 
 func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Request) {
 	templateVariables := TemplateVariables{
-		BasicHTTPServer:    *httpServer,
-		HTMLTitle:          "Senzing Tools",
 		APIServerStatus:    httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
 		APIServerURL:       httpServer.getServerURL(httpServer.EnableSenzingRestAPI, fmt.Sprintf("http://%s/api", r.Host)),
+		BasicHTTPServer:    *httpServer,
 		EntitySearchStatus: httpServer.getServerStatus(httpServer.EnableEntitySearch),
 		EntitySearchURL:    httpServer.getServerURL(httpServer.EnableEntitySearch, fmt.Sprintf("http://%s/entity-search", r.Host)),
+		HTMLTitle:          "Senzing Quickstart",
+		JupyterLabStatus:   httpServer.getServerStatus(httpServer.EnableJupyterLab),
+		JupyterLabURL:      httpServer.getServerURL(httpServer.EnableJupyterLab, fmt.Sprintf("http://%s/jupyter", r.Host)),
 		SwaggerStatus:      httpServer.getServerStatus(httpServer.EnableSwaggerUI),
 		SwaggerURL:         httpServer.getServerURL(httpServer.EnableSwaggerUI, fmt.Sprintf("http://%s/swagger", r.Host)),
 		XtermStatus:        httpServer.getServerStatus(httpServer.EnableXterm),

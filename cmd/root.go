@@ -140,7 +140,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:                 true,
 		EntitySearchRoutePrefix:   "entity-search",
-		JupyterLabRoutePrefix:     "bob",
+		JupyterLabRoutePrefix:     "jupyter",
 		LogLevelName:              viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),
 		Observers:                 observers,

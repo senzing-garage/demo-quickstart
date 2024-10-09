@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>{{.HtmlTitle}}</title>
+  <title>{{.HTMLTitle}} - Overview</title>
   <style>
     table {
       font-family: arial, sans-serif;
@@ -25,73 +25,56 @@
 </head>
 
 <body>
-
-  <h1>senzing-tools</h1>
-
-  <h3>Services</h3>
-
-  <table>
-    <tr>
-      <th>Status</th>
-      <th>Service</th>
-      <th>Location</th>
-      <th>senzing-tools command line option</th>
-      <th>Environment variable</th>
-    </tr>
-    <tr>
-      <td style="text-align: center; vertical-align: middle;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="{{.ApiServerStatus}}"
-          class="bi bi-circle-fill" viewBox="0 0 16 16">
-          <circle cx="8" cy="8" r="8" />
-        </svg>
-      </td>
-      <td>Senzing API Server</td>
-      <td>{{if .ApiServerUrl}}<a href="{{.ApiServerUrl}}">{{.ApiServerUrl}}</a> {{end}}</td>
-      <td>--enable-senzing-rest-api</td>
-      <td>SENZING_TOOLS_ENABLE_SENZING_REST_API</td>
-    </tr>
-    <tr>
-      <td style="text-align: center; vertical-align: middle;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="{{.EntitySearchStatus}}"
-          class="bi bi-circle-fill" viewBox="0 0 16 16">
-          <circle cx="8" cy="8" r="8" />
-        </svg>
-      </td>
-      <td>Entity Search demo</td>
-      <td>{{if .EntitySearchUrl}}<a href="{{.EntitySearchUrl}}">{{.EntitySearchUrl}}</a> {{end}}</td>
-      <td>--enable-entity-search</td>
-      <td>SENZING_TOOLS_ENABLE_ENTITY_SEARCH</td>
-    </tr>
-    <tr>
-      <td style="text-align: center; vertical-align: middle;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="{{.SwaggerStatus}}"
-          class="bi bi-circle-fill" viewBox="0 0 16 16">
-          <circle cx="8" cy="8" r="8" />
-        </svg>
-      </td>
-      <td>Swagger UI</td>
-      <td>{{if .SwaggerUrl}}<a href="{{.SwaggerUrl}}">{{.SwaggerUrl}}</a> {{end}}</td>
-      <td>--enable-swagger-ui</td>
-      <td>SENZING_TOOLS_ENABLE_SWAGGER_UI</td>
-    </tr>
-    <tr>
-      <td style="text-align: center; vertical-align: middle;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="{{.XtermStatus}}" class="bi bi-circle-fill"
-          viewBox="0 0 16 16">
-          <circle cx="8" cy="8" r="8" />
-        </svg>
-      </td>
-      <td>XTerm</td>
-      <td>{{if .XtermUrl}}<a href="{{.XtermUrl}}">{{.XtermUrl}}</a> {{end}}</td>
-      <td>--enable-xterm</td>
-      <td>SENZING_TOOLS_ENABLE_XTERM</td>
-    </tr>
-  </table>
-
+  <h1>Senzing Quickstart demonstrations</h1>
   <p>
-    <a href="debug.html">Debug information</a>
+    Lorem ipsum odor amet, consectetuer adipiscing elit. Lacinia venenatis ornare faucibus primis eleifend molestie nam
+    blandit. Mattis morbi sem nascetur magna tempor. Mus erat blandit elit blandit neque ut. Aliquet curabitur erat
+    rhoncus maecenas dictum platea iaculis gravida. Enim venenatis nec dictum vivamus magnis. Purus auctor mi egestas
+    enim maximus, donec leo non ipsum.
   </p>
-
+  <h2>Python</h2>
+  <p>
+    In this demonstration,
+    Senzing's Python Software Development Kit (SDK) runs natively on a Linux, Mac, or Windows workstation.
+  </p>
+  <p>
+    Choose
+  <ol>
+    <li><a
+        href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/hello-world-linux-macos.md">Try
+        Senzing's Hello World gRPC - Linux/macOS </a>
+    </li>
+    <li><a
+        href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/hello-world-windows.md">Try
+        Senzing's Hello World gRPC - Windows </a>
+    </li>
+  </ol>
+  </p>
+  <h2>Jupyter Lab</h2>
+  <p>
+    In this demonstration,
+    <a href="https://jupyter.org/">Jupyter notebooks</a>
+    have been created to demonstrate Senzing.
+  </p>
+  <p>
+    Visit <a href="/jupyter/lab">Jupyter Lab</a>.
+  </p>
+  <p>
+    Tutorial notebooks:
+  </p>
+  <ol>
+    <li><a href="{{.JupyterLabURL}}/lab/tree/hello_world.ipynb">Hello World</a> - A simple test of connectivity to
+      Senzing engine.</li>
+    <li><a href="{{.JupyterLabURL}}/lab/tree/load_truthsets.ipynb">Load Senzing truth-sets</a> - Load and query the
+      Senzing truth-set-data.</li>
+    <li><a href="{{.JupyterLabURL}}/lab/tree/load_user_data.ipynb">Load user data</a> - Load custom data.</li>
+    <li><a href="{{.JupyterLabURL}}/lab/tree/method_help.ipynb">Show method help</a> - Show how to display help.</li>
+  </ol>
+  <h2>Misc</h2>
+  <ul>
+    <li><a href="debug.html">Debug information</a></li>
+    <li><a href="extras.html">Extras</a></li>
+  </ul>
 </body>
 
 </html>

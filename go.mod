@@ -6,7 +6,6 @@ toolchain go1.23.1
 
 require (
 	github.com/docktermj/cloudshell v0.2.0
-	github.com/docktermj/go-http-proxy v0.0.0-20241007220942-4741b6dfbaa2
 	github.com/flowchartsman/swaggerui v0.0.0-20221017034628-909ed4f3701b
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/senzing-garage/demo-entity-search v0.2.1

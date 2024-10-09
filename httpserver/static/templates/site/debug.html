@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>{{.HtmlTitle}} - Debug</title>
+  <title>{{.HTMLTitle}} - Debug</title>
   <style>
     table {
       font-family: arial, sans-serif;
@@ -34,14 +34,24 @@
       <th>Environment variable</th>
     </tr>
     <tr>
-      <td>ApiUrlRoutePrefix</td>
-      <td>{{.ApiUrlRoutePrefix}}</td>
+      <td>APIUrlRoutePrefix</td>
+      <td>{{.APIUrlRoutePrefix}}</td>
       <td></td>
     </tr>
     <tr>
       <td>EnableAll</td>
       <td>{{.EnableAll}}</td>
       <td>SENZING_TOOLS_ENABLE_ALL</td>
+    </tr>
+    <tr>
+      <td>EnableEntitySearch</td>
+      <td>{{.EnableEntitySearch}}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>EnableJupyterLab</td>
+      <td>{{.EnableJupyterLab}}</td>
+      <td></td>
     </tr>
     <tr>
       <td>EnableSenzingRestAPI</td>
@@ -84,14 +94,9 @@
       <td></td>
     </tr>
     <tr>
-      <td>SenzingEngineConfigurationJson</td>
-      <td>{{.SenzingEngineConfigurationJson}}</td>
-      <td>SENZING_TOOLS_ENGINE_CONFIGURATION_JSON</td>
-    </tr>
-    <tr>
-      <td>SenzingModuleName</td>
-      <td>{{.SenzingModuleName}}</td>
-      <td>SENZING_TOOLS_ENGINE_MODULE_NAME</td>
+      <td>SenzingSettings</td>
+      <td>{{.SenzingSettings}}</td>
+      <td></td>
     </tr>
     <tr>
       <td>SenzingVerboseLogging</td>
@@ -114,9 +119,14 @@
       <td>SENZING_TOOLS_HTTP_PORT</td>
     </tr>
     <tr>
-      <td>SwaggerUrlRoutePrefix</td>
-      <td>{{.SwaggerUrlRoutePrefix}}</td>
+      <td>SwaggerURLRoutePrefix</td>
+      <td>{{.SwaggerURLRoutePrefix}}</td>
       <td></td>
+    </tr>
+    <tr>
+      <td>TtyOnly</td>
+      <td>{{.TtyOnly}}</td>
+      <td>SENZING_TOOLS_TTY_ONLY</td>
     </tr>
     <tr>
       <td>XtermAllowedHostnames</td>
@@ -149,8 +159,8 @@
       <td>SENZING_TOOLS_XTERM_MAX_BUFFER_SIZE_BYTES</td>
     </tr>
     <tr>
-      <td>XtermUrlRoutePrefix</td>
-      <td>{{.XtermUrlRoutePrefix}}</td>
+      <td>XtermURLRoutePrefix</td>
+      <td>{{.XtermURLRoutePrefix}}</td>
       <td></td>
     </tr>
   </table>
