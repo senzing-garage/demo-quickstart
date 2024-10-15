@@ -41,7 +41,7 @@ type BasicHTTPServer struct {
 	EntitySearchRoutePrefix   string // FIXME: Only works with "entity-search"
 	GrpcDialOptions           []grpc.DialOption
 	GrpcTarget                string
-	JupyterLabRoutePrefix     string
+	JupyterLabRoutePrefix     string // FIXME: Only works with "jupyter"
 	LogLevelName              string
 	ObserverOrigin            string
 	Observers                 []observer.Observer

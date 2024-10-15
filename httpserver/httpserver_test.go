@@ -100,6 +100,8 @@ func getTestObject(ctx context.Context, test *testing.T) *BasicHTTPServer {
 		APIUrlRoutePrefix:        "api",
 		AvoidServing:             true,
 		EnableAll:                true,
+		EntitySearchRoutePrefix:  "entity-search",
+		JupyterLabRoutePrefix:    "jupyter",
 		LogLevelName:             logLevelName,
 		ObserverOrigin:           "Test Observer origin",
 		Observers:                []observer.Observer{observer1},
