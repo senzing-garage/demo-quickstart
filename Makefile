@@ -150,7 +150,7 @@ test: test-osarch-specific
 
 .PHONY: docker-test
 docker-test:
-	@docker-compose -f docker-compose.test.yaml up
+	@$(activate-venv); docker-compose -f docker-compose.test.yaml up
 
 # -----------------------------------------------------------------------------
 # Coverage
@@ -201,7 +201,6 @@ docker-build-package:
 clean: clean-osarch-specific
 	@go clean -cache
 	@go clean -testcache
-
 
 # -----------------------------------------------------------------------------
 # Utility targets

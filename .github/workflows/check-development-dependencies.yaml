@@ -7,7 +7,7 @@ permissions:
 
 jobs:
   check-development-dependencies:
-    name: "Check development dependencies"
+    name: Check development dependencies
     runs-on: ubuntu-latest
 
     steps:

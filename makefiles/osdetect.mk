@@ -15,7 +15,6 @@ else
     ifeq ($(OSARCH),aarch64)
         OSARCH = arm64
     endif
-    VENV_ACTIVATE = .\\.venv\\Scripts\\activate
     define activate-venv
         @. .venv/bin/activate
     endef
