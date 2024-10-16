@@ -67,7 +67,7 @@ ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 WORKDIR ${GOPATH}/src/demo-quickstart
 RUN cat Makefile
 RUN make print-make-variables
-RUN make build
+RUN make buildxx
 
 # Copy binaries to /output.
 

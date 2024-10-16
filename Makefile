@@ -115,8 +115,8 @@ $(PLATFORMS):
 	@GOOS=$(GO_OS) GOARCH=$(GO_ARCH) go build -o $(TARGET_DIRECTORY)/$(GO_OS)-$(GO_ARCH)/$(PROGRAM_NAME)
 
 
-.PHONY: build
-build: print-make-variables 
+.PHONY: buildxx
+buildxx: print-make-variables 
 
 
 .PHONY: docker-build
