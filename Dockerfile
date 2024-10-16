@@ -65,6 +65,8 @@ ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 # Build go program.
 
 WORKDIR ${GOPATH}/src/demo-quickstart
+RUN cat Makefile
+RUN make print-make-variables
 RUN make build
 
 # Copy binaries to /output.
