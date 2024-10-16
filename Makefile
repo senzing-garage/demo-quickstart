@@ -116,7 +116,7 @@ $(PLATFORMS):
 
 
 .PHONY: build
-build: build-osarch-specific
+build: print-make-variables build-osarch-specific
 
 
 .PHONY: docker-build
