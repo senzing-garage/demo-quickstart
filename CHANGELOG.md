@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [0.3.0] - 2024-10-16
 
+### Added in 0.3.0
+
+- JupyterLab
+
 ### Changed in 0.3.0
 
 - Update dependencies
