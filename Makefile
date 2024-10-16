@@ -117,7 +117,7 @@ $(PLATFORMS):
 
 
 .PHONY: build
-build:
+build: build-osarch-specific
 	$(info >>>>>> Hit Makefile build target)
 
 .PHONY: docker-build

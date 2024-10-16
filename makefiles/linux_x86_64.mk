@@ -15,11 +15,12 @@ build-osarch-specific: linux/amd64
 
 .PHONY: docker-build-osarch-specific
 docker-build-osarch-specific:
-    @docker build \
-        --platform linux/amd64 \
-        --tag $(DOCKER_IMAGE_NAME) \
-        --tag $(DOCKER_IMAGE_NAME):$(BUILD_VERSION) \
-        .
+	$(info >>>>>> Hit makefiles/linux_x84_64 target)
+	@docker build \
+		--platform linux/amd64 \
+		--tag $(DOCKER_IMAGE_NAME) \
+		--tag $(DOCKER_IMAGE_NAME):$(BUILD_VERSION) \
+		.
 
 # -----------------------------------------------------------------------------
 # Makefile targets supported only by this platform.
