@@ -11,8 +11,6 @@ build-osarch-specific: darwin/arm64
 .PHONY: docker-build-osarch-specific
 docker-build-osarch-specific:
 	docker build \
-	    --no-cache \
-		--platform linux/arm64 \
 		--tag $(DOCKER_IMAGE_NAME) \
 		--tag $(DOCKER_IMAGE_NAME):$(BUILD_VERSION) \
 		.
