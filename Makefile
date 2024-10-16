@@ -58,8 +58,8 @@ default: help
 # Operating System / Architecture targets
 # -----------------------------------------------------------------------------
 
--include makefiles/$(OSTYPE)_$(OSARCH).mk
 -include makefiles/$(OSTYPE).mk
+-include makefiles/$(OSTYPE)_$(OSARCH).mk
 
 .PHONY: hello-world
 hello-world: hello-world-osarch-specific
