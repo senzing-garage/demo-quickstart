@@ -67,8 +67,8 @@ github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyua
 github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
-github.com/ogen-go/ogen v1.4.1 h1:uVZWKw80eZaMQu7LpTJxpHqwu6oMqYuh8ElqP1Mf2bI=
-github.com/ogen-go/ogen v1.4.1/go.mod h1:YeliH7gAS6QToqDqIM5BrnEUOiXiqCnNqNwzEpebDsY=
+github.com/ogen-go/ogen v1.5.0 h1:BhwhiEGNum18dLzhkKl0+aqy/0C1gRhqy0dPkI7NAvk=
+github.com/ogen-go/ogen v1.5.0/go.mod h1:fZ5xl1T3NJOCvHfqszizSYSz+iuI1jW1wVoRENSKR8A=
 github.com/pelletier/go-toml/v2 v2.2.3 h1:YmeHyLY8mFWbdkNWwpr+qIL2bEqT0o95WSdkNHvL12M=
 github.com/pelletier/go-toml/v2 v2.2.3/go.mod h1:MfCQTFTvCcUyyvvwm1+G6H/jORL20Xlb6rzQu9GuUkc=
 github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c h1:+mdjkGKdHQG3305AYmdv1U2eRNDiU2ErMBj1gwrq8eQ=
