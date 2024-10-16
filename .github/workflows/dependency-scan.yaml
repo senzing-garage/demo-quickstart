@@ -26,6 +26,11 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python -m venv ./venv
+          source ./venv/bin/activate
+          echo "PATH=${PATH}" >> "${GITHUB_ENV}"
+          python -m pip install --upgrade pip
+          python -m pip install --requirement requirements.txt
           python -m pip install wheel
           python -m pip wheel -r requirements.txt --wheel-dir=vendor
 
@@ -53,6 +58,9 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python -m venv ./venv
+          source ./venv/bin/activate
+          echo "PATH=${PATH}" >> "${GITHUB_ENV}"
           python -m pip install --requirement requirements.txt
           python -m pip install .
 
