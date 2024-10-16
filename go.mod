@@ -1,8 +1,8 @@
 module github.com/senzing-garage/demo-quickstart
 
-go 1.23.0
+go 1.22.0
 
-toolchain go1.23.1
+toolchain go1.23.2
 
 require (
 	github.com/docktermj/cloudshell v0.2.0
