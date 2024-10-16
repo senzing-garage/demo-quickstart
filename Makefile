@@ -58,6 +58,7 @@ default: help
 # Operating System / Architecture targets
 # -----------------------------------------------------------------------------
 
+$(info >>>>> in Makefile for makefiles/$(OSTYPE)_$(OSARCH).mk)
 -include makefiles/$(OSTYPE).mk
 -include makefiles/$(OSTYPE)_$(OSARCH).mk
 
@@ -115,8 +116,8 @@ $(PLATFORMS):
 	@GOOS=$(GO_OS) GOARCH=$(GO_ARCH) go build -o $(TARGET_DIRECTORY)/$(GO_OS)-$(GO_ARCH)/$(PROGRAM_NAME)
 
 
-.PHONY: buildxx
-buildxx: build-osarch-specific
+.PHONY: build
+build: build-osarch-specific
 
 
 .PHONY: docker-build
