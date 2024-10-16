@@ -1,14 +1,11 @@
 # Makefile extensions for linux-arm64.
 
-$(info >>>>> in makefiles/linux_arm64.mk)
-
 # -----------------------------------------------------------------------------
 # OS-ARCH specific targets
 # -----------------------------------------------------------------------------
 
 .PHONY: build-osarch-specific
 build-osarch-specific: linux/arm64
-	$(info >>>>>> Hit makefiles/linux_arm64 target)
 	@mkdir -p $(TARGET_DIRECTORY)/linux
 	@cp $(TARGET_DIRECTORY)/linux-arm64/$(PROGRAM_NAME) $(TARGET_DIRECTORY)/linux/$(PROGRAM_NAME)
 

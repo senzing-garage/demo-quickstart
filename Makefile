@@ -58,9 +58,9 @@ default: help
 # Operating System / Architecture targets
 # -----------------------------------------------------------------------------
 
-$(info >>>>> in Makefile for makefiles/$(OSTYPE)_$(OSARCH).mk)
 -include makefiles/$(OSTYPE).mk
 -include makefiles/$(OSTYPE)_$(OSARCH).mk
+
 
 .PHONY: hello-world
 hello-world: hello-world-osarch-specific
@@ -118,7 +118,7 @@ $(PLATFORMS):
 
 .PHONY: build
 build: build-osarch-specific
-	$(info >>>>>> Hit Makefile build target)
+
 
 .PHONY: docker-build
 docker-build: docker-build-osarch-specific

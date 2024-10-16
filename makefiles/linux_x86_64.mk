@@ -1,21 +1,17 @@
 # Makefile extensions for linux-x86_64.
 
-$(info >>>>> in makefiles/linux_x84_64.mk)
-
 # -----------------------------------------------------------------------------
 # OS-ARCH specific targets
 # -----------------------------------------------------------------------------
 
 .PHONY: build-osarch-specific
 build-osarch-specific: linux/amd64
-	$(info >>>>>> Hit makefiles/linux_x84_64 target)
 	@mkdir -p $(TARGET_DIRECTORY)/linux
 	@cp $(TARGET_DIRECTORY)/linux-amd64/$(PROGRAM_NAME) $(TARGET_DIRECTORY)/linux/$(PROGRAM_NAME)
 
 
 .PHONY: docker-build-osarch-specific
 docker-build-osarch-specific:
-	$(info >>>>>> Hit makefiles/linux_x84_64 target)
 	@docker build \
 		--platform linux/amd64 \
 		--tag $(DOCKER_IMAGE_NAME) \
