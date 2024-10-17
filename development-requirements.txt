@@ -1,6 +1,6 @@
 bandit==1.7.10
 black==24.8.0
-build==1.2.2
+build==1.2.2.post1
 coverage==7.6.1
 flake8==7.1.1
 fpvs==0.3.0
@@ -12,7 +12,7 @@ pytest-cov==5.0.0
 pytest-schema==0.1.2
 pytest==8.3.3
 sphinx-autodoc-typehints==2.4.4
-sphinx-gallery==0.17.1
+sphinx-gallery==0.18.0
 sphinx-jinja2-compat==0.3.0
 sphinx-prompt==1.9.0
 sphinx-rtd-theme==3.0.0rc3
