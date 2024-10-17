@@ -1,0 +1,18 @@
+{
+    "preferences": {
+        "default_formatter": {
+            "python": [
+                "autopep8"
+            ]
+        }
+    },
+    "autopep8": {},
+    "styler": {},
+    "formatOnSave": false,
+    "cacheFormatters": false,
+    "astyle": {
+        "args": []
+    },
+    "suppressFormatterErrors": false,
+    "suppressFormatterErrorsIFFAutoFormatOnSave": false
+}

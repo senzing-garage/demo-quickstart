@@ -20,6 +20,15 @@
 # Go workspace file
 go.work
 
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
 # macOS artifacts
 .DS_STORE
 
@@ -35,3 +44,7 @@ target/
 cover.out
 coverage.html
 coverage.out
+
+.settings
+/.mypy_cache/
+/.pytest_cache/

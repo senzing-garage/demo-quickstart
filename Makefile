@@ -1,4 +1,4 @@
-# Makefile for Go project
+# Makefile for Go and Python projects
 
 # Detect the operating system and architecture.
 
@@ -69,18 +69,28 @@ hello-world: hello-world-osarch-specific
 # Dependency management
 # -----------------------------------------------------------------------------
 
+.PHONY: venv
+venv: venv-osarch-specific
+
+
 .PHONY: dependencies-for-development
-dependencies-for-development: dependencies-for-development-osarch-specific
+dependencies-for-development: venv dependencies-for-development-osarch-specific
 	@go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 	@go install github.com/vladopajic/go-test-coverage/v2@latest
 	@go install golang.org/x/tools/cmd/godoc@latest
+	$(activate-venv); \
+		python3 -m pip install --upgrade pip; \
+		python3 -m pip install --requirement development-requirements.txt
 
 
 .PHONY: dependencies
-dependencies:
+dependencies: venv
 	@go get -u ./...
 	@go get -t -u ./...
 	@go mod tidy
+	$(activate-venv); \
+		python3 -m pip install --upgrade pip; \
+		python3 -m pip install --requirement requirements.txt
 
 # -----------------------------------------------------------------------------
 # Setup
@@ -94,7 +104,7 @@ setup: setup-osarch-specific
 # -----------------------------------------------------------------------------
 
 .PHONY: lint
-lint: golangci-lint
+lint: golangci-lint pylint mypy bandit black flake8 isort
 
 # -----------------------------------------------------------------------------
 # Build
@@ -102,7 +112,7 @@ lint: golangci-lint
 
 PLATFORMS := darwin/amd64 darwin/arm64 linux/amd64 linux/arm64 windows/amd64 windows/arm64
 $(PLATFORMS):
-	$(info Building $(TARGET_DIRECTORY)/$(GO_OS)-$(GO_ARCH)/$(PROGRAM_NAME))
+	$(info Building $(TARGET_DIRECTORY)/$(GO_OS)-$(GO_ARCH)/$(PROGRAM_NAME) for $(PLATFORMS))
 	@GOOS=$(GO_OS) GOARCH=$(GO_ARCH) go build -o $(TARGET_DIRECTORY)/$(GO_OS)-$(GO_ARCH)/$(PROGRAM_NAME)
 
 
@@ -140,7 +150,7 @@ test: test-osarch-specific
 
 .PHONY: docker-test
 docker-test:
-	@docker-compose -f docker-compose.test.yaml up
+	@$(activate-venv); docker-compose -f docker-compose.test.yaml up
 
 # -----------------------------------------------------------------------------
 # Coverage
@@ -226,6 +236,70 @@ update-pkg-cache:
 # Specific programs
 # -----------------------------------------------------------------------------
 
+.PHONY: bandit
+bandit:
+	$(info --- bandit ---------------------------------------------------------------------)
+	@$(activate-venv); bandit $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: black
+black:
+	$(info --- black ----------------------------------------------------------------------)
+	@$(activate-venv); black $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: flake8
+flake8:
+	$(info --- flake8 ---------------------------------------------------------------------)
+	@$(activate-venv); flake8 $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
 .PHONY: golangci-lint
 golangci-lint:
 	@${GOBIN}/golangci-lint run --config=.github/linters/.golangci.yaml
+
+
+.PHONY: isort
+isort:
+	$(info --- isort ----------------------------------------------------------------------)
+	@$(activate-venv); isort $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: mypy
+mypy:
+	$(info --- mypy -----------------------------------------------------------------------)
+	@$(activate-venv); mypy --strict $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: pydoc
+pydoc:
+	$(info --- pydoc ----------------------------------------------------------------------)
+	@$(activate-venv); python3 -m pydoc
+
+
+.PHONY: pydoc-web
+pydoc-web:
+	$(info --- pydoc-web ------------------------------------------------------------------)
+	@$(activate-venv); python3 -m pydoc -p 8885
+
+
+.PHONY: pylint
+pylint:
+	$(info --- pylint ---------------------------------------------------------------------)
+	@$(activate-venv); pylint $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: pytest
+pytest:
+	$(info --- pytest ---------------------------------------------------------------------)
+	@$(activate-venv); pytest $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: sphinx
+sphinx: sphinx-osarch-specific
+	$(info --- sphinx ---------------------------------------------------------------------)
+
+
+.PHONY: view-sphinx
+view-sphinx: view-sphinx-osarch-specific
+	$(info --- view-sphinx ----------------------------------------------------------------)

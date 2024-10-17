@@ -6,19 +6,16 @@
 
 SENZING_DIR ?= /opt/senzing/er
 SENZING_TOOLS_SENZING_DIRECTORY ?= $(SENZING_DIR)
-
 LD_LIBRARY_PATH ?= $(SENZING_TOOLS_SENZING_DIRECTORY)/lib:$(SENZING_TOOLS_SENZING_DIRECTORY)/lib/macos
+
+CGO_LDFLAGS := "-Wl,-no_warn_duplicate_libraries"
 DYLD_LIBRARY_PATH := $(LD_LIBRARY_PATH)
-SENZING_TOOLS_DATABASE_URL ?= sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
 PATH := $(MAKEFILE_DIRECTORY)/bin:/$(HOME)/go/bin:$(PATH)
+SENZING_TOOLS_DATABASE_URL ?= sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
 
 # -----------------------------------------------------------------------------
 # OS specific targets
 # -----------------------------------------------------------------------------
-
-.PHONY: build-osarch-specific
-build-osarch-specific: darwin/amd64
-
 
 .PHONY: clean-osarch-specific
 clean-osarch-specific:
@@ -46,14 +43,6 @@ coverage-osarch-specific:
 .PHONY: dependencies-for-development-osarch-specific
 dependencies-for-development-osarch-specific:
 	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin latest
-
-
-.PHONY: docker-build-osarch-specific
-docker-build-osarch-specific:
-	@docker build \
-		--tag $(DOCKER_IMAGE_NAME) \
-		--tag $(DOCKER_IMAGE_NAME):$(BUILD_VERSION) \
-		.
 
 
 .PHONY: documentation-osarch-specific
@@ -88,6 +77,11 @@ setup-osarch-specific:
 .PHONY: test-osarch-specific
 test-osarch-specific:
 	@go test -exec macos_exec_dyld.sh -json -v -p 1 ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
+
+
+.PHONY: venv-osarch-specific
+venv-osarch-specific:
+	@python3 -m venv .venv
 
 # -----------------------------------------------------------------------------
 # Makefile targets supported only by this platform.

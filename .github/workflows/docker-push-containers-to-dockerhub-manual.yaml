@@ -1,0 +1,26 @@
+name: docker push containers to dockerhub - manual
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docker-push-containers-to-dockerhub-manual:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repo name
+        id: repo-basename
+        run: |
+          echo "repo=$(basename ${{ github.repository }})" >> "$GITHUB_OUTPUT"
+        shell: bash
+
+      - name: Build docker image and push to DockerHub
+        uses: senzing-factory/github-action-docker-buildx-build@v1
+        with:
+          build-options: "--push"
+          image-repository: senzing/${{ steps.repo-basename.outputs.repo }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}

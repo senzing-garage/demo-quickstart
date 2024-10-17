@@ -9,6 +9,8 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 	"time"
 
@@ -32,12 +34,14 @@ type BasicHTTPServer struct {
 	AvoidServing              bool
 	EnableAll                 bool
 	EnableEntitySearch        bool
+	EnableJupyterLab          bool
 	EnableSenzingRestAPI      bool
 	EnableSwaggerUI           bool
 	EnableXterm               bool
 	EntitySearchRoutePrefix   string // FIXME: Only works with "entity-search"
 	GrpcDialOptions           []grpc.DialOption
 	GrpcTarget                string
+	JupyterLabRoutePrefix     string // FIXME: Only works with "jupyter"
 	LogLevelName              string
 	ObserverOrigin            string
 	Observers                 []observer.Observer
@@ -61,12 +65,14 @@ type BasicHTTPServer struct {
 }
 
 type TemplateVariables struct {
+	APIServerStatus string
+	APIServerURL    string
 	BasicHTTPServer
-	APIServerStatus    string
-	APIServerURL       string
 	EntitySearchStatus string
 	EntitySearchURL    string
 	HTMLTitle          string
+	JupyterLabStatus   string
+	JupyterLabURL      string
 	RequestHost        string
 	SwaggerStatus      string
 	SwaggerURL         string
@@ -130,6 +136,17 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 		swaggerUIMux := httpServer.getSwaggerUIMux(ctx)
 		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.SwaggerURLRoutePrefix), http.StripPrefix("/swagger", swaggerUIMux))
 		userMessage = fmt.Sprintf("%sServing SwaggerUI at        http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.SwaggerURLRoutePrefix)
+	}
+
+	// Enable JupyterLab.
+
+	if httpServer.EnableAll || httpServer.EnableJupyterLab {
+		proxy, err := newReverseProxy("http://localhost:8888")
+		if err != nil {
+			panic(err)
+		}
+		rootMux.HandleFunc(fmt.Sprintf("/%s/", httpServer.JupyterLabRoutePrefix), reverseProxyRequestHandler(proxy))
+		userMessage = fmt.Sprintf("%sServing JupyterLab at       http://localhost:%d/%s\n", userMessage, httpServer.ServerPort, httpServer.JupyterLabRoutePrefix)
 	}
 
 	// Enable Xterm.
@@ -243,6 +260,7 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(responseWriter http.Re
 	}
 	err = templateParsed.Execute(responseWriter, templateVariables)
 	if err != nil {
+		fmt.Printf("Template parsing error: %v", err)
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return
 	}
@@ -282,6 +300,11 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(responseWriter http.Re
 
 // --- http.ServeMux ----------------------------------------------------------
 
+func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http.ServeMux {
+	service := &entitysearchservice.BasicHTTPService{}
+	return service.Handler(ctx)
+}
+
 func (httpServer *BasicHTTPServer) getSenzingRestAPIMux(ctx context.Context) *http.ServeMux {
 	service := &restapiservicelegacy.RestApiServiceLegacyImpl{
 		JarFile:         "/app/senzing-poc-server.jar",
@@ -297,11 +320,6 @@ func (httpServer *BasicHTTPServer) getSenzingRestAPIProxyMux(ctx context.Context
 		ProxyTemplate:   "http://localhost:8250%s",
 		CustomTransport: http.DefaultTransport,
 	}
-	return service.Handler(ctx)
-}
-
-func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http.ServeMux {
-	service := &entitysearchservice.BasicHTTPService{}
 	return service.Handler(ctx)
 }
 
@@ -331,12 +349,14 @@ func (httpServer *BasicHTTPServer) getXtermMux(ctx context.Context) *http.ServeM
 
 func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Request) {
 	templateVariables := TemplateVariables{
-		BasicHTTPServer:    *httpServer,
-		HTMLTitle:          "Senzing Tools",
 		APIServerStatus:    httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
 		APIServerURL:       httpServer.getServerURL(httpServer.EnableSenzingRestAPI, fmt.Sprintf("http://%s/api", r.Host)),
+		BasicHTTPServer:    *httpServer,
 		EntitySearchStatus: httpServer.getServerStatus(httpServer.EnableEntitySearch),
 		EntitySearchURL:    httpServer.getServerURL(httpServer.EnableEntitySearch, fmt.Sprintf("http://%s/entity-search", r.Host)),
+		HTMLTitle:          "Senzing Quickstart",
+		JupyterLabStatus:   httpServer.getServerStatus(httpServer.EnableJupyterLab),
+		JupyterLabURL:      httpServer.getServerURL(httpServer.EnableJupyterLab, fmt.Sprintf("http://%s/jupyter", r.Host)),
 		SwaggerStatus:      httpServer.getServerStatus(httpServer.EnableSwaggerUI),
 		SwaggerURL:         httpServer.getServerURL(httpServer.EnableSwaggerUI, fmt.Sprintf("http://%s/swagger", r.Host)),
 		XtermStatus:        httpServer.getServerStatus(httpServer.EnableXterm),
@@ -345,4 +365,20 @@ func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Reque
 	w.Header().Set("Content-Type", "text/html")
 	filePath := fmt.Sprintf("static/templates%s", r.RequestURI)
 	httpServer.populateStaticTemplate(w, r, filePath, templateVariables)
+}
+
+// newReverseProxy takes target host and creates a reverse proxy
+func newReverseProxy(targetHost string) (*httputil.ReverseProxy, error) {
+	url, err := url.Parse(targetHost)
+	if err != nil {
+		return nil, err
+	}
+	return httputil.NewSingleHostReverseProxy(url), nil
+}
+
+// reverseProxyRequestHandler handles the http request using proxy
+func reverseProxyRequestHandler(proxy *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		proxy.ServeHTTP(w, r)
+	}
 }

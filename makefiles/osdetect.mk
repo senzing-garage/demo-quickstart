@@ -6,10 +6,16 @@ ifeq ($(OS),Windows_NT)
     ifeq ($(PROCESSOR_ARCHITECTURE), ARM64)
         OSARCH = arm4
     endif
+    define activate-venv
+        .venv\\Scripts\\activate
+    endef
 else
     OSTYPE = $(shell uname -s | tr '[:upper:]' '[:lower:]')
     OSARCH = $(shell uname -m | tr '[:upper:]' '[:lower:]')
     ifeq ($(OSARCH),aarch64)
         OSARCH = arm64
     endif
+    define activate-venv
+        @. .venv/bin/activate
+    endef
 endif

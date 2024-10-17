@@ -2,8 +2,8 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_BUILDER=golang:1.22.4-bullseye
-ARG IMAGE_FINAL=senzing/senzingapi-runtime-staging:latest
+ARG IMAGE_BUILDER=golang:1.23.2-bullseye
+ARG IMAGE_FINAL=senzing/senzingapi-runtime-beta:latest
 
 # -----------------------------------------------------------------------------
 # Stage: senzingapi_runtime
@@ -25,6 +25,29 @@ LABEL Name="senzing/go-builder" \
 
 USER root
 
+# Install packages via apt-get.
+
+RUN apt-get update \
+ && apt-get -y install \
+        python3 \
+        python3-dev \
+        python3-pip \
+        python3-venv \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# Create and activate virtual environment.
+
+RUN python3 -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# Install packages via PIP.
+
+COPY requirements.txt .
+RUN pip3 install --upgrade pip \
+ && pip3 install -r requirements.txt \
+ && rm requirements.txt
+
 # Copy local files from the Git repository.
 
 COPY ./rootfs /
@@ -42,7 +65,8 @@ ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 # Build go program.
 
 WORKDIR ${GOPATH}/src/demo-quickstart
-RUN make build
+RUN make print-make-variables
+RUN make --debug=vijm build
 
 # Copy binaries to /output.
 
@@ -58,37 +82,46 @@ ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/demo-quickstart" \
       Maintainer="support@senzing.com" \
       Version="0.0.1"
+
+
+ARG BUILD_USER="senzing"
+ARG BUILD_UID="1001"
+ARG BUILD_GID="101"
+
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
 
 # Install packages via apt-get.
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
-      && chmod 777 /tmp \
-      && apt-get update \
-      && apt-get -y install \
-      gnupg2 \
-      jq \
-      libodbc1 \
-      postgresql-client \
-      supervisor \
-      unixodbc \
-      && chmod ${STAT_TMP} /tmp \
-      && rm -rf /var/lib/apt/lists/*
+ && chmod 777 /tmp \
+ && apt-get update \
+ && apt-get -y install \
+        gnupg2 \
+        jq \
+        libodbc1 \
+        postgresql-client \
+        supervisor \
+        unixodbc \
+ && chmod ${STAT_TMP} /tmp \
+ && rm -rf /var/lib/apt/lists/*
 
 # Install Java-11.
 
 RUN mkdir -p /etc/apt/keyrings \
-      && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
+ && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
 
 RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" >> /etc/apt/sources.list
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
-      && chmod 777 /tmp \
-      && apt-get update \
-      && apt-get -y install temurin-11-jdk \
-      && chmod ${STAT_TMP} /tmp \
-      && rm -rf /var/lib/apt/lists/*
+ && chmod 777 /tmp \
+ && apt-get update \
+ && apt-get -y install \
+        temurin-11-jdk \
+        python3-venv \
+        curl \
+ && chmod ${STAT_TMP} /tmp \
+ && rm -rf /var/lib/apt/lists/*
 
 # Copy files from repository.
 
@@ -96,11 +129,25 @@ COPY ./rootfs /
 
 # Copy files from prior stage.
 
-COPY --from=builder "/output/linux/demo-quickstart" "/app/demo-quickstart"
+COPY --from=builder /output/linux/demo-quickstart /app/demo-quickstart
+COPY --from=builder /app/venv /app/venv
+
+# Prepare jupyter lab environment.
+
+RUN chmod --recursive 777 /tmp /notebooks
+
+# Create ${BUILD_USER} user.
+
+RUN useradd --no-log-init --create-home --shell /bin/bash --uid "${BUILD_UID}" --no-user-group "${BUILD_USER}"
 
 # Run as non-root container
 
-USER 1001
+USER ${BUILD_USER}
+
+# Activate virtual environment.
+
+ENV VIRTUAL_ENV=/app/venv
+ENV PATH="/app/venv/bin:${PATH}"
 
 # Runtime environment variables.
 
