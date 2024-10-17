@@ -22,5 +22,6 @@ jobs:
         with:
           build-options: "--push"
           image-repository: senzing/${{ steps.repo-basename.outputs.repo }}
+          image-tag: latest
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
