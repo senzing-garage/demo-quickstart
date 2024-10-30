@@ -94,8 +94,8 @@ github.com/sagikazarmark/slog-shim v0.1.0 h1:diDBnUNK9N/354PgrxMywXnAwEr1QZcOr6g
 github.com/sagikazarmark/slog-shim v0.1.0/go.mod h1:SrcSrq8aKtyuqEI1uvTDTK1arOWRIczQRv+GVI1AkeQ=
 github.com/segmentio/asm v1.2.0 h1:9BQrFxC+YOHJlTlHGkTrFWf59nbL3XnCoFLTwDCI7ys=
 github.com/segmentio/asm v1.2.0/go.mod h1:BqMnlJP91P8d+4ibuonYZw9mfnzI9HfxselHZr5aAcs=
-github.com/senzing-garage/demo-entity-search v0.2.1 h1:8aw40EKO5XuIQw5gGP4Dt5tPIB/XaKkZuBtBs8Ihq4M=
-github.com/senzing-garage/demo-entity-search v0.2.1/go.mod h1:PiKNh1SIN0d0iFt0xBDvw9YG1hytqznC30nDMbnTJPU=
+github.com/senzing-garage/demo-entity-search v0.2.2 h1:N7K0nsXa/kjGtisAdHyc0p8xzrA3nQ+j6GCuFlyfMG0=
+github.com/senzing-garage/demo-entity-search v0.2.2/go.mod h1:Iuq9kXIl/+HdCWS65k6QxK6IHmFiq0YX3OngR3dTc60=
 github.com/senzing-garage/go-cmdhelping v0.3.1 h1:MCAvjx1kv3yEob1gPv4cUQ+fIrE1C/6bMBw8HbdyEqo=
 github.com/senzing-garage/go-cmdhelping v0.3.1/go.mod h1:JTEcyT9VnuwqxSAolhtZEJB2IbdsFyv5KmEeoKHrUsU=
 github.com/senzing-garage/go-helpers v0.6.1 h1:wxQljvwix3sN7/PkWvWdBKli40lEXpEpaagCJa/336Y=
