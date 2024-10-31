@@ -130,8 +130,7 @@ sz_configmanager.replace_default_config_id(old_config_id, new_config_id)
 # In[ ]:
 
 
-sz_engine.reinitialize(new_config_id)
-sz_diagnostic.reinitialize(new_config_id)
+sz_abstract_factory.reinitialize(new_config_id)
 
 
 # ## Add records
