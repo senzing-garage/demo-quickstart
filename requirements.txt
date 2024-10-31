@@ -8,5 +8,5 @@ nbconvert==7.16.4
 notebook==7.2.2
 protobuf==5.28.3
 senzing-abstract==0.1.8
-senzing-grpc==0.2.3
+senzing-grpc==0.3.2
 setuptools==75.3.0
