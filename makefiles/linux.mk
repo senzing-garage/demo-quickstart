@@ -62,7 +62,7 @@ package-osarch-specific: docker-build-package
 
 .PHONY: run-osarch-specific
 run-osarch-specific:
-	@go run main.go
+	@go run -tags "libsqlite3 linux" main.go
 
 
 .PHONY: setup-osarch-specific
@@ -74,7 +74,7 @@ setup-osarch-specific:
 
 .PHONY: test-osarch-specific
 test-osarch-specific:
-	@go test -json -v -p 1 ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
+	@go test -tags "libsqlite3 linux" -json -v -p 1 ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
 
 
 .PHONY: venv-osarch-specific

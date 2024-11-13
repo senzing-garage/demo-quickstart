@@ -29,6 +29,7 @@ USER root
 
 RUN apt-get update \
  && apt-get -y install \
+        libsqlite3-dev \
         python3 \
         python3-dev \
         python3-pip \
@@ -100,6 +101,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
         gnupg2 \
         jq \
         libodbc1 \
+        libsqlite3-dev \
         postgresql-client \
         supervisor \
         unixodbc \
@@ -159,7 +161,7 @@ ENV SENZING_API_SERVER_PORT='8250'
 ENV SENZING_API_SERVER_SKIP_ENGINE_PRIMING='true'
 ENV SENZING_API_SERVER_SKIP_STARTUP_PERF='true'
 ENV SENZING_DATA_MART_SQLITE_DATABASE_FILE=/tmp/datamart
-ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@/tmp/sqlite/G2C.db"}}'
+ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@/tmp/sqlite/G2C.db?mode=memory&cache=shared"}}'
 
 # Runtime execution.
 

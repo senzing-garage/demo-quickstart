@@ -195,9 +195,11 @@ Example:
 
     ```console
     docker run \
+      --interactive \
       --publish 8260:8260 \
       --publish 8261:8261 \
       --rm \
+      --tty \
       senzing/demo-quickstart
 
     ```
