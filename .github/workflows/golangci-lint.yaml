@@ -23,10 +23,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Senzing API
-        uses: senzing-factory/github-action-install-senzing-api@v4
+      - name: Install Senzing SDK
+        uses: senzing-factory/github-action-install-senzing-sdk@v1
         with:
-          senzingapi-version: staging-v4
+          senzingsdk-version: staging-v4
 
       - name: Copy Senzing headers
         run: |
