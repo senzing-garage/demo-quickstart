@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<title>Hello, world!</title>
+
+
+</head>
+<body>
+
+  <div class="container">
+    <p class="count">The count is </p>
+  </div>
+
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url : "/api/count"
+    }).then(function(data) {
+      $('.count').append(data.count);
+    });
+  });
+</script>
+</body>
+</html>

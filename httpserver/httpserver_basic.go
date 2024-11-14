@@ -41,6 +41,7 @@ type BasicHTTPServer struct {
 	EntitySearchRoutePrefix   string // FIXME: Only works with "entity-search"
 	GrpcDialOptions           []grpc.DialOption
 	GrpcTarget                string
+	IsInDevelopment           bool
 	JupyterLabRoutePrefix     string // FIXME: Only works with "jupyter"
 	LogLevelName              string
 	ObserverOrigin            string
@@ -168,7 +169,7 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	// Add route to static files.
 
-	rootDir, err := fs.Sub(static, "static/root")
+	rootDir, err := fs.Sub(httpServer.getStatic(), "static/root")
 	if err != nil {
 		panic(err)
 	}
@@ -223,6 +224,13 @@ func (httpServer *BasicHTTPServer) getServerURL(up bool, url string) string {
 	return result
 }
 
+func (httpServer *BasicHTTPServer) getStatic() fs.FS {
+	if httpServer.IsInDevelopment {
+		return os.DirFS("static")
+	}
+	return static
+}
+
 func (httpServer *BasicHTTPServer) openAPIFunc(ctx context.Context, openAPISpecification []byte) http.HandlerFunc {
 	_ = ctx
 	_ = openAPISpecification
@@ -248,7 +256,9 @@ func (httpServer *BasicHTTPServer) openAPIFunc(ctx context.Context, openAPISpeci
 }
 func (httpServer *BasicHTTPServer) populateStaticTemplate(responseWriter http.ResponseWriter, request *http.Request, filepath string, templateVariables TemplateVariables) {
 	_ = request
-	templateBytes, err := static.ReadFile(filepath)
+	// templateBytes, err := static.ReadFile(filepath)
+	templateBytes, err := fs.ReadFile(httpServer.getStatic(), filepath)
+
 	if err != nil {
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return

@@ -146,6 +146,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:                 true,
 		EntitySearchRoutePrefix:   "entity-search",
+		IsInDevelopment:           false,
 		JupyterLabRoutePrefix:     "jupyter",
 		LogLevelName:              viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),
@@ -176,6 +177,9 @@ func RunE(_ *cobra.Command, _ []string) error {
 	go func() {
 		defer waitGroup.Done()
 		err = httpServer.Serve(ctx)
+		if err != nil {
+			fmt.Printf("Error: httpServer - %v\n", err)
+		}
 	}()
 
 	go func() {
@@ -185,22 +189,6 @@ func RunE(_ *cobra.Command, _ []string) error {
 			fmt.Printf("Error: grpcServer - %v\n", err)
 		}
 	}()
-
-	// go func() {
-	// 	defer waitGroup.Done()
-	// 	command := exec.CommandContext(ctx,
-	// 		"jupyter",
-	// 		"lab",
-	// 		"--allow-root",
-	// 		"--no-browser",
-	// 		"--IdentityProvider.token=''",
-	// 		"--ServerApp.base_url='/jupyter'",
-	// 		"--ServerApp.allow_origin='*'")
-
-	// 	command.Dir = "/notebooks"
-	// 	err := command.Run()
-	// 	log.Printf("Command finished with error: %v", err)
-	// }()
 
 	waitGroup.Wait()
 
