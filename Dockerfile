@@ -66,8 +66,7 @@ ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 # Build go program.
 
 WORKDIR ${GOPATH}/src/demo-quickstart
-RUN make print-make-variables
-RUN make --debug=vijm build
+RUN make build-with-libsqlite3
 
 # Copy binaries to /output.
 
@@ -82,7 +81,7 @@ FROM ${IMAGE_FINAL} AS final
 ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/demo-quickstart" \
       Maintainer="support@senzing.com" \
-      Version="0.0.1"
+      Version="0.3.2"
 
 
 ARG BUILD_USER="senzing"
@@ -161,7 +160,9 @@ ENV SENZING_API_SERVER_PORT='8250'
 ENV SENZING_API_SERVER_SKIP_ENGINE_PRIMING='true'
 ENV SENZING_API_SERVER_SKIP_STARTUP_PERF='true'
 ENV SENZING_DATA_MART_SQLITE_DATABASE_FILE=/tmp/datamart
-ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@/tmp/sqlite/G2C.db?mode=memory&cache=shared"}}'
+ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@nowhere/IN_MEMORY_DB?mode=memory&cache=shared"}}'
+# ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@nowhere/tmp/sqlite/G2C.db"}}'
+ENV SENZING_TOOLS_ENABLE_ALL=true
 
 # Runtime execution.
 

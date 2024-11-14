@@ -4,6 +4,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -124,6 +125,11 @@ func RunE(_ *cobra.Command, _ []string) error {
 	grpcserver := &grpcserver.BasicGrpcServer{
 		AvoidServing:          viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:             true,
+		EnableSzConfig:        viper.GetBool(option.EnableSzConfig.Arg),
+		EnableSzConfigManager: viper.GetBool(option.EnableSzConfigManager.Arg),
+		EnableSzDiagnostic:    viper.GetBool(option.EnableSzDiagnostic.Arg),
+		EnableSzEngine:        viper.GetBool(option.EnableSzEngine.Arg),
+		EnableSzProduct:       viper.GetBool(option.EnableSzProduct.Arg),
 		LogLevelName:          viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:        viper.GetString(option.ObserverOrigin.Arg),
 		ObserverURL:           viper.GetString(option.ObserverURL.Arg),
@@ -175,7 +181,26 @@ func RunE(_ *cobra.Command, _ []string) error {
 	go func() {
 		defer waitGroup.Done()
 		err = grpcserver.Serve(ctx)
+		if err != nil {
+			fmt.Printf("Error: grpcServer - %v\n", err)
+		}
 	}()
+
+	// go func() {
+	// 	defer waitGroup.Done()
+	// 	command := exec.CommandContext(ctx,
+	// 		"jupyter",
+	// 		"lab",
+	// 		"--allow-root",
+	// 		"--no-browser",
+	// 		"--IdentityProvider.token=''",
+	// 		"--ServerApp.base_url='/jupyter'",
+	// 		"--ServerApp.allow_origin='*'")
+
+	// 	command.Dir = "/notebooks"
+	// 	err := command.Run()
+	// 	log.Printf("Command finished with error: %v", err)
+	// }()
 
 	waitGroup.Wait()
 
