@@ -169,7 +169,7 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	// Add route to static files.
 
-	rootDir, err := fs.Sub(httpServer.getStatic(), "static/root")
+	rootDir, err := fs.Sub(httpServer.getStatic(), "root")
 	if err != nil {
 		panic(err)
 	}
@@ -194,6 +194,9 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	if !httpServer.AvoidServing {
 		err = server.ListenAndServe()
+		if err != nil {
+			panic(err)
+		}
 	}
 	return err
 }
@@ -226,7 +229,7 @@ func (httpServer *BasicHTTPServer) getServerURL(up bool, url string) string {
 
 func (httpServer *BasicHTTPServer) getStatic() fs.FS {
 	if httpServer.IsInDevelopment {
-		return os.DirFS("static")
+		return os.DirFS("httpserver/")
 	}
 	return static
 }
@@ -258,19 +261,20 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(responseWriter http.Re
 	_ = request
 	// templateBytes, err := static.ReadFile(filepath)
 	templateBytes, err := fs.ReadFile(httpServer.getStatic(), filepath)
-
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return
 	}
 	templateParsed, err := template.New("HtmlTemplate").Parse(string(templateBytes))
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return
 	}
 	err = templateParsed.Execute(responseWriter, templateVariables)
 	if err != nil {
-		fmt.Printf("Template parsing error: %v", err)
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return
 	}
