@@ -14,13 +14,13 @@ permissions:
 
 jobs:
   go-test-darwin:
-    name: "Go test with Senzing: ${{ matrix.senzingapi-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+    name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         go: ["1.21"]
         os: [macos-latest]
-        senzingapi-version: [staging-v4]
+        senzingsdk-version: [staging-v4]
 
     steps:
       - name: Checkout repository
@@ -38,10 +38,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Senzing API
-        uses: senzing-factory/github-action-install-senzing-api@v4
+      - name: Install Senzing SDK
+        uses: senzing-factory/github-action-install-senzing-sdk@v1
         with:
-          senzingapi-version: ${{ matrix.senzingapi-version }}
+          senzingsdk-version: ${{ matrix.senzingsdk-version }}
 
       - name: Copy /etc files
         run: sudo mkdir -p /opt/senzing/er/etc && sudo cp testdata/senzing-license/g2.lic /opt/senzing/er/etc/g2.lic
