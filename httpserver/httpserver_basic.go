@@ -169,7 +169,7 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	// Add route to static files.
 
-	rootDir, err := fs.Sub(httpServer.getStatic(), "root")
+	rootDir, err := fs.Sub(httpServer.getStatic(), "static/root")
 	if err != nil {
 		panic(err)
 	}

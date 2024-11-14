@@ -5,42 +5,179 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <title>Hello, world!</title>
+  <script src="/js/bootstrap.min.js"></script>
+  <title>Senzing Playground</title>
 </head>
 
 <body>
 
+  <main class="d-flex flex-nowrap">
 
-  <div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-        <svg class="bi me-2" width="40" height="32">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <svg class="bi pe-none me-2" width="40" height="32">
           <use xlink:href="#bootstrap" />
         </svg>
-        <span class="fs-4">Simple header</span>
+        <span class="fs-4">Senzing Playground</span>
       </a>
-
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="#" class="nav-link active" aria-current="page">
+            <svg class="bi pe-none me-2" width="16" height="16">
+              <use xlink:href="#home" />
+            </svg>
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link text-white" aria-current="page">
+            <svg class="bi pe-none me-2" width="16" height="16">
+              <use xlink:href="#home" />
+            </svg>
+            Languages
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi pe-none me-2" width="16" height="16">
+              <use xlink:href="#speedometer2" />
+            </svg>
+            Python
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi pe-none me-2" width="16" height="16">
+              <use xlink:href="#table" />
+            </svg>
+            Java
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi pe-none me-2" width="16" height="16">
+              <use xlink:href="#grid" />
+            </svg>
+            Go
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi pe-none me-2" width="16" height="16">
+              <use xlink:href="#people-circle" />
+            </svg>
+            C#
+          </a>
+        </li>
       </ul>
-    </header>
-  </div>
+
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+          <strong>mdo</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+          <li><a class="dropdown-item" href="#">New project...</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container">
 
 
-  <ol>
-    <li><a href="/web/all">all</a></li>
-    <li><a href="/web/duplicates/sha256">duplicates/sha256</a></li>
-    <li><a href="/web/count.html">count</a></li>
-    <li><a href="/web/get-started.html">get-started</a></li>
-  </ol>
+
+      <p>
+        With the Senzing Playground, you are able to explore Senzing from the convenience of your workstation.
+      </p>
+      <p>
+        The Senzing Playground has...
+      </p>
+
+
+      <h4>Jupyter Lab demonstration</h4>
+      <p>
+        In this demonstration,
+        <a href="https://jupyter.org/">Jupyter notebooks</a>
+        have been created to demonstrate Senzing.
+      </p>
+      <p>
+        The <a href="/jupyter/lab">Jupyter Lab demonstration</a>
+        consists of tutorials in the following Jupyter Notebooks:
+      <ol>
+        <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_hello_world.ipynb">Senzing Hello World</a> - A simple test of
+          connectivity
+          to
+          Senzing engine.</li>
+        <li><a href="{{.JupyterLabURL}}/lab/tree/load_senzing_truthsets.ipynb">Load Senzing truth-sets</a> - Load and
+          query
+          the
+          Senzing truth-set-data.</li>
+        <li><a href="{{.JupyterLabURL}}/lab/tree/load_user_data.ipynb">Load user data</a> - Load custom data.</li>
+        <li><a href="{{.JupyterLabURL}}/lab/tree/show_method_help.ipynb">Show method help</a> - Show how to display
+          help.
+        </li>
+      </ol>
+      </p>
+      <h4>Senzing Python SDK demonstration</h4>
+      <p>
+        In this demonstration,
+        <a href="https://github.com/senzing-garage/sz-sdk-python-grpc">Senzing's Python
+          Software Development Kit for gRPC</a>
+        (SDK) runs natively on a Linux, macOS, or Windows workstation.
+      </p>
+      <p>
+        The
+        <a
+          href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/senzing-python-sdk-demonstration.md">Senzing
+          Python SDK demonstration</a>
+        consists of the following tutorials:
+      <ol>
+        <li><a
+            href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/senzing-hello-world.md">Senzing
+            Hello
+            World</a> - A simple test of connectivity
+          to
+          Senzing engine.</li>
+        <li><a
+            href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/load-senzing-truthsets.md">Load
+            Senzing truth-sets</a> - Load and query
+          the
+          Senzing truth-set-data.</li>
+        <li><a
+            href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/load-user-data.md">Load
+            user data</a> - Load custom data.</li>
+        <li><a
+            href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/show-method-help.md">Show
+            method help</a> - Show how to display help.
+        </li>
+      </ol>
+      </p>
+      <h4>Clean up</h4>
+      <p>
+        To remove this demonstration from a workstation, visit
+        <a
+          href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/cleanup.md">Cleanup</a>.
+      </p>
+      <h4>Misc - For use during development</h4>
+      <ul>
+        <li><a href="debug.html">Debug information</a></li>
+        <li><a href="extras.html">Extras</a></li>
+      </ul>
+    </div>
+
+  </main>
 
   <script src="/js/jquery-3.4.1.min.js"></script>
   <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
 </body>
 
 </html>
