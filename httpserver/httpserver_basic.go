@@ -169,7 +169,7 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	// Add route for /notebooks.
 
-	// rootMux.Handle("/notebook-downloads/", http.StripPrefix("/notebooks", http.FileServer(http.Dir("/notebooks"))))
+	rootMux.Handle("/notebooks/", http.StripPrefix("/notebooks", http.FileServer(http.Dir("/notebooks"))))
 
 	// Add route to static files.
 

@@ -152,12 +152,11 @@ func RunE(_ *cobra.Command, _ []string) error {
 	// Create object and Serve.
 
 	httpServer := &httpserver.BasicHTTPServer{
-		APIUrlRoutePrefix:       "api",
-		AvoidServing:            viper.GetBool(option.AvoidServe.Arg),
-		EnableAll:               true,
-		EntitySearchRoutePrefix: "entity-search",
-		// IsInDevelopment:           viper.GetBool(isInDevelopment.Arg),
-		IsInDevelopment:           false,
+		APIUrlRoutePrefix:         "api",
+		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
+		EnableAll:                 true,
+		EntitySearchRoutePrefix:   "entity-search",
+		IsInDevelopment:           viper.GetBool(isInDevelopment.Arg),
 		JupyterLabRoutePrefix:     "jupyter",
 		LogLevelName:              viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),
