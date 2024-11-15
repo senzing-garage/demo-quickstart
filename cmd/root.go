@@ -14,6 +14,7 @@ import (
 	"github.com/senzing-garage/demo-quickstart/httpserver"
 	"github.com/senzing-garage/go-cmdhelping/cmdhelper"
 	"github.com/senzing-garage/go-cmdhelping/option"
+	"github.com/senzing-garage/go-cmdhelping/option/optiontype"
 	"github.com/senzing-garage/go-cmdhelping/settings"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
@@ -34,11 +35,20 @@ A server supporting the following services:
     `
 )
 
+var isInDevelopment = option.ContextVariable{
+	Arg:     "is-in-development",
+	Default: option.OsLookupEnvBool("SENZING_TOOLS_IS_IN_DEVELOPMENT", false),
+	Envar:   "SENZING_TOOLS_IS_IN_DEVELOPMENT",
+	Help:    "For testing only. [%s]",
+	Type:    optiontype.Bool,
+}
+
 // ----------------------------------------------------------------------------
 // Context variables
 // ----------------------------------------------------------------------------
 
 var ContextVariablesForMultiPlatform = []option.ContextVariable{
+	isInDevelopment,
 	option.AvoidServe,
 	option.Configuration,
 	option.DatabaseURL,
@@ -142,11 +152,12 @@ func RunE(_ *cobra.Command, _ []string) error {
 	// Create object and Serve.
 
 	httpServer := &httpserver.BasicHTTPServer{
-		APIUrlRoutePrefix:         "api",
-		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
-		EnableAll:                 true,
-		EntitySearchRoutePrefix:   "entity-search",
-		IsInDevelopment:           true,
+		APIUrlRoutePrefix:       "api",
+		AvoidServing:            viper.GetBool(option.AvoidServe.Arg),
+		EnableAll:               true,
+		EntitySearchRoutePrefix: "entity-search",
+		// IsInDevelopment:           viper.GetBool(isInDevelopment.Arg),
+		IsInDevelopment:           false,
 		JupyterLabRoutePrefix:     "jupyter",
 		LogLevelName:              viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),

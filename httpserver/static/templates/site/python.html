@@ -23,85 +23,110 @@
         <div class="container">
             <div class="col-xs-12" style="height:15px;"></div>
             <h1>Senzing Playground for Python</h1>
-
-            <h4>Jupyter Lab demonstration</h4>
-            <p>
-                In this demonstration,
-                <a href="https://jupyter.org/">Jupyter notebooks</a>
-                have been created to demonstrate Senzing.
+            <p>You can use Jupyter notebooks or the Python SDK to explore Senzing.
+                Senzing SDK methods are documented in the
+                <i class="bi bi-box-arrow-up-right me-2"></i><a
+                    href="https://senzing-garage.github.io/sz-sdk-python-abstract/">Senzing Software Development
+                    Kit (SDK)</a>.
             </p>
-            <p>
-                The <a href="/jupyter/lab">Jupyter Lab demonstration</a>
-                consists of tutorials in the following Jupyter Notebooks:
-            <ol>
-                <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_hello_world.ipynb">Senzing Hello World</a> - A simple
-                    test
-                    of
-                    connectivity
-                    to
-                    Senzing engine.</li>
-                <li><a href="{{.JupyterLabURL}}/lab/tree/load_senzing_truthsets.ipynb">Load Senzing truth-sets</a> -
-                    Load
-                    and
-                    query
-                    the
-                    Senzing truth-set-data.</li>
-                <li><a href="{{.JupyterLabURL}}/lab/tree/load_user_data.ipynb">Load user data</a> - Load custom data.
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                        type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Jupyter
+                        notebooks</button>
                 </li>
-                <li><a href="{{.JupyterLabURL}}/lab/tree/show_method_help.ipynb">Show method help</a> - Show how to
-                    display
-                    help.
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                        type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Python
+                        SDK</button>
                 </li>
-            </ol>
-            </p>
-            <h4>Senzing Python SDK demonstration</h4>
-            <p>
-                In this demonstration,
-                <a href="https://github.com/senzing-garage/sz-sdk-python-grpc">Senzing's Python
-                    Software Development Kit for gRPC</a>
-                (SDK) runs natively on a Linux, macOS, or Windows workstation.
-            </p>
-            <p>
-                The
-                <a
-                    href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/senzing-python-sdk-demonstration.md">Senzing
-                    Python SDK demonstration</a>
-                consists of the following tutorials:
-            <ol>
-                <li><a
-                        href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/senzing-hello-world.md">Senzing
-                        Hello
-                        World</a> - A simple test of connectivity
-                    to
-                    Senzing engine.</li>
-                <li><a
-                        href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/load-senzing-truthsets.md">Load
-                        Senzing truth-sets</a> - Load and query
-                    the
-                    Senzing truth-set-data.</li>
-                <li><a
-                        href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/load-user-data.md">Load
-                        user data</a> - Load custom data.</li>
-                <li><a
-                        href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/show-method-help.md">Show
-                        method help</a> - Show how to display help.
-                </li>
-            </ol>
-            </p>
-            <h4>Clean up</h4>
-            <p>
-                To remove this demonstration from a workstation, visit
-                <a
-                    href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/cleanup.md">Cleanup</a>.
-            </p>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+                    tabindex="0">
+                    <div class="col-xs-12" style="height:15px;"></div>
+                    <h4>Jupyter Lab demonstration</h4>
+                    <p>
+                        In this demonstration, Jupyter notebooks have been created to demonstrate Senzing.
+                        Use these notebooks as a starting point to explore Senzing.
+                        Then, build a notebook tailored to your needs.
+                    </p>
 
 
+                    <h5>Download example Jupyter Notebooks</h5>
+                    If you already have
+                    <a href="https://jupyter.org/">Jupyter</a>
+                    installed, simply download and run the following Jupyter notebooks:
 
+                    <ol>
+                        <li><a href="/notebook-downloads/senzing_hello_world.ipynb">senzing_hello_world.ipynb</a> - A
+                            simple test of connectivity to Senzing engine.</li>
+                        <li><a href="/notebook-downloads/senzing_load_truthsets.ipynb">load_senzing_truthsets.ipynb</a>
+                            - Load and query the Senzing truth-set-data.</li>
+                        <li><a href="/notebook-downloads/senzing_load_user_data.ipynb">load_user_data.ipynb</a> - Load
+                            custom data.
+                        </li>
+                    </ol>
+
+                    <h5>Use embedded Jupyter Lab</h5>
+                    <p>
+                        If you just want to see the Jupyter Notebooks in action,
+                        the <a href="/jupyter/lab">Jupyter Lab demonstration</a>
+                        consists of tutorials in the following Jupyter Notebooks:
+                    <ol>
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_hello_world.ipynb">Senzing Hello World</a> - A
+                            simple test of connectivity to Senzing engine.</li>
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_load_truthsets.ipynb">Load Senzing
+                                truth-sets</a> - Load and query the Senzing truth-set-data.</li>
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_load_user_data.ipynb">Load user data</a> - Load
+                            custom data.
+                        </li>
+                    </ol>
+                    </p>
+                </div>
+                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
+                    tabindex="0">
+                    <div class="col-xs-12" style="height:15px;"></div>
+                    <h4>Senzing Python SDK demonstration</h4>
+                    <p>
+                        In this demonstration,
+                        <a href="https://github.com/senzing-garage/sz-sdk-python-grpc">Senzing's Python
+                            Software Development Kit for gRPC</a>
+                        (SDK) runs natively on a Linux, macOS, or Windows workstation.
+                    </p>
+                    <p>
+                        The
+                        <a
+                            href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/senzing-python-sdk-demonstration.md">Senzing
+                            Python SDK demonstration</a>
+                        consists of the following tutorials:
+                    <ol>
+                        <li><a
+                                href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/senzing-hello-world.md">Senzing
+                                Hello
+                                World</a> - A simple test of connectivity
+                            to
+                            Senzing engine.</li>
+                        <li><a
+                                href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/load-senzing-truthsets.md">Load
+                                Senzing truth-sets</a> - Load and query
+                            the
+                            Senzing truth-set-data.</li>
+                        <li><a
+                                href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/load-user-data.md">Load
+                                user data</a> - Load custom data.</li>
+                        <li><a
+                                href="https://github.com/senzing-garage/knowledge-base/blob/main/proposals/quickstart-grpc/show-method-help.md">Show
+                                method help</a> - Show how to display help.
+                        </li>
+                    </ol>
+                    </p>
+
+                </div>
+            </div>
 
             <div id="bottom-nav" w3-include-html="/component/bottom-nav.html" />
         </div>
-
-
     </main>
 
     <script type="text/javascript">

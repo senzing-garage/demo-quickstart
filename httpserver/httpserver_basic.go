@@ -164,8 +164,12 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	// Add route to template pages.
 
-	rootMux.HandleFunc("/site/", httpServer.siteFunc)
+	rootMux.HandleFunc("/site/", httpServer.handleFuncForSite)
 	userMessage = fmt.Sprintf("%sServing Console at          http://localhost:%d\n", userMessage, httpServer.ServerPort)
+
+	// Add route for /notebooks.
+
+	// rootMux.Handle("/notebook-downloads/", http.StripPrefix("/notebooks", http.FileServer(http.Dir("/notebooks"))))
 
 	// Add route to static files.
 
@@ -361,7 +365,7 @@ func (httpServer *BasicHTTPServer) getXtermMux(ctx context.Context) *http.ServeM
 
 // --- Http Funcs -------------------------------------------------------------
 
-func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Request) {
+func (httpServer *BasicHTTPServer) handleFuncForSite(w http.ResponseWriter, r *http.Request) {
 	templateVariables := TemplateVariables{
 		APIServerStatus:    httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
 		APIServerURL:       httpServer.getServerURL(httpServer.EnableSenzingRestAPI, fmt.Sprintf("http://%s/api", r.Host)),
