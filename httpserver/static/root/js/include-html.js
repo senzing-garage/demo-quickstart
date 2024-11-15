@@ -11,10 +11,10 @@ function includeHTML() {
     if (file) {
       /* Make an HTTP request using the attribute value as the file name: */
       xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
+      xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
-          if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-          if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+          if (this.status == 200) { elmnt.innerHTML = this.responseText; }
+          if (this.status == 404) { elmnt.innerHTML = "Page not found."; }
           /* Remove the attribute, and call this function once more: */
           elmnt.removeAttribute("w3-include-html");
           includeHTML();
@@ -27,3 +27,14 @@ function includeHTML() {
     }
   }
 }
+
+const copyToClipboard = async () => {
+  try {
+    const element = document.querySelector(".user-select-all");
+    await navigator.clipboard.writeText(element.textContent);
+    // Optional: Provide feedback or perform additional actions upon successful copy
+  } catch (error) {
+    console.error("Failed to copy to clipboard:", error);
+    // Optional: Handle and display the error to the user
+  }
+};

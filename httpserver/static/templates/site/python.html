@@ -56,7 +56,18 @@
                     <h5>Download example Jupyter Notebooks</h5>
                     If you already have
                     <a href="https://jupyter.org/">Jupyter</a>
-                    installed, simply download and run the following Jupyter notebooks:
+                    installed, start by installing the Python
+                    <a href="https://pypi.org/project/senzing-grpc/">senzing-grpc</a>
+                    package into your environment.
+                    <br>Example:
+
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    python3 -m pip install --upgrade senzing-grpc
+                        </code></pre>
+                    </div>
+
+                    Then download and run the following Jupyter notebooks:
 
                     <ol>
                         <li><a href="/notebooks/senzing_hello_world.ipynb">senzing_hello_world.ipynb</a> - A
@@ -70,15 +81,17 @@
 
                     <h5>Use embedded Jupyter Lab</h5>
                     <p>
-                        If you just want to see the Jupyter Notebooks in action,
+                        If you just want to see the Jupyter Notebooks in action without installing Jupyter,
                         the <a href="/jupyter/lab">Jupyter Lab demonstration</a>
                         consists of tutorials in the following Jupyter Notebooks:
                     <ol>
-                        <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_hello_world.ipynb">Senzing Hello World</a> - A
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_hello_world.ipynb">Senzing Hello World</a>
+                            - A
                             simple test of connectivity to Senzing engine.</li>
                         <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_load_truthsets.ipynb">Load Senzing
                                 truth-sets</a> - Load and query the Senzing truth-set-data.</li>
-                        <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_load_user_data.ipynb">Load user data</a> - Load
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/senzing_load_user_data.ipynb">Load user data</a> -
+                            Load
                             custom data.
                         </li>
                     </ol>
