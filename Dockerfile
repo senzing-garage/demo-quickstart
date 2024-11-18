@@ -135,7 +135,7 @@ COPY --from=builder /app/venv /app/venv
 
 # Prepare jupyter lab environment.
 
-RUN chmod --recursive 777 /tmp /notebooks
+RUN chmod --recursive 777 /tmp /examples
 
 # Create ${BUILD_USER} user.
 
