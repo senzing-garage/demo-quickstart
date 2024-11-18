@@ -148,7 +148,7 @@ USER ${BUILD_USER}
 # Activate virtual environment.
 
 ENV VIRTUAL_ENV=/app/venv
-ENV PATH="/app/venv/bin:${PATH}"
+ENV PATH="/app/venv/bin:/examples/python:${PATH}"
 
 # Runtime environment variables.
 
