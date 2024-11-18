@@ -199,12 +199,8 @@ Example:
       --publish 8260:8260 \
       --publish 8261:8261 \
       --rm \
-<<<<<<< Updated upstream
       --tty \
-      senzing/demo-quickstart
-=======
       senzing/playground
->>>>>>> Stashed changes
 
     ```
 

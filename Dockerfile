@@ -65,14 +65,8 @@ ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 
 # Build go program.
 
-<<<<<<< Updated upstream
-WORKDIR ${GOPATH}/src/demo-quickstart
-RUN make build-with-libsqlite3
-=======
 WORKDIR ${GOPATH}/src/playground
-RUN make print-make-variables
-RUN make --debug=vijm build
->>>>>>> Stashed changes
+RUN make build-with-libsqlite3
 
 # Copy binaries to /output.
 

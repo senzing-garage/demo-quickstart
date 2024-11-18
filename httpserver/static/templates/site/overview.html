@@ -32,9 +32,69 @@
         Choose a topic from the left-hand navigation bar and get started.
       </p>
 
-      <div class="col-xs-12" style="height:300px;"></div>
+      <div class="col-xs-12" style="height:100px;"></div>
+
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              More information...
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <p>The left-hand navigation bar has the following topics:</p>
+
+              <ul class="list-unstyled">
+                <li>
+                  <i class="bi bi-globe me-2"></i>
+                  <strong>Language</strong>
+                  <p>Support for software development languages.</p>
+                </li>
+                <ul>
+                  <li>
+                    <strong>Python</strong>
+                    <p>
+                      Python shows how to explore the Senzing Playground
+                      using Jupyter Notebooks and Python programs using
+                      Senzing Python Software Development Kit (SDK).
+                    </p>
+                  </li>
+                  <li>
+                    <strong>Java</strong>
+                    <p>Not implemented.</p>
+                  </li>
+                  <li>
+                    <strong>Go</strong>
+                    <p>Not implemented.</p>
+                  </li>
+                  <li>
+                    <strong>C#</strong>
+                    <p>Not implemented.</p>
+                  </li>
+                </ul>
+              </ul>
+              <ul class="list-unstyled">
+                <li>
+                  <i class="bi bi-tools me-2"></i>
+                  <strong>Tools</strong>
+                  <p>Not implemented.</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-xs-12" style="height:10px;"></div>
       <div id="bottom-nav" w3-include-html="/component/bottom-nav.html" />
     </div>
+
+
+
+
   </main>
 
   <script type="text/javascript">
