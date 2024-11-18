@@ -15,14 +15,9 @@
 
 <body>
     <main class="d-flex flex-nowrap">
-
         <div id="left-nav" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;"
             w3-include-html="/component/left-nav.html">
         </div>
-
-
-
-
         <div class="container">
             <div class="col-xs-12" style="height:15px;"></div>
             <h1>Senzing Playground for Python</h1>
@@ -278,6 +273,10 @@
 
     <script type="text/javascript">
         includeHTML();
+        alert("Here")
+        z = document.getElementById("bob-languages");
+        z.classList.replace("text-white", "active")
+        alert(z)
     </script>
 </body>
 
