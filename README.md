@@ -16,8 +16,7 @@ the recommendation is not to use it yet.
 
 ## Synopsis
 
-`playground` is a command in the [senzing-tools] suite of tools.
-This command creates an environment for exploring Senzing.
+`playground` creates an environment for exploring Senzing.
 
 [![Go Reference Badge]][Package reference]
 [![Go Report Card Badge]][Go Report Card]
@@ -31,46 +30,24 @@ This command creates an environment for exploring Senzing.
 ## Overview
 
 `playground` starts the Senzing gRPC server and HTTP server for use in Senzing exploration.
+A user visits the web interface to help with the exploration.
+
+## Install
+
+To start the Senzing Playground, run:
+
+```console
+docker run -it --name senzing-playground -p 8260:8260 -p 8261:8261 --rm senzing/playground
+```
+
+then visit [localhost:8260].
+
+## Use
 
 Senzing SDKs for accessing the gRPC server:
 
 1. Go: [sz-sdk-go-grpc]
 1. Python: [sz-sdk-python-grpc]
-
-A simple demonstration using `senzing-tools` and a SQLite database.
-
-```console
-export LD_LIBRARY_PATH=/opt/senzing/er/lib/
-export SENZING_TOOLS_DATABASE_URL=sqlite3://na:na@/tmp/sqlite/G2C.db
-senzing-tools init-database
-senzing-tools playground
-
-```
-
-Then visit [localhost:8261]
-
-## Install
-
-1. The `playground` command is installed with the [senzing-tools] suite of tools.
-   See [senzing-tools install].
-
-## Use
-
-```console
-export LD_LIBRARY_PATH=/opt/senzing/er/lib/
-senzing-tools playground [flags]
-```
-
-1. For options and flags:
-    1. [Online documentation]
-    1. Runtime documentation:
-
-        ```console
-        export LD_LIBRARY_PATH=/opt/senzing/er/lib/
-        senzing-tools playground --help
-        ```
-
-1. In addition to the following simple usage examples, there are additional [Examples].
 
 ### Using command line options
 
@@ -155,8 +132,8 @@ This usage shows how to initialize a database with a Docker container.
 [golangci-lint.yaml]: https://github.com/senzing-garage/playground/actions/workflows/golangci-lint.yaml
 [License Badge]: https://img.shields.io/badge/License-Apache2-brightgreen.svg
 [License]: https://github.com/senzing-garage/playground/blob/main/LICENSE
+[localhost:8260]: http://localhost:8260
 [localhost:8261]: http://localhost:8261
-[Online documentation]: https://hub.senzing.com/senzing-tools/senzing-tools_playground.html
 [Package reference]: https://pkg.go.dev/github.com/senzing-garage/playground
 [Parameters]: #parameters
 [Senzing Garage]: https://github.com/senzing-garage-garage
@@ -167,8 +144,6 @@ This usage shows how to initialize a database with a Docker container.
 [SENZING_TOOLS_ENGINE_MODULE_NAME]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_engine_module_name
 [SENZING_TOOLS_GRPC_PORT]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_grpc_port
 [SENZING_TOOLS_LOG_LEVEL]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_log_level
-[senzing-tools install]: https://github.com/senzing-garage/senzing-tools#install
-[senzing-tools]: https://github.com/senzing-garage/senzing-tools
 [Senzing]: https://senzing.com/
 [sz-sdk-go-grpc]: https://github.com/senzing-garage/sz-sdk-go-grpc
 [sz-sdk-python-grpc]: https://github.com/senzing-garage/sz-sdk-python-grpc
