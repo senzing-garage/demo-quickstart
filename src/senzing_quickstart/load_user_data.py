@@ -15,7 +15,7 @@
 #    ("Upload Files") icon.
 # 1. Choose the file of JSON lines to upload.
 #
-# [example file]: https://raw.githubusercontent.com/senzing-garage/demo-quickstart/refs/heads/main/testdata/example-data-for-senzing.json
+# [example file]: https://raw.githubusercontent.com/senzing-garage/playground/refs/heads/main/testdata/example-data-for-senzing.json
 
 # ## Prepare Python enviroment
 

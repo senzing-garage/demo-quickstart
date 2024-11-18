@@ -1,4 +1,4 @@
-# demo-quickstart development
+# playground development
 
 The following instructions are useful during development.
 
@@ -33,7 +33,7 @@ Since the Senzing library is a prerequisite, it must be installed first.
 
     ```console
     export GIT_ACCOUNT=senzing-garage
-    export GIT_REPOSITORY=demo-quickstart
+    export GIT_REPOSITORY=playground
     export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
 
@@ -98,7 +98,7 @@ Since the Senzing library is a prerequisite, it must be installed first.
    Examples:
 
     ```console
-    ${GIT_REPOSITORY_DIR}/target/linux/demo-quickstart
+    ${GIT_REPOSITORY_DIR}/target/linux/playground
 
     ```
 
@@ -163,7 +163,7 @@ Create a code coverage map.
 
 1. If a web page doesn't appear, visit [localhost:6060].
 1. Senzing documentation will be in the "Third party" section.
-   `github.com` > `senzing-garage` > `demo-quickstart`
+   `github.com` > `senzing-garage` > `playground`
 
 1. When a versioned release is published with a `v0.0.0` format tag,
 the reference can be found by clicking on the following badge at the top of the README.md page.
@@ -199,8 +199,12 @@ Example:
       --publish 8260:8260 \
       --publish 8261:8261 \
       --rm \
+<<<<<<< Updated upstream
       --tty \
       senzing/demo-quickstart
+=======
+      senzing/playground
+>>>>>>> Stashed changes
 
     ```
 
@@ -244,20 +248,20 @@ Example:
 
 ### Test DEB package on Ubuntu
 
-1. Determine if `demo-quickstart` is installed.
+1. Determine if `playground` is installed.
    Example:
 
     ```console
-    apt list --installed | grep demo-quickstart
+    apt list --installed | grep playground
 
     ```
 
-1. :pencil2: Install `demo-quickstart`.
+1. :pencil2: Install `playground`.
    Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}/target
-    sudo apt install ./demo-quickstart-0.0.0.deb
+    sudo apt install ./playground-0.0.0.deb
 
     ```
 
@@ -265,15 +269,15 @@ Example:
    Example:
 
     ```console
-    demo-quickstart
+    playground
 
     ```
 
-1. Remove `demo-quickstart` from system.
+1. Remove `playground` from system.
    Example:
 
     ```console
-    sudo apt-get remove demo-quickstart
+    sudo apt-get remove playground
 
     ```
 
@@ -282,10 +286,10 @@ Example:
 [clone-repository]: https://github.com/senzing-garage/knowledge-base/blob/main/HOWTO/clone-repository.md
 [Go]: https://go.dev/
 [How to Install Senzing for Go Development]: https://github.com/senzing-garage/knowledge-base/blob/main/HOWTO/install-senzing-for-go-development.md
-[localhost:6060]: http://localhost:6060/pkg/github.com/senzing-garage/demo-quickstart/
+[localhost:6060]: http://localhost:6060/pkg/github.com/senzing-garage/playground/
 [testcoverage.yaml]: ../.github/coverage/testcoverage.yaml
 [docker]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker.md
 [git]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/git.md
-[Go Reference Badge]: https://pkg.go.dev/badge/github.com/senzing-garage/demo-quickstart.svg
-[Go Reference]: https://pkg.go.dev/github.com/senzing-garage/demo-quickstart
+[Go Reference Badge]: https://pkg.go.dev/badge/github.com/senzing-garage/playground.svg
+[Go Reference]: https://pkg.go.dev/github.com/senzing-garage/playground
 [make]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/make.md

@@ -1,4 +1,4 @@
-module github.com/senzing-garage/demo-quickstart
+module github.com/senzing-garage/playground
 
 go 1.22.7
 

@@ -52,7 +52,7 @@ RUN pip3 install --upgrade pip \
 # Copy local files from the Git repository.
 
 COPY ./rootfs /
-COPY . ${GOPATH}/src/demo-quickstart
+COPY . ${GOPATH}/src/playground
 
 # Copy files from prior stage.
 
@@ -65,13 +65,19 @@ ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 
 # Build go program.
 
+<<<<<<< Updated upstream
 WORKDIR ${GOPATH}/src/demo-quickstart
 RUN make build-with-libsqlite3
+=======
+WORKDIR ${GOPATH}/src/playground
+RUN make print-make-variables
+RUN make --debug=vijm build
+>>>>>>> Stashed changes
 
 # Copy binaries to /output.
 
 RUN mkdir -p /output \
- && cp -R ${GOPATH}/src/demo-quickstart/target/*  /output/
+ && cp -R ${GOPATH}/src/playground/target/*  /output/
 
 # -----------------------------------------------------------------------------
 # Stage: final
@@ -79,7 +85,7 @@ RUN mkdir -p /output \
 
 FROM ${IMAGE_FINAL} AS final
 ENV REFRESHED_AT=2024-07-01
-LABEL Name="senzing/demo-quickstart" \
+LABEL Name="senzing/playground" \
       Maintainer="support@senzing.com" \
       Version="0.3.2"
 
@@ -130,7 +136,7 @@ COPY ./rootfs /
 
 # Copy files from prior stage.
 
-COPY --from=builder /output/linux/demo-quickstart /app/demo-quickstart
+COPY --from=builder /output/linux/playground /app/playground
 COPY --from=builder /app/venv /app/venv
 
 # Prepare jupyter lab environment.

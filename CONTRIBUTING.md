@@ -80,7 +80,7 @@ The variables are used throughout the installation procedure.
 
 ```console
 export GIT_ACCOUNT=senzing-garage
-export GIT_REPOSITORY=demo-quickstart
+export GIT_REPOSITORY=playground
 ```
 
 Synthesize environment variables.

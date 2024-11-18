@@ -11,13 +11,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/senzing-garage/demo-quickstart/httpserver"
 	"github.com/senzing-garage/go-cmdhelping/cmdhelper"
 	"github.com/senzing-garage/go-cmdhelping/option"
 	"github.com/senzing-garage/go-cmdhelping/option/optiontype"
 	"github.com/senzing-garage/go-cmdhelping/settings"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
+	"github.com/senzing-garage/playground/httpserver"
 	"github.com/senzing-garage/serve-grpc/grpcserver"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -25,7 +25,7 @@ import (
 
 const (
 	Short string = "HTTP/gRPC server supporting various services"
-	Use   string = "demo-quickstart"
+	Use   string = "playground"
 	Long  string = `
 A server supporting the following services:
     - HTTP: Senzing API server
