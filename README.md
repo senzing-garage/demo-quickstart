@@ -34,7 +34,7 @@ A user visits the web interface to help with the exploration.
 
 ## Install
 
-To start the Senzing Playground, run:
+To start the Senzing Playground, run
 
 ```console
 docker run -it --name senzing-playground -p 8260:8260 -p 8261:8261 --rm senzing/playground
@@ -48,63 +48,6 @@ Senzing SDKs for accessing the gRPC server:
 
 1. Go: [sz-sdk-go-grpc]
 1. Python: [sz-sdk-python-grpc]
-
-### Using command line options
-
-1. :pencil2: Specify database using command line option.
-   Example:
-
-    ```console
-    export LD_LIBRARY_PATH=/opt/senzing/er/lib/
-    senzing-tools playground \
-        --database-url postgresql://username:password@postgres.example.com:5432/G2 \
-
-    ```
-
-1. Visit [localhost:8261]
-1. Run `senzing-tools playground --help` or see [Parameters] for additional parameters.
-
-### Using environment variables
-
-1. :pencil2: Specify database using environment variable.
-   Example:
-
-    ```console
-    export LD_LIBRARY_PATH=/opt/senzing/er/lib/
-    export SENZING_TOOLS_DATABASE_URL=postgresql://username:password@postgres.example.com:5432/G2
-    senzing-tools playground
-    ```
-
-1. Visit [localhost:8261]
-1. Run `senzing-tools playground --help` or see [Parameters] for additional parameters.
-
-### Using Docker
-
-This usage shows how to initialize a database with a Docker container.
-
-1. This usage specifies a URL of an external database.
-   Example:
-
-    ```console
-    docker run \
-        --publish 8260:8260 \
-        --publish 8261:8261 \
-        --rm \
-        senzing/senzing-tools playground
-
-    ```
-
-1. Visit [localhost:8261]
-1. See [Parameters] for additional parameters.
-
-### Parameters
-
-- **[SENZING_TOOLS_DATABASE_URL]**
-- **[SENZING_TOOLS_ENGINE_CONFIGURATION_JSON]**
-- **[SENZING_TOOLS_ENGINE_LOG_LEVEL]**
-- **[SENZING_TOOLS_ENGINE_MODULE_NAME]**
-- **[SENZING_TOOLS_GRPC_PORT]**
-- **[SENZING_TOOLS_LOG_LEVEL]**
 
 ## References
 
@@ -133,17 +76,9 @@ This usage shows how to initialize a database with a Docker container.
 [License Badge]: https://img.shields.io/badge/License-Apache2-brightgreen.svg
 [License]: https://github.com/senzing-garage/playground/blob/main/LICENSE
 [localhost:8260]: http://localhost:8260
-[localhost:8261]: http://localhost:8261
 [Package reference]: https://pkg.go.dev/github.com/senzing-garage/playground
-[Parameters]: #parameters
 [Senzing Garage]: https://github.com/senzing-garage-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
-[SENZING_TOOLS_DATABASE_URL]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_database_url
-[SENZING_TOOLS_ENGINE_CONFIGURATION_JSON]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_engine_configuration_json
-[SENZING_TOOLS_ENGINE_LOG_LEVEL]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_engine_log_level
-[SENZING_TOOLS_ENGINE_MODULE_NAME]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_engine_module_name
-[SENZING_TOOLS_GRPC_PORT]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_grpc_port
-[SENZING_TOOLS_LOG_LEVEL]: https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_tools_log_level
 [Senzing]: https://senzing.com/
 [sz-sdk-go-grpc]: https://github.com/senzing-garage/sz-sdk-go-grpc
 [sz-sdk-python-grpc]: https://github.com/senzing-garage/sz-sdk-python-grpc
