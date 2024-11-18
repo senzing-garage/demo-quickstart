@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
+#!/usr/bin/env python3
 
 # Import Python packages.
 
@@ -14,7 +13,7 @@ home_path = "./"
 
 # Modify the following. Identify uploaded file.
 
-filepath = home_path + "example-data-for-senzing.json"
+filepath = home_path + "senzing-example-data.json"
 
 # Discover `DATA_SOURCE` values in records.
 
