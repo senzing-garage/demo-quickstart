@@ -72,15 +72,12 @@
                                     Python <a href="https://pypi.org/project/senzing-grpc/">senzing-grpc</a> package
                                     into your environment.
                                     <br>Example:
-
                                     <div class="mb-6 bg-light">
                                         <pre><code>
     python3 -m pip install --upgrade senzing-grpc
                                         </code></pre>
                                     </div>
-
                                     Then download and run the following Jupyter notebooks:
-
                                     <ol>
                                         <li><a
                                                 href="/examples/notebooks/python/senzing_hello_world.ipynb">senzing_hello_world.ipynb</a>
@@ -127,12 +124,12 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#jupyterAdvanced" aria-expanded="false"
-                                    aria-controls="jupyterAdvanced">
-                                    <h6>Advanced use</h6>
+                                    data-bs-target="#jupyterGrpcServer" aria-expanded="false"
+                                    aria-controls="jupyterGrpcServer">
+                                    <h6>Start a gRPC server</h6>
                                 </button>
                             </h2>
-                            <div id="jupyterAdvanced" class="accordion-collapse collapse"
+                            <div id="jupyterGrpcServer" class="accordion-collapse collapse"
                                 data-bs-parent="#accordionJupyter">
                                 <div class="accordion-body">
                                     <p>
@@ -231,13 +228,13 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#pythonSdkAdvanced" aria-expanded="false"
-                                    aria-controls="pythonSdkAdvanced">
-                                    <h6>Advanced use</h6>
+                                    data-bs-target="#pythonSdkGrpcServer" aria-expanded="false"
+                                    aria-controls="pythonSdkGrpcServer">
+                                    <h6>Start a gRPC server</h6>
                                 </button>
                             </h2>
-                            <div id="pythonSdkAdvanced" class="accordion-collapse collapse"
-                                data-bs-parent="#accordionJupyter">
+                            <div id="pythonSdkGrpcServer" class="accordion-collapse collapse"
+                                data-bs-parent="#accordionPythonSdk">
                                 <div class="accordion-body">
                                     <p>
                                         If only a gRPC server is required for your future exploration, run:
@@ -250,11 +247,54 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#pythonSdkMigrate" aria-expanded="false"
+                                    aria-controls="pythonSdkMigrate">
+                                    <h6>Migrate from gRPC to core Senzing SDK</h6>
+                                </button>
+                            </h2>
+                            <div id="pythonSdkMigrate" class="accordion-collapse collapse"
+                                data-bs-parent="#accordionPythonSdk">
+                                <div class="accordion-body">
+                                    <p>
+                                        To migrate your Python application from using the gRPC server
+                                        to using the core
+                                        <a href="https://senzing-garage.github.io/sz-sdk-python/">Senzing SDK for
+                                            Python</a>,
+                                        replace the following code:
+                                    </p>
+                                    <div class="mb-6 bg-light">
+                                        <pre><code>
+    from senzing_grpc import SzAbstractFactory, SzAbstractFactoryParameters
 
+    FACTORY_PARAMETERS: SzAbstractFactoryParameters = {
+        "grpc_channel": grpc.insecure_channel("localhost:8261"),
+    }
+                                        </code></pre>
+                                    </div>
+                                    with a customized version of this:
+                                    <div class="mb-6 bg-light">
+                                        <pre><code>
+    from senzing import SzAbstractFactory, SzAbstractFactoryParameters
 
-
-
-
+    FACTORY_PARAMETERS: SzAbstractFactoryParameters = {
+        "instance_name": "Example",
+        "settings": {
+            "PIPELINE": {
+                "CONFIGPATH": "/etc/opt/senzing",
+                "RESOURCEPATH": "/opt/senzing/er/resources",
+                "SUPPORTPATH": "/opt/senzing/data",
+            },
+            "SQL": {"CONNECTION": "sqlite3://na:na@/tmp/sqlite/G2C.db"},
+        },
+    }
+                                        </code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
