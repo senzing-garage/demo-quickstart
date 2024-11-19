@@ -9,7 +9,7 @@ var (
 	githubIteration      = "0"
 	githubRef            = "refs/tags/0.3.2"
 	githubRefName        = "0.3.2"
-	githubRepository     = "senzing-garage/demo-quickstart"
-	githubRepositoryName = "demo-quickstart"
+	githubRepository     = "senzing-garage/playground"
+	githubRepositoryName = "playground"
 	githubVersion        = "0.3.2"
 )

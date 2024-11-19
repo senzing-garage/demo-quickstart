@@ -14,10 +14,10 @@ var completionCmd = &cobra.Command{
 	Use:   "completion",
 	Short: "Generate bash completion for the command",
 	Long: `To load completions, run:
-source < (demo-quickstart completion)
+source < (playground completion)
 
 To load completions automaticallon on login, add this line to your .bashrc file:
-source < (demo-quickstart completion)
+source < (playground completion)
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		_ = cmd

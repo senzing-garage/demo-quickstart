@@ -22,7 +22,7 @@ var docsCmd = &cobra.Command{
 			return err
 		}
 		if dir == "" {
-			if dir, err = os.MkdirTemp("", "demo-quickstart"); err != nil {
+			if dir, err = os.MkdirTemp("", "playground"); err != nil {
 				return err
 			}
 		}

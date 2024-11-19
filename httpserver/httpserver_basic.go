@@ -41,6 +41,7 @@ type BasicHTTPServer struct {
 	EntitySearchRoutePrefix   string // FIXME: Only works with "entity-search"
 	GrpcDialOptions           []grpc.DialOption
 	GrpcTarget                string
+	IsInDevelopment           bool
 	JupyterLabRoutePrefix     string // FIXME: Only works with "jupyter"
 	LogLevelName              string
 	ObserverOrigin            string
@@ -163,12 +164,16 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	// Add route to template pages.
 
-	rootMux.HandleFunc("/site/", httpServer.siteFunc)
+	rootMux.HandleFunc("/site/", httpServer.handleFuncForSite)
 	userMessage = fmt.Sprintf("%sServing Console at          http://localhost:%d\n", userMessage, httpServer.ServerPort)
+
+	// Add route for /notebooks.
+
+	rootMux.Handle("/examples/", http.StripPrefix("/examples", http.FileServer(http.Dir("/examples"))))
 
 	// Add route to static files.
 
-	rootDir, err := fs.Sub(static, "static/root")
+	rootDir, err := fs.Sub(httpServer.getStatic(), "static/root")
 	if err != nil {
 		panic(err)
 	}
@@ -193,6 +198,9 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 
 	if !httpServer.AvoidServing {
 		err = server.ListenAndServe()
+		if err != nil {
+			panic(err)
+		}
 	}
 	return err
 }
@@ -223,6 +231,13 @@ func (httpServer *BasicHTTPServer) getServerURL(up bool, url string) string {
 	return result
 }
 
+func (httpServer *BasicHTTPServer) getStatic() fs.FS {
+	if httpServer.IsInDevelopment {
+		return os.DirFS("httpserver/")
+	}
+	return static
+}
+
 func (httpServer *BasicHTTPServer) openAPIFunc(ctx context.Context, openAPISpecification []byte) http.HandlerFunc {
 	_ = ctx
 	_ = openAPISpecification
@@ -248,19 +263,22 @@ func (httpServer *BasicHTTPServer) openAPIFunc(ctx context.Context, openAPISpeci
 }
 func (httpServer *BasicHTTPServer) populateStaticTemplate(responseWriter http.ResponseWriter, request *http.Request, filepath string, templateVariables TemplateVariables) {
 	_ = request
-	templateBytes, err := static.ReadFile(filepath)
+	// templateBytes, err := static.ReadFile(filepath)
+	templateBytes, err := fs.ReadFile(httpServer.getStatic(), filepath)
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return
 	}
 	templateParsed, err := template.New("HtmlTemplate").Parse(string(templateBytes))
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return
 	}
 	err = templateParsed.Execute(responseWriter, templateVariables)
 	if err != nil {
-		fmt.Printf("Template parsing error: %v", err)
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
 		http.Error(responseWriter, http.StatusText(500), 500)
 		return
 	}
@@ -347,7 +365,7 @@ func (httpServer *BasicHTTPServer) getXtermMux(ctx context.Context) *http.ServeM
 
 // --- Http Funcs -------------------------------------------------------------
 
-func (httpServer *BasicHTTPServer) siteFunc(w http.ResponseWriter, r *http.Request) {
+func (httpServer *BasicHTTPServer) handleFuncForSite(w http.ResponseWriter, r *http.Request) {
 	templateVariables := TemplateVariables{
 		APIServerStatus:    httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
 		APIServerURL:       httpServer.getServerURL(httpServer.EnableSenzingRestAPI, fmt.Sprintf("http://%s/api", r.Host)),

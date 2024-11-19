@@ -4,18 +4,20 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"os"
 	"sync"
 	"time"
 
-	"github.com/senzing-garage/demo-quickstart/httpserver"
 	"github.com/senzing-garage/go-cmdhelping/cmdhelper"
 	"github.com/senzing-garage/go-cmdhelping/option"
+	"github.com/senzing-garage/go-cmdhelping/option/optiontype"
 	"github.com/senzing-garage/go-cmdhelping/settings"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
+	"github.com/senzing-garage/playground/httpserver"
 	"github.com/senzing-garage/serve-grpc/grpcserver"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,7 +25,7 @@ import (
 
 const (
 	Short string = "HTTP/gRPC server supporting various services"
-	Use   string = "demo-quickstart"
+	Use   string = "playground"
 	Long  string = `
 A server supporting the following services:
     - HTTP: Senzing API server
@@ -33,11 +35,20 @@ A server supporting the following services:
     `
 )
 
+var isInDevelopment = option.ContextVariable{
+	Arg:     "is-in-development",
+	Default: option.OsLookupEnvBool("SENZING_TOOLS_IS_IN_DEVELOPMENT", false),
+	Envar:   "SENZING_TOOLS_IS_IN_DEVELOPMENT",
+	Help:    "For testing only. [%s]",
+	Type:    optiontype.Bool,
+}
+
 // ----------------------------------------------------------------------------
 // Context variables
 // ----------------------------------------------------------------------------
 
 var ContextVariablesForMultiPlatform = []option.ContextVariable{
+	isInDevelopment,
 	option.AvoidServe,
 	option.Configuration,
 	option.DatabaseURL,
@@ -124,6 +135,11 @@ func RunE(_ *cobra.Command, _ []string) error {
 	grpcserver := &grpcserver.BasicGrpcServer{
 		AvoidServing:          viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:             true,
+		EnableSzConfig:        viper.GetBool(option.EnableSzConfig.Arg),
+		EnableSzConfigManager: viper.GetBool(option.EnableSzConfigManager.Arg),
+		EnableSzDiagnostic:    viper.GetBool(option.EnableSzDiagnostic.Arg),
+		EnableSzEngine:        viper.GetBool(option.EnableSzEngine.Arg),
+		EnableSzProduct:       viper.GetBool(option.EnableSzProduct.Arg),
 		LogLevelName:          viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:        viper.GetString(option.ObserverOrigin.Arg),
 		ObserverURL:           viper.GetString(option.ObserverURL.Arg),
@@ -140,6 +156,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:                 true,
 		EntitySearchRoutePrefix:   "entity-search",
+		IsInDevelopment:           viper.GetBool(isInDevelopment.Arg),
 		JupyterLabRoutePrefix:     "jupyter",
 		LogLevelName:              viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),
@@ -170,11 +187,17 @@ func RunE(_ *cobra.Command, _ []string) error {
 	go func() {
 		defer waitGroup.Done()
 		err = httpServer.Serve(ctx)
+		if err != nil {
+			fmt.Printf("Error: httpServer - %v\n", err)
+		}
 	}()
 
 	go func() {
 		defer waitGroup.Done()
 		err = grpcserver.Serve(ctx)
+		if err != nil {
+			fmt.Printf("Error: grpcServer - %v\n", err)
+		}
 	}()
 
 	waitGroup.Wait()

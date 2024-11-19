@@ -29,6 +29,7 @@ USER root
 
 RUN apt-get update \
  && apt-get -y install \
+        libsqlite3-dev \
         python3 \
         python3-dev \
         python3-pip \
@@ -51,7 +52,7 @@ RUN pip3 install --upgrade pip \
 # Copy local files from the Git repository.
 
 COPY ./rootfs /
-COPY . ${GOPATH}/src/demo-quickstart
+COPY . ${GOPATH}/src/playground
 
 # Copy files from prior stage.
 
@@ -64,14 +65,13 @@ ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 
 # Build go program.
 
-WORKDIR ${GOPATH}/src/demo-quickstart
-RUN make print-make-variables
-RUN make --debug=vijm build
+WORKDIR ${GOPATH}/src/playground
+RUN make build-with-libsqlite3
 
 # Copy binaries to /output.
 
 RUN mkdir -p /output \
- && cp -R ${GOPATH}/src/demo-quickstart/target/*  /output/
+ && cp -R ${GOPATH}/src/playground/target/*  /output/
 
 # -----------------------------------------------------------------------------
 # Stage: final
@@ -79,9 +79,9 @@ RUN mkdir -p /output \
 
 FROM ${IMAGE_FINAL} AS final
 ENV REFRESHED_AT=2024-07-01
-LABEL Name="senzing/demo-quickstart" \
+LABEL Name="senzing/playground" \
       Maintainer="support@senzing.com" \
-      Version="0.0.1"
+      Version="0.3.2"
 
 
 ARG BUILD_USER="senzing"
@@ -100,6 +100,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
         gnupg2 \
         jq \
         libodbc1 \
+        libsqlite3-dev \
         postgresql-client \
         supervisor \
         unixodbc \
@@ -129,12 +130,12 @@ COPY ./rootfs /
 
 # Copy files from prior stage.
 
-COPY --from=builder /output/linux/demo-quickstart /app/demo-quickstart
+COPY --from=builder /output/linux/playground /app/playground
 COPY --from=builder /app/venv /app/venv
 
 # Prepare jupyter lab environment.
 
-RUN chmod --recursive 777 /tmp /notebooks
+RUN chmod --recursive 777 /app /examples /tmp 
 
 # Create ${BUILD_USER} user.
 
@@ -147,7 +148,7 @@ USER ${BUILD_USER}
 # Activate virtual environment.
 
 ENV VIRTUAL_ENV=/app/venv
-ENV PATH="/app/venv/bin:${PATH}"
+ENV PATH="/app/venv/bin:/examples/python:${PATH}"
 
 # Runtime environment variables.
 
@@ -159,7 +160,9 @@ ENV SENZING_API_SERVER_PORT='8250'
 ENV SENZING_API_SERVER_SKIP_ENGINE_PRIMING='true'
 ENV SENZING_API_SERVER_SKIP_STARTUP_PERF='true'
 ENV SENZING_DATA_MART_SQLITE_DATABASE_FILE=/tmp/datamart
-ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@/tmp/sqlite/G2C.db"}}'
+ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@nowhere/IN_MEMORY_DB?mode=memory&cache=shared"}}'
+# ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@nowhere/tmp/sqlite/G2C.db"}}'
+ENV SENZING_TOOLS_ENABLE_ALL=true
 
 # Runtime execution.
 

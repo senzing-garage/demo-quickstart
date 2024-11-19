@@ -73,7 +73,7 @@ func TestBasicHTTPServer_siteFunc(test *testing.T) {
 	request := httptest.NewRequest(http.MethodGet, "/", nil)
 	response := httptest.NewRecorder()
 	httpServer := getTestObject(ctx, test)
-	httpServer.siteFunc(response, request)
+	httpServer.handleFuncForSite(response, request)
 }
 
 // ----------------------------------------------------------------------------
