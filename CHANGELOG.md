@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.4.0] - 2024-11-19
+
+### Changed in 0.4.0
+
+- Migrate from `demo-quickstart` to `playground`
+
 ## [0.3.2] - 2024-11-14
 
 ### Changed in 0.3.2
