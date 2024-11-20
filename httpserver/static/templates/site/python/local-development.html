@@ -24,21 +24,11 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/site/home.html">Home</a></li>
                     <li class="breadcrumb-item" aria-current="page"><a href="/site/python/index.html">Python</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">SDK</li>
+                    <li class="breadcrumb-item active" aria-current="page">Local development</li>
                 </ol>
             </nav>
-            <h1>Using personal development environment</h1>
-            <p>
-                Prepare your python environment by installing the Python
-                <a href="https://pypi.org/project/senzing-grpc/">senzing-grpc</a>
-                package into your environment.
-                <br>Example:
-            <div class="mb-6 bg-light">
-                <pre><code>
-    python3 -m pip install --upgrade senzing-grpc
-                                        </code></pre>
-            </div>
-            </p>
+            <h1>Senzing SDK in my development environment</h1>
+            <div id="install-python-package" w3-include-html="/component/install-python-package.html"> </div>
             <p>
                 Download and run any of the following files:
             <ol>
@@ -54,6 +44,12 @@
             </ol>
             </p>
 
+            <p>
+                Using the files as examples, build your own Python application using the Senzing SDK.
+            </p>
+
+            <div id="sdk-doc-python" w3-include-html="/component/sdk-doc-python.html"> </div>
+            <div id="serve-grpc" w3-include-html="/component/serve-grpc.html"> </div>
             <div class="col-xs-12" style="height:10px;"></div>
             <div id="bottom-nav" w3-include-html="/component/bottom-nav.html" />
         </div>

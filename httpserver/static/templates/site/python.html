@@ -138,15 +138,7 @@
                             <div id="jupyterGrpcServer" class="accordion-collapse collapse"
                                 data-bs-parent="#accordionJupyter">
                                 <div class="accordion-body">
-                                    <p>
-                                        In the future, if you only need a gRPC server, but not the entire Senzing
-                                        Playground, run:
-                                    </p>
-                                    <div class="mb-6 bg-light">
-                                        <pre><code>
-    docker run -it --name senzing-serve-grpc -p 8261:8261 --pull always --rm senzing/serve-grpc
-                                        </code></pre>
-                                    </div>
+                                    <div id="serve-grpc-jupyter" w3-include-html="/component/serve-grpc.html"> </div>
                                 </div>
                             </div>
                         </div>
@@ -180,17 +172,10 @@
                             <div id="pythonSdkDownload" class="accordion-collapse collapse"
                                 data-bs-parent="#accordionPythonSdk">
                                 <div class="accordion-body">
-                                    <p>
-                                        Prepare your python environment by installing the Python
-                                        <a href="https://pypi.org/project/senzing-grpc/">senzing-grpc</a>
-                                        package into your environment.
-                                        <br>Example:
-                                    <div class="mb-6 bg-light">
-                                        <pre><code>
-    python3 -m pip install --upgrade senzing-grpc
-                                        </code></pre>
-                                    </div>
-                                    </p>
+                                    <div id="install-python-package"
+                                        w3-include-html="/component/install-python-package.html"> </div>
+
+
                                     <p>
                                         Download and run any of the following files:
                                     <ol>
@@ -243,15 +228,7 @@
                             <div id="pythonSdkGrpcServer" class="accordion-collapse collapse"
                                 data-bs-parent="#accordionPythonSdk">
                                 <div class="accordion-body">
-                                    <p>
-                                        In the future, if you only need a gRPC server, but not the entire Senzing
-                                        Playground, run:
-                                    </p>
-                                    <div class="mb-6 bg-light">
-                                        <pre><code>
-    docker run -it --name senzing-serve-grpc -p 8261:8261 --pull always --rm senzing/serve-grpc
-                                        </code></pre>
-                                    </div>
+                                    <div id="serve-grpc" w3-include-html="/component/serve-grpc.html"> </div>
                                 </div>
                             </div>
                         </div>

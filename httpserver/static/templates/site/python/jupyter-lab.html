@@ -27,19 +27,10 @@
                     <li class="breadcrumb-item active" aria-current="page">Jupyter Lab</li>
                 </ol>
             </nav>
-            <h1>Using personal Jupyter Lab</h1>
+            <h1>Using my Jupyter Lab</h1>
+            <div id="install-python-package" w3-include-html="/component/install-python-package.html"> </div>
             <p>
-                Add the Python <a href="https://pypi.org/project/senzing-grpc/">senzing-grpc</a> package into your
-                environment.
-                <br>Example:
-            </p>
-            <div class="mb-6 bg-light">
-                <pre><code>
-    python3 -m pip install --upgrade senzing-grpc
-        </code></pre>
-            </div>
-            <p>
-                Then download and run the following Jupyter notebooks in your Jupyter Lab:
+                Download and run the following Jupyter notebooks in your Jupyter Lab:
             <ol>
                 <li><a href="/examples/notebooks/python/senzing_hello_world.ipynb">senzing_hello_world.ipynb</a>
                     - A simple test of connectivity to Senzing engine.</li>
@@ -50,8 +41,8 @@
                 </li>
             </ol>
             </p>
-
-
+            <div id="sdk-doc-python" w3-include-html="/component/sdk-doc-python.html"> </div>
+            <div id="serve-grpc" w3-include-html="/component/serve-grpc.html"> </div>
             <div class="col-xs-12" style="height:10px;"></div>
             <div id="bottom-nav" w3-include-html="/component/bottom-nav.html" />
         </div>
