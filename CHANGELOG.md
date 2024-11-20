@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
-## [0.4.2] - 2024-11-20
+## [0.4.1] - 2024-11-20
 
-### Changed in 0.4.2
+### Changed in 0.4.1
 
 - Add "Sandbox" concept
 - Add goals
