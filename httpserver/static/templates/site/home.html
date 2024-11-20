@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/jquery-3.7.1.min.js" type="text/javascript"></script>
+  <script src="/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+  <script src="/js/jquery.dataTables.min.js" type="text/javascript"></script>
+  <script src="/js/include-html.js" type="text/javascript"></script>
+  <title>Senzing Playground</title>
+</head>
+
+<body>
+  <main class="d-flex flex-nowrap">
+    <div id="left-nav" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;"
+      w3-include-html="/component/left-nav.html">
+    </div>
+    <div class="container">
+      <div class="col-xs-12" style="height:15px;"></div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">Home</li>
+        </ol>
+      </nav>
+      <h1>Playground & Sandbox</h1>
+      <p>
+        Explore Senzing from the convenience of your workstation.
+      </p>
+      <p>
+        Depending on your goal, you may want to use the Playground
+        or you may want to use the Sandbox.
+        The <b>Playground</b> has "baked-in" features that
+        allow you to examine Senzing without installing anything
+        on your workstation.
+        The <b>Sandbox</b> helps you set up an environment on your
+        workstation to use Senzing via gRPC server.
+      </p>
+      <p>
+        So the question is: &nbsp;<i>What is your goal?</i>
+      </p>
+      <p>
+        <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
+        Choose your goal:
+      </p>
+
+      <div class="accordion" id="accordionGoal">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#tabPlayground" aria-expanded="true" aria-controls="tabPlayground">
+              <h6>1. <b class="text-primary">I want to try Senzing without installing anything.</b> (Playground)</h6>
+            </button>
+          </h2>
+          <div id="tabPlayground" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
+            <div class="col-xs-12" style="height:15px;"></div>
+            <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
+            Which language are you using?
+            <ul class="nav nav-pills mb-auto">
+              <li>
+                <a href="/site/python/playground.html" class="nav-link">
+                  &nbsp; &nbsp;
+                  <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
+                  &nbsp; Python </a>
+              </li>
+              <li>
+                <a id="bob-java" href="/site/java.html" class="nav-link disabled">
+                  &nbsp; &nbsp;
+                  <img src="/images/java-icon.svg" alt="Go" width="24" height="24">
+                  &nbsp; &nbsp; Java
+                </a>
+              </li>
+              <li>
+                <a href="/site/go.html" class="nav-link disabled">
+                  &nbsp; &nbsp;
+                  <img src="/images/Go-Logo_Black.svg" alt="Go" width="32" height="32">
+                  &nbsp;Go
+                </a>
+              </li>
+              <li>
+                <a href="/site/csharp.html" class="nav-link disabled">
+                  &nbsp; &nbsp;
+                  <img src="/images/32px-Logo_C_sharp.svg.png" alt="C-sharp" width="24" height="24">
+                  &nbsp; &nbsp; C#
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
+        <div class="accordion" id="accordionGoal">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#tabJupyter" aria-expanded="true" aria-controls="tabJupyter">
+                <h6>2. <b class="text-primary">I want to use my Jupyter Lab.</b> (Sandbox)</h6>
+              </button>
+            </h2>
+            <div id="tabJupyter" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
+              <div class="col-xs-12" style="height:15px;"></div>
+              <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
+              Which language are you using?
+              <ul class="nav nav-pills mb-auto">
+                <li>
+                  <a href="/site/python/jupyter-lab.html" class="nav-link">
+                    &nbsp; &nbsp;
+                    <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
+                    &nbsp; Python </a>
+                </li>
+                <li>
+                  <a id="bob-java" href="/site/java.html" class="nav-link disabled">
+                    &nbsp; &nbsp;
+                    <img src="/images/java-icon.svg" alt="Go" width="24" height="24">
+                    &nbsp; &nbsp; Java
+                  </a>
+                </li>
+                <li>
+                  <a href="/site/go.html" class="nav-link disabled">
+                    &nbsp; &nbsp;
+                    <img src="/images/Go-Logo_Black.svg" alt="Go" width="32" height="32">
+                    &nbsp;Go
+                  </a>
+                </li>
+                <li>
+                  <a href="/site/csharp.html" class="nav-link disabled">
+                    &nbsp; &nbsp;
+                    <img src="/images/32px-Logo_C_sharp.svg.png" alt="C-sharp" width="24" height="24">
+                    &nbsp; &nbsp; C#
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
+          <div class="accordion" id="accordionGoal">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#tabSDK" aria-expanded="true" aria-controls="tabSDK">
+                  <h6>3. <b class="text-primary">I want to try Senzing with my development environment.</b>
+                    (Sandbox)</h6>
+                </button>
+              </h2>
+              <div id="tabSDK" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
+                <div class="col-xs-12" style="height:15px;"></div>
+                <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
+                Which language are you using?
+                <ul class="nav nav-pills mb-auto">
+                  <li>
+                    <a href="/site/python/local-development.html" class="nav-link">
+                      &nbsp; &nbsp;
+                      <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
+                      &nbsp; Python </a>
+                  </li>
+                  <li>
+                    <a id="bob-java" href="/site/java.html" class="nav-link disabled">
+                      &nbsp; &nbsp;
+                      <img src="/images/java-icon.svg" alt="Go" width="24" height="24">
+                      &nbsp; &nbsp; Java
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/site/go.html" class="nav-link disabled">
+                      &nbsp; &nbsp;
+                      <img src="/images/Go-Logo_Black.svg" alt="Go" width="32" height="32">
+                      &nbsp;Go
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/site/csharp.html" class="nav-link disabled">
+                      &nbsp; &nbsp;
+                      <img src="/images/32px-Logo_C_sharp.svg.png" alt="C-sharp" width="24" height="24">
+                      &nbsp; &nbsp; C#
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+            <div class="accordion" id="accordionGoal">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#tabMIgrate" aria-expanded="true" aria-controls="tabMIgrate">
+                    <h6>4. <b class="text-primary">I want to migrate from using Senzing gRPC SDK to using the Senzing
+                        native
+                        SDK.</b></h6>
+                  </button>
+                </h2>
+                <div id="tabMIgrate" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
+                  <div class="col-xs-12" style="height:15px;"></div>
+                  <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
+                  Which language are you using?
+                  <ul class="nav nav-pills mb-auto">
+                    <li>
+                      <a href="/site/python/migrate.html" class="nav-link">
+                        &nbsp; &nbsp;
+                        <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
+                        &nbsp; Python </a>
+                    </li>
+                    <li>
+                      <a id="bob-java" href="/site/java.html" class="nav-link disabled">
+                        &nbsp; &nbsp;
+                        <img src="/images/java-icon.svg" alt="Go" width="24" height="24">
+                        &nbsp; &nbsp; Java
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/site/go.html" class="nav-link disabled">
+                        &nbsp; &nbsp;
+                        <img src="/images/Go-Logo_Black.svg" alt="Go" width="32" height="32">
+                        &nbsp;Go
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/site/csharp.html" class="nav-link disabled">
+                        &nbsp; &nbsp;
+                        <img src="/images/32px-Logo_C_sharp.svg.png" alt="C-sharp" width="24" height="24">
+                        &nbsp; &nbsp; C#
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <div id="bottom-nav" w3-include-html="/component/bottom-nav.html" />
+        </div>
+  </main>
+
+  <script type="text/javascript">
+    includeHTML();
+  </script>
+</body>
+
+</html>
