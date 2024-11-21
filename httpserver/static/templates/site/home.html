@@ -19,7 +19,7 @@
     <div id="left-nav" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;"
       w3-include-html="/component/left-nav.html">
     </div>
-    <div class="container">
+    <div id="main-container" class="container px-5">
       <div class="col-xs-12" style="height:15px;"></div>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -31,13 +31,11 @@
         Explore Senzing SDK from the convenience of your workstation.
       </p>
       <p>
-        Depending on your goal, you may want to use the Playground
-        or you may want to use the Sandbox.
-        The <b>Playground</b> has "baked-in" features that
-        allow you to examine Senzing without installing anything
-        on your workstation.
-        The <b>Sandbox</b> helps you set up an environment on your
-        workstation to use Senzing via a gRPC server.
+        Depending on your goal, you may want to use the Playground or you may want to use the Sandbox. The
+        <b>Playground</b> has <a href="#" data-toggle="tooltip"
+          title="Baked-in features include: Jupyter Lab, terminal, ..." data-content="">baked-in features</a>
+        that allow you to examine Senzing without installing anything on your computer. The <b>Sandbox</b> helps you set
+        up an environment on your workstation to use Senzing via a gRPC server.
       </p>
       <p>
         So the question is: &nbsp;<i>What is your goal?</i>
@@ -59,56 +57,19 @@
           </h2>
           <div id="tabPlayground" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
             <div class="col-xs-12" style="height:15px;"></div>
-            <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
-            Which language are you using?
-            <ul class="nav nav-pills mb-auto">
-              <li>
-                <a href="/site/python/playground.html" class="nav-link">
-                  &nbsp; &nbsp;
-                  <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
-                  &nbsp; Python </a>
-              </li>
-              <li>
-                <a id="bob-java" href="/site/java.html" class="nav-link disabled">
-                  &nbsp; &nbsp;
-                  <img src="/images/java-icon.svg" alt="Go" width="24" height="24">
-                  &nbsp; &nbsp; Java
-                </a>
-              </li>
-              <li>
-                <a href="/site/go.html" class="nav-link disabled">
-                  &nbsp; &nbsp;
-                  <img src="/images/Go-Logo_Black.svg" alt="Go" width="32" height="32">
-                  &nbsp;Go
-                </a>
-              </li>
-              <li>
-                <a href="/site/csharp.html" class="nav-link disabled">
-                  &nbsp; &nbsp;
-                  <img src="/images/32px-Logo_C_sharp.svg.png" alt="C-sharp" width="24" height="24">
-                  &nbsp; &nbsp; C#
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-
-        <div class="accordion" id="accordionGoal">
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#tabJupyter" aria-expanded="true" aria-controls="tabJupyter">
-                <h6>2. <b class="text-primary">I want to use my Jupyter Lab.</b> (Sandbox)</h6>
-              </button>
-            </h2>
-            <div id="tabJupyter" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
-              <div class="col-xs-12" style="height:15px;"></div>
+            <div class="container px-5">
+              <p>
+                In this exercise, you'll be using the built-in
+                <a href="https://jupyter.org/">Jupyter Lab</a>
+                and termimal to work with code examples that access the Senzing SDK.
+                Everything is included within the Docker container;
+                there's nothing else to install on your computer.
+              </p>
               <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
               Which language are you using?
               <ul class="nav nav-pills mb-auto">
                 <li>
-                  <a href="/site/python/jupyter-lab.html" class="nav-link">
+                  <a href="/site/python/playground.html" class="nav-link">
                     &nbsp; &nbsp;
                     <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
                     &nbsp; Python </a>
@@ -137,24 +98,31 @@
               </ul>
             </div>
           </div>
+        </div>
 
 
-          <div class="accordion" id="accordionGoal">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#tabSDK" aria-expanded="true" aria-controls="tabSDK">
-                  <h6>3. <b class="text-primary">I want to try Senzing SDK in my development environment.</b>
-                    (Sandbox)</h6>
-                </button>
-              </h2>
-              <div id="tabSDK" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
-                <div class="col-xs-12" style="height:15px;"></div>
+        <div class="accordion" id="accordionGoal">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#tabJupyter" aria-expanded="true" aria-controls="tabJupyter">
+                <h6>2. <b class="text-primary">I want to use my Jupyter Lab.</b> (Sandbox)</h6>
+              </button>
+            </h2>
+            <div id="tabJupyter" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
+              <div class="col-xs-12" style="height:15px;"></div>
+              <div class="container px-5">
+                <p>
+                  Using the
+                  <a href="https://jupyter.org/">Jupyter Lab</a>
+                  that you already have installed on your computer,
+                  this exercise gives you some starter Jupyter notebooks to try.
+                </p>
                 <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
                 Which language are you using?
                 <ul class="nav nav-pills mb-auto">
                   <li>
-                    <a href="/site/python/local-development.html" class="nav-link">
+                    <a href="/site/python/jupyter-lab.html" class="nav-link">
                       &nbsp; &nbsp;
                       <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
                       &nbsp; Python </a>
@@ -183,25 +151,37 @@
                 </ul>
               </div>
             </div>
+          </div>
 
 
-            <div class="accordion" id="accordionGoal">
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#tabMIgrate" aria-expanded="true" aria-controls="tabMIgrate">
-                    <h6>4. <b class="text-primary">I want to migrate from using Senzing gRPC SDK to using the Senzing
-                        native
-                        SDK.</b></h6>
-                  </button>
-                </h2>
-                <div id="tabMIgrate" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
-                  <div class="col-xs-12" style="height:15px;"></div>
+          <div class="accordion" id="accordionGoal">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#tabSDK" aria-expanded="true" aria-controls="tabSDK">
+                  <h6>3. <b class="text-primary">I want to try Senzing SDK in my development environment.</b>
+                    (Sandbox)</h6>
+                </button>
+              </h2>
+              <div id="tabSDK" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
+                <div class="col-xs-12" style="height:15px;"></div>
+                <div class="container px-5">
+                  <p>
+                    Using a development environment that you already have on your computer
+                    (e.g.
+                    <a href="https://code.visualstudio.com/">VSCode</a>,
+                    <a href="https://www.eclipse.org/">Eclipse</a>,
+                    <a href="https://developer.apple.com/xcode/">Xcode</a>,
+                    <a href="https://www.jetbrains.com/">JetBrains</a>,
+                    simple editor, etc.
+                    ),
+                    this exercise gives you some starter code to try.
+                  </p>
                   <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
                   Which language are you using?
                   <ul class="nav nav-pills mb-auto">
                     <li>
-                      <a href="/site/python/migrate.html" class="nav-link">
+                      <a href="/site/python/local-development.html" class="nav-link">
                         &nbsp; &nbsp;
                         <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
                         &nbsp; Python </a>
@@ -231,6 +211,62 @@
                 </div>
               </div>
             </div>
+
+
+            <div class="accordion" id="accordionGoal">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#tabMIgrate" aria-expanded="true" aria-controls="tabMIgrate">
+                    <h6>4. <b class="text-primary">I want to migrate from using Senzing gRPC SDK to using the Senzing
+                        native
+                        SDK.</b></h6>
+                  </button>
+                </h2>
+                <div id="tabMIgrate" class="accordion-collapse collapse" data-bs-parent="#accordionGoal">
+                  <div class="col-xs-12" style="height:15px;"></div>
+                  <div class="container px-5">
+                    <p>
+                      In the preceding excerises, you accessed Senzing SDK over gRPC.
+                      The Senzing SDK also has libraries for accessing Senzing directly.
+                      In this exercise, you'll see how to modify your code to access
+                      Senzing directly.
+                    </p>
+                    <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
+                    Which language are you using?
+                    <ul class="nav nav-pills mb-auto">
+                      <li>
+                        <a href="/site/python/migrate.html" class="nav-link">
+                          &nbsp; &nbsp;
+                          <img src="/images/python-svgrepo-com.svg" alt="Python" width="32" height="32">
+                          &nbsp; Python </a>
+                      </li>
+                      <li>
+                        <a id="bob-java" href="/site/java.html" class="nav-link disabled">
+                          &nbsp; &nbsp;
+                          <img src="/images/java-icon.svg" alt="Go" width="24" height="24">
+                          &nbsp; &nbsp; Java
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/site/go.html" class="nav-link disabled">
+                          &nbsp; &nbsp;
+                          <img src="/images/Go-Logo_Black.svg" alt="Go" width="32" height="32">
+                          &nbsp;Go
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/site/csharp.html" class="nav-link disabled">
+                          &nbsp; &nbsp;
+                          <img src="/images/32px-Logo_C_sharp.svg.png" alt="C-sharp" width="24" height="24">
+                          &nbsp; &nbsp; C#
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-xs-12" style="height:15px;"></div>
           <div id="bottom-nav" w3-include-html="/component/bottom-nav.html" />
@@ -239,6 +275,9 @@
 
   <script type="text/javascript">
     includeHTML();
+    $(document).ready(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
   </script>
 </body>
 
