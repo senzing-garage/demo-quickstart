@@ -149,6 +149,7 @@ RUN useradd --no-log-init --create-home --shell /bin/bash --uid "${BUILD_UID}" -
 # Run as non-root container
 
 USER ${BUILD_USER}
+ENV HOME=/home/${BUILD_USER}
 WORKDIR ${HOME}
 
 # Activate virtual environment.
@@ -156,22 +157,22 @@ WORKDIR ${HOME}
 ENV VIRTUAL_ENV=/app/venv
 ENV PATH="/app/venv/bin:/examples/python:${PATH}"
 
-# Install Go and Jupyter Go Kernel.
+# Install Jupyter Go Kernel.
 
-ENV HOME=/home/${BUILD_USER}
 ENV GOROOT=/usr/local/go
 ENV GOPATH=${HOME}/go
 ENV PATH=$PATH:${GOROOT}/bin:${GOPATH}/bin
 RUN <<EOF
+  echo "NB_USER=${BUILD_USER}" >> .profile
   echo "export PATH=${PATH}" >> .profile
   echo "export GOPATH=${GOPATH}" >> .profile
   echo "export GOROOT=${GOROOT}" >> .profile
 EOF
 
-#RUN go install github.com/janpfeifer/gonb@latest \
-# && go install golang.org/x/tools/cmd/goimports@latest \
-# && go install golang.org/x/tools/gopls@latest \
-# && gonb --install
+RUN go install github.com/janpfeifer/gonb@latest \
+ && go install golang.org/x/tools/cmd/goimports@latest \
+ && go install golang.org/x/tools/gopls@latest \
+ && gonb --install
 
 # Runtime environment variables.
 
