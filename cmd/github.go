@@ -1,15 +1,15 @@
-// 0.4.3
-// Created by senzing-factory/github-action-make-go-github-file.yaml on Thu Nov 21 20:19:29 UTC 2024
+// 0.4.4
+// Created by senzing-factory/github-action-make-go-github-file.yaml on Fri Nov 22 16:21:44 UTC 2024
 //
 //lint:file-ignore U1000 Ignore all unused code, it's generated
 package cmd
 
 var (
-	githubDate           = "2024-11-21"
+	githubDate           = "2024-11-22"
 	githubIteration      = "0"
-	githubRef            = "refs/tags/0.4.3"
-	githubRefName        = "0.4.3"
+	githubRef            = "refs/tags/0.4.4"
+	githubRefName        = "0.4.4"
 	githubRepository     = "senzing-garage/playground"
 	githubRepositoryName = "playground"
-	githubVersion        = "0.4.3"
+	githubVersion        = "0.4.4"
 )
