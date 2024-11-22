@@ -27,14 +27,14 @@
                     <li class="breadcrumb-item active" aria-current="page">Playground</li>
                 </ol>
             </nav>
-            <h1>Senzing SDK without installing anything</h1>
+            <h1>Senzing SDK without installing anything else</h1>
             <p>
                 You can use Jupyter notebooks or the Python SDK to explore Senzing.
             </p>
             <div id="sdk-doc-python" w3-include-html="/component/sdk-doc-python.html"> </div>
             <p class="text-muted fw-light">
-                <b>Hint:</b> If the senzing/playground docker container has been use in a prior
-                demonstration, restart the docker container for best results.
+                <b>Hint:</b> If the senzing/playground Docker container has been use in a prior
+                demonstration, restart the Docker container for best results.
             </p>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -53,10 +53,15 @@
                 <div class="tab-pane fade show active" id="jupyter-tab-pane" role="tabpanel"
                     aria-labelledby="jupyter-tab" tabindex="0">
                     <div class="col-xs-12" style="height:15px;"></div>
-                    <h4>Jupyter notebook demonstration</h4>
+                    <h4>Jupyter notebooks</h4>
                     <p>
-                        In this demonstration, Jupyter notebooks have been created to demonstrate Senzing.
-                        Using these notebooks as a starting point, modify the notebook to explore Senzing.
+                        In this exercise, Jupyter notebooks have been created to demonstrate Senzing. Using these
+                        notebooks in the embedded Jupyter Lab as a starting point, modify a notebook to explore
+                        Senzing.
+                    </p>
+                    <p>
+                        More information on
+                        <a href="https://jupyter.org/">Jupyter Lab</a>.
                     </p>
                     <p>
                         <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
@@ -74,9 +79,9 @@
                     </ol>
                     </p>
                     <p>
-                        Use a notebook as starting point to create your own Jupyter notebooks. Remember that the
-                        notebooks are not permanent and will be deleted when the docker container is destroyed. You can
-                        save a notebook locally by selecting <b>File</b> > <b>Download</b> in Jupyter Lab.
+                        Use a notebook as starting point to create your own Jupyter notebook. Remember that the
+                        notebooks are not permanent and will be deleted when the Docker container is destroyed. You can
+                        save a notebook to your workstation by selecting <b>File</b> > <b>Download</b> in Jupyter Lab.
                     </p>
                     <p>
                         You can also upload a Python Notebook (.ipynb) file using a <b>docker</b> command.
@@ -91,10 +96,13 @@
                 <div class="tab-pane fade" id="python-sdk-tab-pane" role="tabpanel" aria-labelledby="python-sdk-tab"
                     tabindex="0">
                     <div class="col-xs-12" style="height:15px;"></div>
-                    <h4>Senzing Python SDK demonstration</h4>
+                    <h4>Python SDK</h4>
                     <p>
-                        To run the example files, open <a href="/xterm/xterm.html" target="senzing-xterm">Xterm</a> and
-                        run any of the following:
+                        In this exercise, Python programs which access Senzing are run on the command line.
+                    </p>
+                    <p>
+                        To run the example programs in the Docker container, open a <a href="/xterm/xterm.html"
+                            target="senzing-xterm">Docker terminal</a> and run any of the following:
                     <div class="mb-6 bg-light">
                         <pre><code>
     senzing_hello_world.py
@@ -104,7 +112,7 @@
                     </div>
                     </p>
                     <p>
-                        By using a <b>docker</b> command, you can upload and download files to/from the running Docker
+                        By using <b>docker</b> commands, you can upload and download files to/from the running Docker
                         container. <br /> Example download from Docker container:
                     <div class="mb-6 bg-light">
 
