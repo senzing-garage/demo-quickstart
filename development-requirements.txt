@@ -1,7 +1,7 @@
 bandit==1.7.10
 black==24.10.0
 build==1.2.2.post1
-coverage==7.6.7
+coverage==7.6.8
 flake8==7.1.1
 fpvs==0.3.0
 isort==5.13.2
@@ -28,4 +28,4 @@ sphinxcontrib-qthelp==2.0.0
 sphinxcontrib-serializinghtml==2.0.0
 twine==5.1.1
 virtualenv==20.27.1
-wheel==0.45.0
+wheel==0.45.1
