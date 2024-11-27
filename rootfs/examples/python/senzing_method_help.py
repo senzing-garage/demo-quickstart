@@ -15,7 +15,7 @@ sz_abstract_factory = SzAbstractFactory(**FACTORY_PARAMETERS)
 
 # Create Senzing object.
 
-sz_engine = sz_abstract_factory.create_sz_engine()
+sz_engine = sz_abstract_factory.create_engine()
 
 # List all methods for a Senzing object.
 
