@@ -1,12 +1,12 @@
 autopep8==2.3.1
 black==24.10.0
-grpcio==1.68.0
+grpcio==1.68.1
 isort==5.13.2
 jupyter==1.1.1
 jupyterlab-code-formatter==3.0.2
 nbconvert==7.16.4
 notebook==7.2.2
-protobuf==5.28.3
-senzing-abstract==0.1.10
-senzing-grpc==0.3.4
+protobuf==5.29.0
+senzing-abstract==0.1.12
+senzing-grpc==0.3.6
 setuptools==75.6.0
