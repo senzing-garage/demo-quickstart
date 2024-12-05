@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.4.6] - 2024-11-27
+
+### Changed in 0.4.6
+
+- Update dependencies
+- Migrate from `senzing` to `senzing_core`
+
 ## [0.4.5] - 2024-11-27
 
 ### Changed in 0.4.5
