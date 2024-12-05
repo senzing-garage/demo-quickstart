@@ -2,16 +2,16 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_SENZINGAPI_RUNTIME=senzing/senzingapi-runtime-beta:latest
-ARG IMAGE_BUILDER=golang:1.22.4-bullseye
+ARG IMAGE_SENZINGSDK_RUNTIME=senzing/senzingsdk-runtime-beta:latest
+ARG IMAGE_BUILDER=golang:1.23.4-bullseye
 ARG IMAGE_FPM=dockter/fpm:latest
 ARG IMAGE_FINAL=alpine
 
 # -----------------------------------------------------------------------------
-# Stage: senzingapi_runtime
+# Stage: senzingsdk_runtime
 # -----------------------------------------------------------------------------
 
-FROM ${IMAGE_SENZINGAPI_RUNTIME} AS senzingapi_runtime
+FROM ${IMAGE_SENZINGSDK_RUNTIME} AS senzingsdk_runtime
 
 # -----------------------------------------------------------------------------
 # Stage: builder
@@ -37,8 +37,8 @@ COPY . ${GOPATH}/src/${GO_PACKAGE_NAME}
 
 # Copy files from prior stage.
 
-COPY --from=senzingapi_runtime  "/opt/senzing/er/lib/"   "/opt/senzing/er/lib/"
-COPY --from=senzingapi_runtime  "/opt/senzing/er/sdk/c/" "/opt/senzing/er/sdk/c/"
+COPY --from=senzingsdk_runtime  "/opt/senzing/er/lib/"   "/opt/senzing/er/lib/"
+COPY --from=senzingsdk_runtime  "/opt/senzing/er/sdk/c/" "/opt/senzing/er/sdk/c/"
 
 # Build go program.
 

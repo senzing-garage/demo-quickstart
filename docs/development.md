@@ -204,6 +204,8 @@ Example:
 
     ```
 
+1. Open web browser on [localhost:8260].
+
 1. **Optional:** Test using `docker-compose`.
    Example:
 
@@ -283,6 +285,7 @@ Example:
 [Go]: https://go.dev/
 [How to Install Senzing for Go Development]: https://github.com/senzing-garage/knowledge-base/blob/main/HOWTO/install-senzing-for-go-development.md
 [localhost:6060]: http://localhost:6060/pkg/github.com/senzing-garage/playground/
+[localhost:8260]: http://localhost:8260
 [testcoverage.yaml]: ../.github/coverage/testcoverage.yaml
 [docker]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker.md
 [git]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/git.md
