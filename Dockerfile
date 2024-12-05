@@ -2,8 +2,8 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_BUILDER=golang:1.23.2-bullseye
-ARG IMAGE_FINAL=senzing/senzingapi-runtime-beta:latest
+ARG IMAGE_BUILDER=golang:1.23.4-bullseye
+ARG IMAGE_FINAL=senzing/senzingsdk-runtime-beta:latest
 
 # -----------------------------------------------------------------------------
 # Stage: senzingapi_runtime
@@ -81,7 +81,7 @@ FROM ${IMAGE_FINAL} AS final
 ENV REFRESHED_AT=2024-07-01
 LABEL Name="senzing/playground" \
       Maintainer="support@senzing.com" \
-      Version="0.3.2"
+      Version="0.4.6"
 
 
 ARG BUILD_USER="senzing"
@@ -161,7 +161,6 @@ ENV SENZING_API_SERVER_SKIP_ENGINE_PRIMING='true'
 ENV SENZING_API_SERVER_SKIP_STARTUP_PERF='true'
 ENV SENZING_DATA_MART_SQLITE_DATABASE_FILE=/tmp/datamart
 ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@nowhere/IN_MEMORY_DB?mode=memory&cache=shared"}}'
-# ENV SENZING_ENGINE_CONFIGURATION_JSON='{"PIPELINE": {"CONFIGPATH": "/etc/opt/senzing", "LICENSESTRINGBASE64": "", "RESOURCEPATH": "/opt/senzing/er/resources", "SUPPORTPATH": "/opt/senzing/data"}, "SQL": {"CONNECTION": "sqlite3://na:na@nowhere/tmp/sqlite/G2C.db"}}'
 ENV SENZING_TOOLS_ENABLE_ALL=true
 
 # Runtime execution.
