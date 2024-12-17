@@ -23,6 +23,7 @@ jobs:
       - name: Build docker image
         uses: senzing-factory/github-action-docker-buildx-build@v1
         with:
+          build-options: "-q"
           image-repository: senzing/${{ steps.repo-basename.outputs.repo }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
           platforms: linux/amd64
