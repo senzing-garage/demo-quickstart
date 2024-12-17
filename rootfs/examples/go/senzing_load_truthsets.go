@@ -29,58 +29,18 @@ type Record struct {
 
 var (
 	ctx               = context.TODO()
-	err               error
 	grpcAddress       = "localhost:8261"
 	jsonDataSource    DataSourceKey
 	homePath          = "./"
 	jsonRecord        Record
-	szConfig          senzing.SzConfig
 	truthSetURLPrefix = "https://raw.githubusercontent.com/Senzing/truth-sets/refs/heads/main/truthsets/demo/"
 	truthSetFileNames = []string{"customers.json", "reference.json", "watchlist.json"}
 )
-
-func getSzAbstractFactory() senzing.SzAbstractFactory {
-	grpcConnection, err := grpc.NewClient(grpcAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	testErr(err)
-	return &szabstractfactory.Szabstractfactory{
-		GrpcConnection: grpcConnection,
-	}
-}
 
 func testErr(err error) {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func getSzConfig(ctx context.Context, szAbstractFactory senzing.SzAbstractFactory) senzing.SzConfig {
-	result, err := szAbstractFactory.CreateConfig(ctx)
-	testErr(err)
-	return result
-}
-
-func getSzConfigManager(ctx context.Context, szAbstractFactory senzing.SzAbstractFactory) senzing.SzConfigManager {
-	result, err := szAbstractFactory.CreateConfigManager(ctx)
-	testErr(err)
-	return result
-}
-
-func getSzDiagnostic(ctx context.Context, szAbstractFactory senzing.SzAbstractFactory) senzing.SzDiagnostic {
-	result, err := szAbstractFactory.CreateDiagnostic(ctx)
-	testErr(err)
-	return result
-}
-
-func getSzEngine(ctx context.Context, szAbstractFactory senzing.SzAbstractFactory) senzing.SzEngine {
-	result, err := szAbstractFactory.CreateEngine(ctx)
-	testErr(err)
-	return result
-}
-
-func getSzProduct(ctx context.Context, szAbstractFactory senzing.SzAbstractFactory) senzing.SzProduct {
-	result, err := szAbstractFactory.CreateProduct(ctx)
-	testErr(err)
-	return result
 }
 
 func downloadFile(url string, filepath string) error {
@@ -131,15 +91,18 @@ func getDataSources() []string {
 	return result
 }
 
-func prettyJSON(str string) (string, error) {
+func asPrettyJSON(str string) string {
 	var prettyJSON bytes.Buffer
 	if err := json.Indent(&prettyJSON, []byte(str), "", "    "); err != nil {
-		return "", err
+		return str
 	}
-	return prettyJSON.String(), nil
+	return prettyJSON.String()
 }
 
 func main() {
+
+	// Download truth-sets.
+
 	for i := 0; i < len(truthSetFileNames); i++ {
 		url := fmt.Sprintf("%s/%s", truthSetURLPrefix, truthSetFileNames[i])
 		filepath := fmt.Sprintf("%s%s", homePath, truthSetFileNames[i])
@@ -147,12 +110,25 @@ func main() {
 		testErr(err)
 	}
 
+	// Identify datasources.
+
 	var dataSources = getDataSources()
 	fmt.Printf("Found the following DATA_SOURCE values in the data: %v\n", dataSources)
-	var szAbstractFactory = getSzAbstractFactory()
-	var szConfig = getSzConfig(ctx, szAbstractFactory)
-	var szConfigManager = getSzConfigManager(ctx, szAbstractFactory)
-	// var szDiagnostic = getSzDiagnostic(ctx, szAbstractFactory)
+
+	grpcConnection, err := grpc.NewClient(grpcAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	testErr(err)
+	szAbstractFactory := &szabstractfactory.Szabstractfactory{
+		GrpcConnection: grpcConnection,
+	}
+
+	szConfig, err := szAbstractFactory.CreateConfig(ctx)
+	testErr(err)
+
+	szConfigManager, err := szAbstractFactory.CreateConfigManager(ctx)
+	testErr(err)
+
+	szEngine, err := szAbstractFactory.CreateEngine(ctx)
+	testErr(err)
 
 	oldConfigID, err := szConfigManager.GetDefaultConfigID(ctx)
 	testErr(err)
@@ -179,27 +155,10 @@ func main() {
 	err = szConfigManager.ReplaceDefaultConfigID(ctx, oldConfigID, newConfigID)
 	testErr(err)
 
-	fmt.Printf(">>>>>3 szAbstractFactory.Reinitialize(ctx, %d)\n", newConfigID)
-	szAbstractFactory.Reinitialize(ctx, newConfigID)
-
+	err = szAbstractFactory.Reinitialize(ctx, newConfigID)
 	testErr(err)
 
-	var szEngine = getSzEngine(ctx, szAbstractFactory)
-
-	defaultConfigID, err := szConfigManager.GetDefaultConfigID(ctx)
-	testErr(err)
-	fmt.Printf("default: %d\n", defaultConfigID)
-
-	configDefinition, err := szConfigManager.GetConfig(ctx, defaultConfigID)
-	testErr(err)
-
-	configHandle, err = szConfig.ImportConfig(ctx, configDefinition)
-	testErr(err)
-
-	dataXX, err := szConfig.GetDataSources(ctx, configHandle)
-	testErr(err)
-
-	fmt.Println(dataXX)
+	// Add records.
 
 	for _, value := range truthSetFileNames {
 		filepath := fmt.Sprintf("%s%s", homePath, value)
@@ -218,24 +177,18 @@ func main() {
 		}
 	}
 
+	// View results.
+
 	customer1070Entity, err := szEngine.GetEntityByRecordID(ctx, "CUSTOMERS", "1070", senzing.SzEntityIncludeRecordSummary)
 	testErr(err)
+	fmt.Println(asPrettyJSON(customer1070Entity))
 
-	customer1070EntityPretty, err := prettyJSON(customer1070Entity)
-	testErr(err)
-
-	fmt.Println(customer1070EntityPretty)
 	searchProfile := ""
 	searchQuery := `{
         "name_full": "robert smith",
         "date_of_birth": "11/12/1978"
     }`
-
 	searchResult, err := szEngine.SearchByAttributes(ctx, searchQuery, searchProfile, senzing.SzSearchByAttributesDefaultFlags)
 	testErr(err)
-
-	searchResultPretty, err := prettyJSON(searchResult)
-	testErr(err)
-
-	fmt.Println(searchResultPretty)
+	fmt.Println(asPrettyJSON(searchResult))
 }
