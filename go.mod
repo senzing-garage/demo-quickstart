@@ -14,9 +14,9 @@ require (
 	github.com/senzing-garage/go-observing v0.3.3
 	github.com/senzing-garage/go-rest-api-service v0.10.3
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
-	github.com/senzing-garage/serve-grpc v0.8.8
+	github.com/senzing-garage/serve-grpc v0.8.9
 	github.com/senzing-garage/sz-sdk-go v0.14.4
-	github.com/senzing-garage/sz-sdk-go-grpc v0.8.6-0.20241216201717-56b9921f49b0
+	github.com/senzing-garage/sz-sdk-go-grpc v0.8.6
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.10.0
