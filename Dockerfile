@@ -174,15 +174,11 @@ RUN go install github.com/janpfeifer/gonb@latest \
  && go install golang.org/x/tools/gopls@latest \
  && gonb --install
 
-RUN go get \
-        github.com/senzing-garage/sz-sdk-go \
-        github.com/senzing-garage/sz-sdk-go-grpc \
-        google.golang.org/grpc
-
 WORKDIR /examples/go
+ 
 RUN go get -u ./... \
-    go get -t -u ./... \
-    go mod tidy
+ && go get -t -u ./... \
+ && go mod tidy
 
 WORKDIR ${HOME}
 
