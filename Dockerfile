@@ -174,6 +174,8 @@ RUN go install github.com/janpfeifer/gonb@latest \
  && go install golang.org/x/tools/gopls@latest \
  && gonb --install
 
+# Install go packages for SDK
+ 
 WORKDIR /examples/go
  
 RUN go get -u ./... \

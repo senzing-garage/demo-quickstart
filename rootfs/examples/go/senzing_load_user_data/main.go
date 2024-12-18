@@ -26,11 +26,11 @@ type Record struct {
 
 var (
 	ctx            = context.TODO()
-	grpcAddress    = "localhost:8261"
-	jsonDataSource DataSourceKey
-	homePath       = "./"
-	jsonRecord     Record
 	fileName       = "senzing-example-data.json"
+	grpcAddress    = "localhost:8261"
+	homePath       = "./"
+	jsonDataSource DataSourceKey
+	jsonRecord     Record
 )
 
 func testErr(err error) {
