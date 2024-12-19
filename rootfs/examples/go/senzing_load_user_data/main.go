@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -39,7 +40,7 @@ func testErr(err error) {
 	}
 }
 
-func getDataSources(filePath string) []string {
+func extractDataSources(filePath string) []string {
 	result := []string{}
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -63,7 +64,7 @@ func getDataSources(filePath string) []string {
 	return result
 }
 
-func updateSenzingConfig(szAbstractFactory senzing.SzAbstractFactory, dataSourceNames []string) error {
+func addDatasourcesToSenzingConfig(szAbstractFactory senzing.SzAbstractFactory, dataSourceNames []string) error {
 
 	szConfig, err := szAbstractFactory.CreateConfig(ctx)
 	if err != nil {
@@ -120,8 +121,8 @@ func updateSenzingConfig(szAbstractFactory senzing.SzAbstractFactory, dataSource
 	return nil
 }
 
-func addRecords(szAbstractFactory senzing.SzAbstractFactory, fileName string) error {
-	file, err := os.Open(fileName)
+func addRecords(szAbstractFactory senzing.SzAbstractFactory, filepath string) error {
+	file, err := os.Open(filepath)
 	if err != nil {
 		return err
 	}
@@ -144,6 +145,14 @@ func addRecords(szAbstractFactory senzing.SzAbstractFactory, fileName string) er
 	return nil
 }
 
+func asPrettyJSON(str string) string {
+	var prettyJSON bytes.Buffer
+	if err := json.Indent(&prettyJSON, []byte(str), "", "    "); err != nil {
+		return str
+	}
+	return prettyJSON.String()
+}
+
 func main() {
 
 	// User input.
@@ -160,9 +169,10 @@ func main() {
 
 	// Identify datasources and update Senzing configuration.
 
-	dataSourceNames := getDataSources(inputFile)
+	dataSourceNames := extractDataSources(inputFile)
 	fmt.Printf("Found the following DATA_SOURCE values in the data: %v\n", dataSourceNames)
-	err = updateSenzingConfig(szAbstractFactory, dataSourceNames)
+
+	err = addDatasourcesToSenzingConfig(szAbstractFactory, dataSourceNames)
 	testErr(err)
 
 	// Add records.

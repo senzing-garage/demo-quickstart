@@ -64,31 +64,112 @@ func downloadFile(url string, filepath string) error {
 	return nil
 }
 
-func getDataSources() []string {
+func extractDataSources(filePath string) []string {
 	result := []string{}
-	for i := 0; i < len(truthSetFileNames); i++ {
-		filepath := fmt.Sprintf("%s%s", homePath, truthSetFileNames[i])
-		file, err := os.Open(filepath)
-		if err != nil {
-			panic(err)
-		}
-		defer file.Close()
+	file, err := os.Open(filePath)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
 
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			line := scanner.Bytes()
-			err := json.Unmarshal(line, &jsonDataSource)
-			testErr(err)
-			if !slices.Contains(result, jsonDataSource.Data_Source) {
-				result = append(result, jsonDataSource.Data_Source)
-			}
-		}
-
-		if err := scanner.Err(); err != nil {
-			log.Fatal(err)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Bytes()
+		err := json.Unmarshal(line, &jsonDataSource)
+		testErr(err)
+		if !slices.Contains(result, jsonDataSource.Data_Source) {
+			result = append(result, jsonDataSource.Data_Source)
 		}
 	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 	return result
+}
+
+func addDatasourcesToSenzingConfig(szAbstractFactory senzing.SzAbstractFactory, dataSourceNames []string) error {
+	szConfig, err := szAbstractFactory.CreateConfig(ctx)
+	if err != nil {
+		return err
+	}
+
+	szConfigManager, err := szAbstractFactory.CreateConfigManager(ctx)
+	if err != nil {
+		return err
+	}
+
+	oldConfigID, err := szConfigManager.GetDefaultConfigID(ctx)
+	if err != nil {
+		return err
+	}
+
+	oldJsonConfig, err := szConfigManager.GetConfig(ctx, oldConfigID)
+	if err != nil {
+		return err
+	}
+
+	configHandle, err := szConfig.ImportConfig(ctx, oldJsonConfig)
+	if err != nil {
+		return err
+	}
+
+	for _, value := range dataSourceNames {
+		_, err := szConfig.AddDataSource(ctx, configHandle, value)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	newJsonConfig, err := szConfig.ExportConfig(ctx, configHandle)
+	if err != nil {
+		return err
+	}
+
+	newConfigID, err := szConfigManager.AddConfig(ctx, newJsonConfig, "Add TruthSet datasources")
+	if err != nil {
+		return err
+	}
+
+	err = szConfigManager.ReplaceDefaultConfigID(ctx, oldConfigID, newConfigID)
+	if err != nil {
+		return err
+	}
+
+	err = szAbstractFactory.Reinitialize(ctx, newConfigID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func addRecords(szAbstractFactory senzing.SzAbstractFactory, filepath string) error {
+	file, err := os.Open(filepath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	szEngine, err := szAbstractFactory.CreateEngine(ctx)
+	if err != nil {
+		return err
+	}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Bytes()
+		err := json.Unmarshal(line, &jsonRecord)
+		if err != nil {
+			return err
+		}
+		result, err := szEngine.AddRecord(ctx, jsonRecord.Data_Source, jsonRecord.Record_ID, string(line), senzing.SzWithInfo)
+		if err != nil {
+			return err
+		}
+		fmt.Println(result)
+	}
+	return nil
 }
 
 func asPrettyJSON(str string) string {
@@ -101,7 +182,7 @@ func asPrettyJSON(str string) string {
 
 func main() {
 
-	// Download truth-sets.
+	// Download truth-sets files.
 
 	for i := 0; i < len(truthSetFileNames); i++ {
 		url := fmt.Sprintf("%s/%s", truthSetURLPrefix, truthSetFileNames[i])
@@ -110,10 +191,7 @@ func main() {
 		testErr(err)
 	}
 
-	// Identify datasources.
-
-	var dataSources = getDataSources()
-	fmt.Printf("Found the following DATA_SOURCE values in the data: %v\n", dataSources)
+	// Create an abstract factory for acessing Senzing via gRPC.
 
 	grpcConnection, err := grpc.NewClient(grpcAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	testErr(err)
@@ -121,74 +199,44 @@ func main() {
 		GrpcConnection: grpcConnection,
 	}
 
-	szConfig, err := szAbstractFactory.CreateConfig(ctx)
-	testErr(err)
+	// Discover DATA_SOURCE values in records.
 
-	szConfigManager, err := szAbstractFactory.CreateConfigManager(ctx)
-	testErr(err)
-
-	szEngine, err := szAbstractFactory.CreateEngine(ctx)
-	testErr(err)
-
-	oldConfigID, err := szConfigManager.GetDefaultConfigID(ctx)
-	testErr(err)
-
-	oldJsonConfig, err := szConfigManager.GetConfig(ctx, oldConfigID)
-	testErr(err)
-
-	configHandle, err := szConfig.ImportConfig(ctx, oldJsonConfig)
-	testErr(err)
-
-	for _, value := range dataSources {
-		_, err := szConfig.AddDataSource(ctx, configHandle, value)
-		if err != nil {
-			fmt.Println(err)
-		}
+	dataSources := []string{}
+	for _, value := range truthSetFileNames {
+		partialDataSources := extractDataSources(fmt.Sprintf("%s%s", homePath, value))
+		dataSources = append(dataSources, partialDataSources...)
 	}
+	fmt.Printf("Found the following DATA_SOURCE values in the data: %v\n", dataSources)
 
-	newJsonConfig, err := szConfig.ExportConfig(ctx, configHandle)
-	testErr(err)
+	// Update Senzing configuration.
 
-	newConfigID, err := szConfigManager.AddConfig(ctx, newJsonConfig, "Add TruthSet datasources")
-	testErr(err)
-
-	err = szConfigManager.ReplaceDefaultConfigID(ctx, oldConfigID, newConfigID)
-	testErr(err)
-
-	err = szAbstractFactory.Reinitialize(ctx, newConfigID)
-	testErr(err)
+	err = addDatasourcesToSenzingConfig(szAbstractFactory, dataSources)
 
 	// Add records.
 
 	for _, value := range truthSetFileNames {
-		filepath := fmt.Sprintf("%s%s", homePath, value)
-		file, err := os.Open(filepath)
-		testErr(err)
-		defer file.Close()
-
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			line := scanner.Bytes()
-			err := json.Unmarshal(line, &jsonRecord)
-			testErr(err)
-			result, err := szEngine.AddRecord(ctx, jsonRecord.Data_Source, jsonRecord.Record_ID, string(line), senzing.SzWithInfo)
-			testErr(err)
-			fmt.Println(result)
-		}
+		err = addRecords(szAbstractFactory, fmt.Sprintf("%s%s", homePath, value))
 	}
 
-	// View results.
+	// Retrieve an entity by identifying a record of the entity. Use the `SZ_ENTITY_INCLUDE_RECORD_SUMMARY` flag from among the get_entity flags.
+
+	szEngine, err := szAbstractFactory.CreateEngine(ctx)
+	testErr(err)
 
 	customer1070Entity, err := szEngine.GetEntityByRecordID(ctx, "CUSTOMERS", "1070", senzing.SzEntityIncludeRecordSummary)
 	testErr(err)
 	fmt.Println(asPrettyJSON(customer1070Entity))
 
+	// Search for entities by attributes.
+
 	searchProfile := ""
 	searchQuery := `{
-        "name_full": "robert smith",
-        "date_of_birth": "11/12/1978"
-    }`
+    "name_full": "robert smith",
+    "date_of_birth": "11/12/1978"
+}`
+
 	searchResult, err := szEngine.SearchByAttributes(ctx, searchQuery, searchProfile, senzing.SzSearchByAttributesDefaultFlags)
 	testErr(err)
 	fmt.Println(asPrettyJSON(searchResult))
+
 }
