@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 
 ARG IMAGE_BUILDER=golang:1.23.4-bullseye
-ARG IMAGE_FINAL=senzing/senzingsdk-runtime-beta:latest
+ARG IMAGE_FINAL=senzing/senzingsdk-runtime:latest
 
 # -----------------------------------------------------------------------------
 # Stage: senzingsdk_runtime
